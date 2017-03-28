@@ -1,0 +1,7 @@
+/Users/xiongwei/Downloads/AST/obj/x86/Debug/.NETFramework,Version=v4.0,Profile=Client.AssemblyAttribute.cs
+/Users/xiongwei/Downloads/AST/bin/Debug/AST.exe.mdb
+/Users/xiongwei/Downloads/AST/bin/Debug/AST.pdb
+/Users/xiongwei/Downloads/AST/bin/Debug/AST.exe
+/Users/xiongwei/Downloads/AST/obj/x86/Debug/AST.exe
+/Users/xiongwei/Downloads/AST/obj/x86/Debug/AST.exe.mdb
+/Users/xiongwei/Downloads/AST/obj/x86/Debug/AST.pdb
