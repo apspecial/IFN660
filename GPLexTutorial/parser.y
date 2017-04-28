@@ -12,6 +12,8 @@
     public ClassBody classBodi;
     public MethodDeclaration methDecl;
     public MethodModifier methModi;
+    public LIST<MethodModifier> methmodilist;
+    public Result result;
 }
 
 %token <num> NUMBER
@@ -31,6 +33,8 @@
 %type <classBodi> ClassBody
 %type <methModi> MethodModifier
 %type <methDecl> MethodDeclaration
+%type <methmodilist> MethodModifierList
+%type <result> Result
 
 %%
 
@@ -90,13 +94,15 @@ ClassBody
 	;
 
 MethodDeclaration
-    : MethodModifiers MethodHeader MethodBody {$$ = new MethodDeclaration(new LIST<$1> ,null,null);}
-    ;
-
-MethodModifiers
-    : MethodModifier MethodModifiers
+    : MethodModifierList MethodHeader MethodBody {$$ = new MethodDeclaration($1,$2,$3);}
     | empty
     ;
+
+MethodModifierList : MethodModifierList MethodModifier                     { $$ = $1; $$ = $1.add($2);    }
+              | empty                                                      { $$ = new LIST<MethodModifier>(); }
+              ;
+
+
 
 MethodModifier
     : PUBLIC
@@ -105,13 +111,61 @@ MethodModifier
     ;
 
 MethodHeader
-    : empty 
+    : Result MethodDeclarator       {$$ = new MethodHeader($1,$2);}
+    | empty
+    ;
+
+Result
+    :VOID
+    ;
+
+MethodDeclarator
+    :Identifier '(' FormalParameterList ')'  {$$ = new MethodDeclarator($1,null);}
+    |empty
+    ;
+
+FormalParameterList
+    : FormalParameterList FormalParameter    {$$=null;}
+    | empty
+    ;                                      
+
+FormalParameter
+    : VariableModifiers UnannType VariableDeclaratorId {$$=null;}
+    ;
+
+VariableModifiers
+    :empty            {$$ = null;}
+    ;
+
+VariableDeclaratorId
+    :empty            {$$ = null;}
+    ;
+
+UnannType
+    :empty            {$$ = null;}
     ;
 
 MethodBody
-    : empty 
+    : '{' BlockStatements '}'   {$$ = new MethodBody($2);} 
     ;
 
+BlockStatements
+    : BlockStatement BlockStatements  
+    | empty
+    ;
+
+BlockStatement
+    : LocalVariableDeclarationStatement ExpressionStatement  {$$ = new BlockStatement($1,$2);}
+    | empty 
+    ;
+
+LocalVariableDeclarationStatement
+    : empty                         {$$ = null;}
+    ;
+
+ExpressionStatement
+    : empty                         {$$ = null;}
+    ;
 
 %%
 

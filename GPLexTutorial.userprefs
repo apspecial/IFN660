@@ -1,15 +1,16 @@
 ﻿<Properties StartupConfiguration="{0597E117-FE4E-461B-A098-5D89297BF19E}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="GPLexTutorial/parser.y">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="GPLexTutorial/parser.y" Line="116" Column="3" />
-      <File FileName="ASTTest/Program.cs" Line="17" Column="64" />
-      <File FileName="ASTTest/AST.cs" Line="152" Column="34" />
+      <File FileName="GPLexTutorial/parser.y" Line="158" Column="94" />
+      <File FileName="ASTTest/Program.cs" Line="22" Column="60" />
+      <File FileName="ASTTest/AST.cs" Line="106" Column="32" />
       <File FileName="GPLexTutorial/AST.cs" Line="167" Column="2" />
-      <File FileName="GPLexTutorial/parser.cs" Line="1" Column="1" />
-      <File FileName="GPLexTutorial/Program.cs" Line="15" Column="1" />
+      <File FileName="GPLexTutorial/parser.cs" Line="18" Column="7" />
+      <File FileName="GPLexTutorial/Program.cs" Line="20" Column="6" />
       <File FileName="GPLexTutorial/scanner.cs" Line="1" Column="1" />
       <File FileName="GPLexTutorial/Properties/AssemblyInfo.cs" Line="1" Column="1" />
-      <File FileName="GPLexTutorial/scanner.lex" Line="51" Column="1" />
+      <File FileName="GPLexTutorial/scanner.lex" Line="59" Column="40" />
+      <File FileName="GPLexTutorial/GPLexTutorial.csproj" Line="72" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.GPLexTutorial PreferredExecutionTarget="MonoDevelop.Default" />

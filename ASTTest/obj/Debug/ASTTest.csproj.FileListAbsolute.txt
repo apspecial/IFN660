@@ -4,3 +4,10 @@
 /Users/xiongwei/Downloads/GPLexTutorial 2/ASTTest/obj/Debug/ASTTest.csproj.CoreCompileInputs.cache
 /Users/xiongwei/Downloads/GPLexTutorial 2/ASTTest/obj/Debug/ASTTest.exe
 /Users/xiongwei/Downloads/GPLexTutorial 2/ASTTest/obj/Debug/ASTTest.pdb
+/Users/xiongwei/Projects/IFN660_group/ASTTest/bin/Debug/ASTTest.exe.config
+/Users/xiongwei/Projects/IFN660_group/ASTTest/bin/Debug/ASTTest.exe
+/Users/xiongwei/Projects/IFN660_group/ASTTest/bin/Debug/ASTTest.pdb
+/Users/xiongwei/Projects/IFN660_group/ASTTest/obj/Debug/ASTTest.csprojResolveAssemblyReference.cache
+/Users/xiongwei/Projects/IFN660_group/ASTTest/obj/Debug/ASTTest.csproj.CoreCompileInputs.cache
+/Users/xiongwei/Projects/IFN660_group/ASTTest/obj/Debug/ASTTest.exe
+/Users/xiongwei/Projects/IFN660_group/ASTTest/obj/Debug/ASTTest.pdb

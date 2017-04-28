@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 2017/4/25 0:56:32>
+//  GPPG error listing for yacc source file <parser.y - 2017/4/28 17:44:07>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  xiongweitekiMBP
-//  DateTime: 2017/4/25 0:56:32
+//  DateTime: 2017/4/28 17:45:35
 //  UserName: xiongwei
 // ==========================================================================
 
@@ -22,7 +22,9 @@
     public Identifier identi;
     public ClassBody classBodi;
     public MethodDeclaration methDecl;
-    public List<MethodModifier> methModi;
+    public MethodModifier methModi;
+    public LIST<MethodModifier> methmodilist;
+    public Result result;
 }
 
 %token <num> NUMBER
@@ -42,8 +44,13 @@
 %type <classBodi> ClassBody
 %type <methModi> MethodModifier
 %type <methDecl> MethodDeclaration
+%type <methmodilist> MethodModifierList
+%type <result> Result
 
 %%
+// Warning: NonTerminal symbol "TypeDeclarations" is unreachable
+// Warning: NonTerminal symbol "Identifiers" is unreachable
+// -------------------------------------------------------------
 
 CompilationUnit
 	: PackageDeclaration ImportDeclarations TypeDeclaration   { $$=new CompilationUnit(null,null,$3); }
@@ -101,16 +108,15 @@ ClassBody
 	;
 
 MethodDeclaration
-    : MethodModifiers MethodHeader MethodBody {$$ = new MethodDeclaration($1,null,null);}
+    : MethodModifierList MethodHeader MethodBody {$$ = new MethodDeclaration($1,$2,$3);}
+    | empty
     ;
 
-MethodModifiers
-    : MethodModifier MethodModifiers
-    | empty;
-    ;
-//-^^
-// Error: Syntax error, unexpected ';', expecting %%, or anchoredSymbol, or EOF
-// ----------------------------------------------------------------------------
+MethodModifierList : MethodModifierList MethodModifier                     { $$ = $1; $$ = $1.add($2);    }
+              | empty                                                      { $$ = new LIST<MethodModifier>(); }
+              ;
+
+
 
 MethodModifier
     : PUBLIC
@@ -119,12 +125,61 @@ MethodModifier
     ;
 
 MethodHeader
-    : empty 
-    ;
-MethodBody
-    : empty 
+    : Result MethodDeclarator       {$$ = new MethodHeader($1,$2);}
+    | empty
     ;
 
+Result
+    :VOID
+    ;
+
+MethodDeclarator
+    :Identifier '(' FormalParameterList ')'  {$$ = new MethodDeclarator($1,null);}
+    |empty
+    ;
+
+FormalParameterList
+    : FormalParameterList FormalParameter    {$$=null;}
+    | empty
+    ;                                      
+
+FormalParameter
+    : VariableModifiers UnannType VariableDeclaratorId {$$=null;}
+    ;
+
+VariableModifiers
+    :empty            {$$ = null;}
+    ;
+
+VariableDeclaratorId
+    :empty            {$$ = null;}
+    ;
+
+UnannType
+    :empty            {$$ = null;}
+    ;
+
+MethodBody
+    : '{' BlockStatements '}'   {$$ = new MethodBody($2);} 
+    ;
+
+BlockStatements
+    : BlockStatement BlockStatements  
+    | empty
+    ;
+
+BlockStatement
+    : LocalVariableDeclarationStatement ExpressionStatement  {$$ = new BlockStatement($1,$2);}
+    | empty 
+    ;
+
+LocalVariableDeclarationStatement
+    : empty                         {$$ = null;}
+    ;
+
+ExpressionStatement
+    : empty                         {$$ = null;}
+    ;
 
 %%
 
