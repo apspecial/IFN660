@@ -1,4 +1,0 @@
-F:\Project\C#\IFN660\AST\bin\Debug\AST.exe
-F:\Project\C#\IFN660\AST\bin\Debug\AST.pdb
-F:\Project\C#\IFN660\AST\obj\x86\Debug\AST.exe
-F:\Project\C#\IFN660\AST\obj\x86\Debug\AST.pdb

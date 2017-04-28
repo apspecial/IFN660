@@ -1,0 +1,2 @@
+/Users/xiongwei/Downloads/GPLexTutorial 2/GPLexTutorial/obj/Debug/.NETFramework,Version=v4.5.2.AssemblyAttribute.cs
+/Users/xiongwei/Downloads/GPLexTutorial 2/GPLexTutorial/bin/Debug/QUT.ShiftReduceParser.dll
