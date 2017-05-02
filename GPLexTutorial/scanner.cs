@@ -5,10 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.2.2
-//  Machine:  xiongweitekiMacBook-Pro.local
-//  DateTime: 2017/5/2 17:07:40
-//  UserName: xiongwei
-//  GPLEX input file <scanner.lex - 2017/4/24 0:06:16>
+//  Machine:  LAPTOP-F1AHD3OF
+//  DateTime: 2/05/2017 5:48:45 PM
+//  UserName: home
+//  GPLEX input file <scanner.lex - 2/05/2017 5:46:27 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize

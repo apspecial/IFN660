@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 2017/5/2 17:06:40>
+//  GPPG error listing for yacc source file <parser.y - 2/05/2017 5:46:27 PM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  xiongweitekiMacBook-Pro.local
-//  DateTime: 2017/5/2 17:07:40
-//  UserName: xiongwei
+//  Machine:  LAPTOP-F1AHD3OF
+//  DateTime: 2/05/2017 5:48:45 PM
+//  UserName: home
 // ==========================================================================
 
 
@@ -48,8 +48,8 @@
 %type <result> Result
 
 %%
-// Warning: NonTerminal symbol "TypeDeclarations" is unreachable
 // Warning: NonTerminal symbol "Identifiers" is unreachable
+// Warning: NonTerminal symbol "TypeDeclarations" is unreachable
 // -------------------------------------------------------------
 
 CompilationUnit

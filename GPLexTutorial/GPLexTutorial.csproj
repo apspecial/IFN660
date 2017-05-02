@@ -68,7 +68,7 @@
   -->
   <Target Name="BeforeBuild">
     <Message Text="Generating Scanner and Parser" />
-    <Exec Command="mono gplex.exe /unicode scanner.lex" />
-    <Exec Command="mono gppg.exe /gplex parser.y &gt; parser.cs" />
+    <Exec Command="gplex.exe /unicode scanner.lex" />
+    <Exec Command="gppg.exe /gplex parser.y &gt; parser.cs" />
   </Target>
 </Project>

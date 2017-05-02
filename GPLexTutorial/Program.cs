@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
-using QUT.gppg;
+using QUT.Gppg;
 
 namespace GPLexTutorial
 {
@@ -13,6 +13,7 @@ namespace GPLexTutorial
     {
         static void Main(string[] args)
         {
+            string a = "ASDfasdf";
             Scanner scanner = new Scanner(
                 new FileStream(args[0], FileMode.Open));
             Parser parser = new Parser(scanner);
