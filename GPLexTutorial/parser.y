@@ -1,4 +1,4 @@
-﻿%namespace GPLexTutorial
+﻿﻿%namespace GPLexTutorial
 
 %union
 {
@@ -15,8 +15,8 @@
     public List<MethodModifier> methmodilist;
     public Result result;
 	public BlockStatement blksta;
-	public BlockStatements blkstas;
-	public LocalVariableDeclarationStatement localvariable;
+
+	public VariableDeclarationStatement variablestate;
 	public MethodDeclarator methodecla;
 	public MethodHeader methodhea;
 	public MethodBody methodbd;
@@ -42,8 +42,7 @@
 %type <methmodilist> MethodModifierList
 %type <result> Result
 %type <blksta> BlockStatement
-%type <blkstas> BlockStatements
-%type <localvariable> LocalVariableDeclarationStatement
+%type <variablestate> VariableDeclarationStatement
 %type <methodecla> MethodDeclarator
 %type <methodhea> MethodHeader
 %type <methodbd> MethodBody
@@ -167,11 +166,11 @@ BlockStatements
     ;
 
 BlockStatement
-    : LocalVariableDeclarationStatement ExpressionStatement  {$$ = new BlockStatement($1,$2);}
+    : VariableDeclarationStatement ExpressionStatement  {$$ = new BlockStatement($1,$2);}
     | empty 
     ;
 
-LocalVariableDeclarationStatement
+VariableDeclarationStatement
     : empty                         
     ;
 
