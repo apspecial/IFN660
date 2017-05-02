@@ -12,7 +12,7 @@
     public ClassBody classBodi;
     public MethodDeclaration methDecl;
     public MethodModifier methModi;
-    public LIST<MethodModifier> methmodilist;
+    public List<MethodModifier> methmodilist;
     public Result result;
 }
 
@@ -127,7 +127,7 @@ MethodDeclarator
 FormalParameterList
     : FormalParameterList FormalParameter    {$$=null;}
     | empty
-    ;                                      
+    ;
 
 FormalParameter
     : VariableModifiers UnannType VariableDeclaratorId {$$=null;}

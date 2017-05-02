@@ -142,8 +142,7 @@ MethodBody
 	;
 Block
 	: '{' BlockStatements '}'
-	;
-BlockStatements
+	;BlockStatements
 	: BlockStatement
 	| BlockStatement BlockStatements
 	;
@@ -151,6 +150,7 @@ BlockStatement
 	: LocalVariableDeclarationStatement
 	| Statement
 	;
+
 LocalVariableDeclarationStatement
 	: LocalVariableDeclaration ';'
 	;

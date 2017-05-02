@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 2017/4/28 17:44:07>
+//  GPPG error listing for yacc source file <parser.y - 2017/5/2 17:06:40>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  xiongweitekiMBP
-//  DateTime: 2017/4/28 17:45:35
+//  Machine:  xiongweitekiMacBook-Pro.local
+//  DateTime: 2017/5/2 17:07:40
 //  UserName: xiongwei
 // ==========================================================================
 
@@ -23,7 +23,7 @@
     public ClassBody classBodi;
     public MethodDeclaration methDecl;
     public MethodModifier methModi;
-    public LIST<MethodModifier> methmodilist;
+    public List<MethodModifier> methmodilist;
     public Result result;
 }
 
@@ -141,7 +141,7 @@ MethodDeclarator
 FormalParameterList
     : FormalParameterList FormalParameter    {$$=null;}
     | empty
-    ;                                      
+    ;
 
 FormalParameter
     : VariableModifiers UnannType VariableDeclaratorId {$$=null;}

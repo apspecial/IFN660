@@ -3,10 +3,10 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.5.2
-// Machine:  xiongweitekiMBP
-// DateTime: 2017/4/28 17:45:34
+// Machine:  xiongweitekiMacBook-Pro.local
+// DateTime: 2017/5/2 17:07:40
 // UserName: xiongwei
-// Input file <parser.y - 2017/4/28 17:44:07>
+// Input file <parser.y - 2017/5/2 17:06:40>
 
 // options: lines gplex
 
@@ -36,7 +36,7 @@ public struct ValueType
     public ClassBody classBodi;
     public MethodDeclaration methDecl;
     public MethodModifier methModi;
-    public LIST<MethodModifier> methmodilist;
+    public List<MethodModifier> methmodilist;
     public Result result;
 }
 #line default
