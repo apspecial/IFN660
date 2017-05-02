@@ -14,6 +14,12 @@
     public MethodModifier methModi;
     public List<MethodModifier> methmodilist;
     public Result result;
+	public BlockStatement blksta;
+	public BlockStatements blkstas;
+	public LocalVariableDeclarationStatement localvariable;
+	public MethodDeclarator methodecla;
+	public MethodHeader methodhea;
+	public MethodBody methodbd;
 }
 
 %token <num> NUMBER
@@ -35,6 +41,12 @@
 %type <methDecl> MethodDeclaration
 %type <methmodilist> MethodModifierList
 %type <result> Result
+%type <blksta> BlockStatement
+%type <blkstas> BlockStatements
+%type <localvariable> LocalVariableDeclarationStatement
+%type <methodecla> MethodDeclarator
+%type <methodhea> MethodHeader
+%type <methodbd> MethodBody
 
 %%
 
@@ -98,8 +110,8 @@ MethodDeclaration
     | empty
     ;
 
-MethodModifierList : MethodModifierList MethodModifier                     { $$ = $1; $$ = $1.add($2);    }
-              | empty                                                      { $$ = new LIST<MethodModifier>(); }
+MethodModifierList : MethodModifierList MethodModifier                     { $$ = $1; $$ = $1.Add($2);    }
+              | empty                                                      { $$ = new List<MethodModifier>(); }
               ;
 
 
@@ -125,24 +137,24 @@ MethodDeclarator
     ;
 
 FormalParameterList
-    : FormalParameterList FormalParameter    {$$=null;}
+    : FormalParameterList FormalParameter    
     | empty
     ;
 
 FormalParameter
-    : VariableModifiers UnannType VariableDeclaratorId {$$=null;}
+    : VariableModifiers UnannType VariableDeclaratorId 
     ;
 
 VariableModifiers
-    :empty            {$$ = null;}
+    :empty            
     ;
 
 VariableDeclaratorId
-    :empty            {$$ = null;}
+    :empty            
     ;
 
 UnannType
-    :empty            {$$ = null;}
+    :empty            
     ;
 
 MethodBody
@@ -160,11 +172,11 @@ BlockStatement
     ;
 
 LocalVariableDeclarationStatement
-    : empty                         {$$ = null;}
+    : empty                         
     ;
 
 ExpressionStatement
-    : empty                         {$$ = null;}
+    : empty                         
     ;
 
 %%
