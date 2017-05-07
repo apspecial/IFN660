@@ -13,7 +13,6 @@ namespace GPLexTutorial
     {
         static void Main(string[] args)
         {
-            string a = "ASDfasdf";
             Scanner scanner = new Scanner(
                 new FileStream(args[0], FileMode.Open));
             Parser parser = new Parser(scanner);

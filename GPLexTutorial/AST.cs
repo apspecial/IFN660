@@ -113,15 +113,31 @@ namespace GPLexTutorial
 			this.expressionStatement = expressionstatement;
 		}
 	}
+    public class BlockStatements: Node
+    {
+        private BlockStatement blockStatement;
+        public BlockStatements(BlockStatement blockstatement)
+        {
+            this.blockStatement = blockstatement;
+        }
+    }
 	public class MethodBody : Node
 	{
-		private BlockStatement blockStatement;
-		public MethodBody(BlockStatement blockstatement)
+		private BlockStatements blockStatements;
+		public MethodBody(BlockStatements blockstatements)
 		{
-			this.blockStatement = blockstatement;
+			this.blockStatements = blockstatements;
 		}
 	}
 	public enum MethodModifier { Public, Static };
+    public class MethodModifiers : Node
+    {
+        private MethodModifier methodModifier;
+        public MethodModifiers(MethodModifier methodmodifier)
+        {
+            this.methodModifier = methodmodifier;
+        }
+    }
 	public abstract class FormalParameterList : Node { };
 	public class MethodDeclarator : Node
 	{
@@ -146,12 +162,12 @@ namespace GPLexTutorial
 	}
 	public class MethodDeclaration : Node
 	{
-		private List<MethodModifier> methodModifier;
+		private MethodModifiers methodModifiers;
 		private MethodHeader methodHeader;
 		private MethodBody methodBody;
-		public MethodDeclaration(List<MethodModifier> methodmodifier, MethodHeader methodheader, MethodBody methodbody)
+		public MethodDeclaration(MethodModifiers methodmodifiers, MethodHeader methodheader, MethodBody methodbody)
 		{
-			this.methodModifier = methodmodifier;
+			this.methodModifiers = methodmodifiers;
 			this.methodHeader = methodheader;
 			this.methodBody = methodbody;
 		}

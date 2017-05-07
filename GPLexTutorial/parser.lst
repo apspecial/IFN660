@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 2/05/2017 5:46:27 PM>
+//  GPPG error listing for yacc source file <parser.y - 5/7/2017 11:09:57 PM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  LAPTOP-F1AHD3OF
-//  DateTime: 2/05/2017 5:48:45 PM
-//  UserName: home
+//  Machine:  TUPHAM-LAPTOP
+//  DateTime: 5/7/2017 11:10:00 PM
+//  UserName: Ngoc Tu Pham
 // ==========================================================================
 
 
@@ -25,6 +25,13 @@
     public MethodModifier methModi;
     public List<MethodModifier> methmodilist;
     public Result result;
+	public BlockStatement blksta;
+	public BlockStatements blkstas;
+	public VariableDeclarationStatement variablestate;
+	public MethodDeclarator methodecla;
+	public MethodHeader methodhea;
+	public MethodBody methodbd;
+	public ExpressionStatement expstm;
 }
 
 %token <num> NUMBER
@@ -46,11 +53,22 @@
 %type <methDecl> MethodDeclaration
 %type <methmodilist> MethodModifierList
 %type <result> Result
+%type <blksta> BlockStatement
+%type <variablestate> VariableDeclarationStatement
+%type <methodecla> MethodDeclarator
+%type <methodhea> MethodHeader
+%type <methodbd> MethodBody
+%type <blkstas> BlockStatements
+%type <expstm> ExpressionStatement
 
 %%
-// Warning: NonTerminal symbol "Identifiers" is unreachable
-// Warning: NonTerminal symbol "TypeDeclarations" is unreachable
-// -------------------------------------------------------------
+// Warning: NonTerminal symbol "MethodModifierList" is unreachable
+// Error: NonTerminal symbol "MethodModifierList" has no productions
+// Error: There are 1 non-terminating NonTerminal Symbols
+   //  {MethodModifierList}
+// Warning: Terminating MethodModifierList fixes the following size-1 NonTerminal set
+   // {MethodModifierList}
+// ----------------------------------------------------------------------------------
 
 CompilationUnit
 	: PackageDeclaration ImportDeclarations TypeDeclaration   { $$=new CompilationUnit(null,null,$3); }
@@ -71,11 +89,6 @@ ImportDeclaration
 	: empty
 	;
 
-TypeDeclarations 
-	: TypeDeclaration TypeDeclarations  
-	| empty
-	;
-
 TypeDeclaration
 	: NormalClassDeclaration   { $$ = new TypeDeclaration($1); }
 	;
@@ -84,18 +97,12 @@ NormalClassDeclaration
 	:ClassModifier CLASS Identifier TypeParameters '{' ClassBody '}'  {$$ = new NormalClassDeclaration($1,$3,$6);}
 	;
 
-
 ClassModifier
 	: PUBLIC  
 	;
 
 TypeParameters
 	: empty
-	;
-
-Identifiers
-	: Identifier Identifiers  
-	| empty
 	;
 
 Identifier
@@ -108,19 +115,12 @@ ClassBody
 	;
 
 MethodDeclaration
-    : MethodModifierList MethodHeader MethodBody {$$ = new MethodDeclaration($1,$2,$3);}
+    : MethodModifier MethodHeader MethodBody {$$ = new MethodDeclaration($1,$2,$3);}
     | empty
     ;
 
-MethodModifierList : MethodModifierList MethodModifier                     { $$ = $1; $$ = $1.add($2);    }
-              | empty                                                      { $$ = new LIST<MethodModifier>(); }
-              ;
-
-
-
 MethodModifier
-    : PUBLIC
-    | STATIC
+    : PUBLIC STATIC
     | empty
     ;
 
@@ -135,28 +135,28 @@ Result
 
 MethodDeclarator
     :Identifier '(' FormalParameterList ')'  {$$ = new MethodDeclarator($1,null);}
-    |empty
+    | empty
     ;
 
 FormalParameterList
-    : FormalParameterList FormalParameter    {$$=null;}
+    : FormalParameterList FormalParameter    
     | empty
     ;
 
 FormalParameter
-    : VariableModifiers UnannType VariableDeclaratorId {$$=null;}
+    : VariableModifiers UnannType VariableDeclaratorId 
     ;
 
 VariableModifiers
-    :empty            {$$ = null;}
+    :empty            
     ;
 
 VariableDeclaratorId
-    :empty            {$$ = null;}
+    :empty            
     ;
 
 UnannType
-    :empty            {$$ = null;}
+    :empty            
     ;
 
 MethodBody
@@ -169,16 +169,16 @@ BlockStatements
     ;
 
 BlockStatement
-    : LocalVariableDeclarationStatement ExpressionStatement  {$$ = new BlockStatement($1,$2);}
+    : VariableDeclarationStatement ExpressionStatement  {$$ = new BlockStatement($1,$2);}
     | empty 
     ;
 
-LocalVariableDeclarationStatement
-    : empty                         {$$ = null;}
+VariableDeclarationStatement
+    : empty                         
     ;
 
 ExpressionStatement
-    : empty                         {$$ = null;}
+    : empty                         
     ;
 
 %%

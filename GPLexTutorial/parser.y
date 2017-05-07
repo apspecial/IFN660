@@ -11,15 +11,16 @@
     public Identifier identi;
     public ClassBody classBodi;
     public MethodDeclaration methDecl;
+	public MethodModifiers methModis;
     public MethodModifier methModi;
-    public List<MethodModifier> methmodilist;
     public Result result;
 	public BlockStatement blksta;
-
+	public BlockStatements blkstas;
 	public VariableDeclarationStatement variablestate;
 	public MethodDeclarator methodecla;
 	public MethodHeader methodhea;
 	public MethodBody methodbd;
+	public ExpressionStatement expstm;
 }
 
 %token <num> NUMBER
@@ -38,14 +39,16 @@
 %type <identi> Identifier
 %type <classBodi> ClassBody
 %type <methModi> MethodModifier
+%type <methModis> MethodModifiers
 %type <methDecl> MethodDeclaration
-%type <methmodilist> MethodModifierList
 %type <result> Result
 %type <blksta> BlockStatement
 %type <variablestate> VariableDeclarationStatement
 %type <methodecla> MethodDeclarator
 %type <methodhea> MethodHeader
 %type <methodbd> MethodBody
+%type <blkstas> BlockStatements
+%type <expstm> ExpressionStatement
 
 %%
 
@@ -68,11 +71,6 @@ ImportDeclaration
 	: empty
 	;
 
-TypeDeclarations 
-	: TypeDeclaration TypeDeclarations  
-	| empty
-	;
-
 TypeDeclaration
 	: NormalClassDeclaration   { $$ = new TypeDeclaration($1); }
 	;
@@ -81,18 +79,12 @@ NormalClassDeclaration
 	:ClassModifier CLASS Identifier TypeParameters '{' ClassBody '}'  {$$ = new NormalClassDeclaration($1,$3,$6);}
 	;
 
-
 ClassModifier
 	: PUBLIC  
 	;
 
 TypeParameters
 	: empty
-	;
-
-Identifiers
-	: Identifier Identifiers  
-	| empty
 	;
 
 Identifier
@@ -105,19 +97,18 @@ ClassBody
 	;
 
 MethodDeclaration
-    : MethodModifierList MethodHeader MethodBody {$$ = new MethodDeclaration($1,$2,$3);}
+    : MethodModifiers MethodHeader MethodBody {$$ = new MethodDeclaration($1,$2,$3);}
     | empty
     ;
 
-MethodModifierList : MethodModifierList MethodModifier                     { $$ = $1; $$ = $1.Add($2);    }
-              | empty                                                      { $$ = new List<MethodModifier>(); }
-              ;
-
-
+MethodModifiers
+	: MethodModifiers MethodModifier			{$$ = new MethodModifiers($2);}
+	| empty
+	;
 
 MethodModifier
-    : PUBLIC
-    | STATIC
+    : PUBLIC 
+	| STATIC
     | empty
     ;
 
@@ -132,7 +123,7 @@ Result
 
 MethodDeclarator
     :Identifier '(' FormalParameterList ')'  {$$ = new MethodDeclarator($1,null);}
-    |empty
+    | empty
     ;
 
 FormalParameterList

@@ -11,3 +11,8 @@
 /Users/xiongwei/Projects/IFN660_group/ASTTest/obj/Debug/ASTTest.csproj.CoreCompileInputs.cache
 /Users/xiongwei/Projects/IFN660_group/ASTTest/obj/Debug/ASTTest.exe
 /Users/xiongwei/Projects/IFN660_group/ASTTest/obj/Debug/ASTTest.pdb
+C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\bin\Debug\ASTTest.exe.config
+C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\bin\Debug\ASTTest.exe
+C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\bin\Debug\ASTTest.pdb
+C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\obj\Debug\ASTTest.exe
+C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\obj\Debug\ASTTest.pdb
