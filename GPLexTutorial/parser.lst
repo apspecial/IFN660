@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 2/05/2017 5:46:27 PM>
+//  GPPG error listing for yacc source file <parser.y - 9/05/2017 12:07:18 AM>
 // ==========================================================================
 //  Version:  1.5.2
-//  Machine:  LAPTOP-F1AHD3OF
-//  DateTime: 2/05/2017 5:48:45 PM
-//  UserName: home
+//  Machine:  DESKTOP-NS388F7
+//  DateTime: 9/05/2017 12:07:20 AM
+//  UserName: xiong
 // ==========================================================================
 
 
@@ -22,9 +22,16 @@
     public Identifier identi;
     public ClassBody classBodi;
     public MethodDeclaration methDecl;
+	public MethodModifiers methModis;
     public MethodModifier methModi;
-    public List<MethodModifier> methmodilist;
     public Result result;
+	public BlockStatement blksta;
+	public BlockStatements blkstas;
+	public LocalVariableDeclarationStatement localvariablestate;
+	public MethodDeclarator methodecla;
+	public MethodHeader methodhea;
+	public MethodBody methodbd;
+	public ExpressionStatement expstm;
 }
 
 %token <num> NUMBER
@@ -37,20 +44,32 @@
 %left '+'
 
 %type <compUnit> CompilationUnit
-%type <typeDecl> TypeDeclaration
+%type <typeDecl> TypeDeclaration 
 %type <normclassDecl> NormalClassDeclaration
 %type <classModi> ClassModifier
 %type <identi> Identifier
 %type <classBodi> ClassBody
 %type <methModi> MethodModifier
+%type <methModis> MethodModifiers
 %type <methDecl> MethodDeclaration
-%type <methmodilist> MethodModifierList
 %type <result> Result
+%type <blksta> BlockStatement
+%type <localvariablestate> LocalVariableDeclarationStatement
+%type <methodecla> MethodDeclarator
+%type <methodhea> MethodHeader
+%type <methodbd> MethodBody
+%type <blkstas> BlockStatements
+%type <expstm> ExpressionStatement
+
 
 %%
-// Warning: NonTerminal symbol "Identifiers" is unreachable
-// Warning: NonTerminal symbol "TypeDeclarations" is unreachable
-// -------------------------------------------------------------
+// Warning: Terminating VariableModifiers fixes the following size-4 NonTerminal set
+   // {LocalVariableDeclarationStatement, FormalParameter, VariableModifiers, 
+   //     LocalVariableDeclaration}
+// Error: There are 4 non-terminating NonTerminal Symbols
+   //  {LocalVariableDeclarationStatement, FormalParameter, VariableModifiers, 
+   //     LocalVariableDeclaration}
+// ---------------------------------------------------------------------------------
 
 CompilationUnit
 	: PackageDeclaration ImportDeclarations TypeDeclaration   { $$=new CompilationUnit(null,null,$3); }
@@ -63,27 +82,16 @@ PackageDeclaration
 	;
 
 ImportDeclarations
-	: ImportDeclaration ImportDeclarations  
-	| empty
-	;
-
-ImportDeclaration
 	: empty
 	;
 
-TypeDeclarations 
-	: TypeDeclaration TypeDeclarations  
-	| empty
-	;
-
 TypeDeclaration
-	: NormalClassDeclaration   { $$ = new TypeDeclaration($1); }
+	: NormalClassDeclaration   { $$ = $1; }
 	;
 
 NormalClassDeclaration
-	:ClassModifier CLASS Identifier TypeParameters '{' ClassBody '}'  {$$ = new NormalClassDeclaration($1,$3,$6);}
+	: ClassModifier CLASS Identifier TypeParameters '{' ClassBody '}'  {$$ = new NormalClassDeclaration($1,$3,$6);}
 	;
-
 
 ClassModifier
 	: PUBLIC  
@@ -91,11 +99,6 @@ ClassModifier
 
 TypeParameters
 	: empty
-	;
-
-Identifiers
-	: Identifier Identifiers  
-	| empty
 	;
 
 Identifier
@@ -108,78 +111,187 @@ ClassBody
 	;
 
 MethodDeclaration
-    : MethodModifierList MethodHeader MethodBody {$$ = new MethodDeclaration($1,$2,$3);}
+    : MethodModifiers MethodHeader MethodBody	{$$ = new MethodDeclaration($1,$2,$3);}
     | empty
     ;
 
-MethodModifierList : MethodModifierList MethodModifier                     { $$ = $1; $$ = $1.add($2);    }
-              | empty                                                      { $$ = new LIST<MethodModifier>(); }
-              ;
-
-
+MethodModifiers
+	: MethodModifiers MethodModifier			{$$ = new MethodModifiers($2);}
+	| empty
+	;
 
 MethodModifier
-    : PUBLIC
-    | STATIC
-    | empty
+    : PUBLIC 
+	| STATIC
     ;
 
 MethodHeader
     : Result MethodDeclarator       {$$ = new MethodHeader($1,$2);}
-    | empty
     ;
 
 Result
-    :VOID
+    : VOID
     ;
 
 MethodDeclarator
-    :Identifier '(' FormalParameterList ')'  {$$ = new MethodDeclarator($1,null);}
-    |empty
+    : Identifier '(' FormalParameterList ')'  {$$ = new MethodDeclarator($1,null);}
     ;
 
 FormalParameterList
-    : FormalParameterList FormalParameter    {$$=null;}
+    : FormalParameterList FormalParameter    
     | empty
     ;
 
 FormalParameter
-    : VariableModifiers UnannType VariableDeclaratorId {$$=null;}
+    : VariableModifiers UnannType VariableDeclaratorId 
     ;
 
-VariableModifiers
-    :empty            {$$ = null;}
-    ;
+MethodBody 
+	: Block
+	;
 
-VariableDeclaratorId
-    :empty            {$$ = null;}
-    ;
-
-UnannType
-    :empty            {$$ = null;}
-    ;
-
-MethodBody
+Block
     : '{' BlockStatements '}'   {$$ = new MethodBody($2);} 
     ;
 
 BlockStatements
-    : BlockStatement BlockStatements  
-    | empty
-    ;
+	: BlockStatement BlockStatements
+	| empty
+	;
 
 BlockStatement
-    : LocalVariableDeclarationStatement ExpressionStatement  {$$ = new BlockStatement($1,$2);}
-    | empty 
-    ;
+	: LocalVariableDeclarationStatement
+	| Statement
+	;
 
 LocalVariableDeclarationStatement
-    : empty                         {$$ = null;}
-    ;
+	: LocalVariableDeclaration ';'
+	;
 
+LocalVariableDeclaration
+	: VariableModifiers UnannType VariableDeclarationList
+	;
+
+VariableModifiers
+	: VariableModifier VariableModifiers
+	;
+
+VariableModifier
+	: empty
+	;
+UnannType
+	: UnannPrimitiveType
+	| UnannReferenceType
+	;
+UnannReferenceType
+	: UnannArrayType
+	;
+UnannArrayType
+	: UnannPrimitiveType '[' ']'
+	;
+UnannPrimitiveType
+	: NumericType
+	;
+NumericType
+	: IntegralType
+	;
+IntegralType
+	: INT
+	| IDENT
+	;
+VariableDeclarationList
+	: VariableDeclarator
+	;
+VariableDeclarator
+	: VariableDeclaratorId
+	;
+VariableDeclaratorId
+	: IDENT
+	;
+Statement
+	: StatementWithoutTrailingSubstatement
+	;
+StatementWithoutTrailingSubstatement
+	: ExpressionStatement
+	;
 ExpressionStatement
-    : empty                         {$$ = null;}
-    ;
+	: StatementExpression ';'
+	;
+StatementExpression
+	: Assignment
+	;
+Assignment
+	: LeftHandSide AssignmentOperator Expression
+	;
+LeftHandSide
+	: ExpressionName
+	;
+ExpressionName
+	: IDENT
+	;
+AssignmentOperator
+	: '='
+	;
+Expression
+	: AssignmentExpression
+	;
+AssignmentExpression
+	: ConditionalExpression
+	;
+ConditionalExpression
+	: ConditionalOrExpression
+	;
+ConditionalOrExpression
+	: ConditionalAndExpression
+	;
+ConditionalAndExpression
+	: InclusiveOrExpression
+	;
+InclusiveOrExpression
+	: ExclusiveOrExpression
+	;
+ExclusiveOrExpression
+	: AndExpression
+	;
+AndExpression
+	: EqualityExpression
+	;
+EqualityExpression
+	: RelationalExpression
+	;
+RelationalExpression
+	: ShiftExpression
+	;
+ShiftExpression
+	: AdditiveExpression
+	;
+AdditiveExpression
+	: MultiplicativeExpression
+	;
+MultiplicativeExpression
+	: UnaryExpression
+	;
+UnaryExpression
+	: UnaryExpressionNotPlusMinus
+	;
+UnaryExpressionNotPlusMinus
+	: PostfixExpression
+	;
+PostfixExpression
+	: Primary
+	;
+Primary
+	: PrimaryNoNewArray
+	;
+PrimaryNoNewArray
+	: Literal
+	;
+Literal
+	: IntegerLiteral
+	;
+IntegerLiteral
+	: NUMBER
+	;
 
 %%
 
