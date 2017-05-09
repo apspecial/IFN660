@@ -33,7 +33,7 @@
 %left '+'
 
 %type <compUnit> CompilationUnit
-%type <typeDecl> TypeDeclaration
+%type <typeDecl> TypeDeclaration 
 %type <normclassDecl> NormalClassDeclaration
 %type <classModi> ClassModifier
 %type <identi> Identifier
@@ -76,7 +76,7 @@ TypeDeclaration
 	;
 
 NormalClassDeclaration
-	:ClassModifier CLASS Identifier TypeParameters '{' ClassBody '}'  {$$ = new NormalClassDeclaration($1,$3,$6);}
+	: ClassModifier CLASS Identifier TypeParameters '{' ClassBody '}'  {$$ = new NormalClassDeclaration($1,$3,$6);}
 	;
 
 ClassModifier
@@ -97,7 +97,7 @@ ClassBody
 	;
 
 MethodDeclaration
-    : MethodModifiers MethodHeader MethodBody {$$ = new MethodDeclaration($1,$2,$3);}
+    : MethodModifiers MethodHeader MethodBody	{$$ = new MethodDeclaration($1,$2,$3);}
     | empty
     ;
 
