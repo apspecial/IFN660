@@ -88,7 +88,7 @@ ClassBody
 	;
 
 MethodDeclaration
-    : MethodModifiers MethodHeader MethodBody	{$$ = new MethodDeclaration($1,$2,$3);}
+    : MethodModifiers MethodHeader MethodBody
     | empty
     ;
 
@@ -128,7 +128,7 @@ MethodBody
 	;
 
 Block
-    : '{' BlockStatements '}'   {$$ = new MethodBody($2);} 
+    : '{' BlockStatements '}'   
     ;
 
 BlockStatements
