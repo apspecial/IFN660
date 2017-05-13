@@ -11,16 +11,14 @@
     public Identifier identi;
     public ClassBody classBodi;
     public MethodDeclaration methDecl;
-	public MethodModifiers methModis;
     public MethodModifier methModi;
     public Result result;
 	public BlockStatement blksta;
-	public BlockStatements blkstas;
-	public VariableDeclarationStatement variablestate;
 	public MethodDeclarator methodecla;
 	public MethodHeader methodhea;
 	public MethodBody methodbd;
 	public ExpressionStatement expstm;
+	
 }
 
 %token <num> NUMBER
@@ -39,16 +37,14 @@
 %type <identi> Identifier
 %type <classBodi> ClassBody
 %type <methModi> MethodModifier
-%type <methModis> MethodModifiers
 %type <methDecl> MethodDeclaration
 %type <result> Result
 %type <blksta> BlockStatement
-%type <variablestate> VariableDeclarationStatement
 %type <methodecla> MethodDeclarator
 %type <methodhea> MethodHeader
 %type <methodbd> MethodBody
-%type <blkstas> BlockStatements
 %type <expstm> ExpressionStatement
+
 
 %%
 
@@ -63,16 +59,11 @@ PackageDeclaration
 	;
 
 ImportDeclarations
-	: ImportDeclaration ImportDeclarations  
-	| empty
-	;
-
-ImportDeclaration
 	: empty
 	;
 
 TypeDeclaration
-	: NormalClassDeclaration   { $$ = new TypeDeclaration($1); }
+	: NormalClassDeclaration   { $$ = $1; }
 	;
 
 NormalClassDeclaration
@@ -102,28 +93,25 @@ MethodDeclaration
     ;
 
 MethodModifiers
-	: MethodModifiers MethodModifier			{$$ = new MethodModifiers($2);}
+	: MethodModifiers MethodModifier			
 	| empty
 	;
 
 MethodModifier
     : PUBLIC 
 	| STATIC
-    | empty
     ;
 
 MethodHeader
     : Result MethodDeclarator       {$$ = new MethodHeader($1,$2);}
-    | empty
     ;
 
 Result
-    :VOID
+    : VOID
     ;
 
 MethodDeclarator
-    :Identifier '(' FormalParameterList ')'  {$$ = new MethodDeclarator($1,null);}
-    | empty
+    : Identifier '(' FormalParameterList ')'  {$$ = new MethodDeclarator($1,null);}
     ;
 
 FormalParameterList
@@ -135,39 +123,153 @@ FormalParameter
     : VariableModifiers UnannType VariableDeclaratorId 
     ;
 
-VariableModifiers
-    :empty            
-    ;
+MethodBody 
+	: Block
+	;
 
-VariableDeclaratorId
-    :empty            
-    ;
-
-UnannType
-    :empty            
-    ;
-
-MethodBody
+Block
     : '{' BlockStatements '}'   {$$ = new MethodBody($2);} 
     ;
 
 BlockStatements
-    : BlockStatement BlockStatements  
-    | empty
-    ;
+	: BlockStatements BlockStatement
+	| empty
+	;
 
 BlockStatement
-    : VariableDeclarationStatement ExpressionStatement  {$$ = new BlockStatement($1,$2);}
-    | empty 
-    ;
+	: LocalVariableDeclarationStatement
+	| Statement
+	;
 
-VariableDeclarationStatement
-    : empty                         
-    ;
+LocalVariableDeclarationStatement
+	: LocalVariableDeclaration ';'
+	;
 
+LocalVariableDeclaration
+	: VariableModifiers UnannType VariableDeclarationList
+	;
+
+VariableModifiers
+	: VariableModifier VariableModifiers
+	| empty
+	;
+
+VariableModifier
+	: empty
+	;
+UnannType
+	: UnannPrimitiveType
+	| UnannReferenceType
+	;
+UnannReferenceType
+	: UnannArrayType
+	;
+UnannArrayType
+	: UnannPrimitiveType '[' ']'
+	;
+UnannPrimitiveType
+	: NumericType
+	;
+NumericType
+	: IntegralType
+	;
+IntegralType
+	: INT
+	| IDENT
+	;
+VariableDeclarationList
+	: VariableDeclarator
+	;
+VariableDeclarator
+	: VariableDeclaratorId
+	;
+VariableDeclaratorId
+	: IDENT
+	;
+Statement
+	: StatementWithoutTrailingSubstatement
+	;
+StatementWithoutTrailingSubstatement
+	: ExpressionStatement
+	;
 ExpressionStatement
-    : empty                         
-    ;
+	: StatementExpression ';'
+	;
+StatementExpression
+	: Assignment
+	;
+Assignment
+	: LeftHandSide AssignmentOperator Expression
+	;
+LeftHandSide
+	: ExpressionName
+	;
+ExpressionName
+	: IDENT
+	;
+AssignmentOperator
+	: '='
+	;
+Expression
+	: AssignmentExpression
+	;
+AssignmentExpression
+	: ConditionalExpression
+	;
+ConditionalExpression
+	: ConditionalOrExpression
+	;
+ConditionalOrExpression
+	: ConditionalAndExpression
+	;
+ConditionalAndExpression
+	: InclusiveOrExpression
+	;
+InclusiveOrExpression
+	: ExclusiveOrExpression
+	;
+ExclusiveOrExpression
+	: AndExpression
+	;
+AndExpression
+	: EqualityExpression
+	;
+EqualityExpression
+	: RelationalExpression
+	;
+RelationalExpression
+	: ShiftExpression
+	;
+ShiftExpression
+	: AdditiveExpression
+	;
+AdditiveExpression
+	: MultiplicativeExpression
+	;
+MultiplicativeExpression
+	: UnaryExpression
+	;
+UnaryExpression
+	: UnaryExpressionNotPlusMinus
+	;
+UnaryExpressionNotPlusMinus
+	: PostfixExpression
+	;
+PostfixExpression
+	: Primary
+	;
+Primary
+	: PrimaryNoNewArray
+	;
+PrimaryNoNewArray
+	: Literal
+	;
+Literal
+	: IntegerLiteral
+	;
+IntegerLiteral
+	: NUMBER
+	;
 
 %%
 
