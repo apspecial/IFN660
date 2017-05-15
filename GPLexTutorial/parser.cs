@@ -4,9 +4,9 @@
 
 // GPPG version 1.5.2
 // Machine:  DESKTOP-NS388F7
-// DateTime: 9/05/2017 12:21:16 AM
+// DateTime: 14/05/2017 6:10:22 PM
 // UserName: xiong
-// Input file <parser.y - 9/05/2017 12:21:01 AM>
+// Input file <parser.y - 14/05/2017 6:09:55 PM>
 
 // options: lines gplex
 
@@ -40,8 +40,11 @@ public struct ValueType
 	public BlockStatement blksta;
 	public MethodDeclarator methodecla;
 	public MethodHeader methodhea;
-	public MethodBody methodbd;
 	public ExpressionStatement expstm;
+	public List<MethodModifier> methodmodilist;
+	public List<BlockStatement> blkstas;
+	public Block blk;
+
 	
 }
 #line default
@@ -75,11 +78,12 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
   private static string[] nonTerms = new string[] {
       "CompilationUnit", "TypeDeclaration", "NormalClassDeclaration", "ClassModifier", 
       "Identifier", "ClassBody", "MethodModifier", "MethodDeclaration", "Result", 
-      "BlockStatement", "MethodDeclarator", "MethodHeader", "MethodBody", "ExpressionStatement", 
-      "$accept", "PackageDeclaration", "ImportDeclarations", "empty", "TypeParameters", 
-      "MethodModifiers", "FormalParameterList", "FormalParameter", "VariableModifiers", 
-      "UnannType", "VariableDeclaratorId", "Block", "BlockStatements", "LocalVariableDeclarationStatement", 
-      "Statement", "LocalVariableDeclaration", "VariableDeclarationList", "VariableModifier", 
+      "BlockStatement", "MethodDeclarator", "MethodHeader", "ExpressionStatement", 
+      "MethodModifiers", "BlockStatements", "MethodBody", "Block", "$accept", 
+      "PackageDeclaration", "ImportDeclarations", "empty", "TypeParameters", 
+      "FormalParameterList", "FormalParameter", "VariableModifiers", "UnannType", 
+      "VariableDeclaratorId", "LocalVariableDeclarationStatement", "Statement", 
+      "LocalVariableDeclaration", "VariableDeclarationList", "VariableModifier", 
       "UnannPrimitiveType", "UnannReferenceType", "UnannArrayType", "NumericType", 
       "IntegralType", "VariableDeclarator", "StatementWithoutTrailingSubstatement", 
       "StatementExpression", "Assignment", "LeftHandSide", "AssignmentOperator", 
@@ -91,34 +95,34 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
       "Literal", "IntegerLiteral", };
 
   static Parser() {
-    states[0] = new State(-3,new int[]{-1,1,-16,3,-18,97});
+    states[0] = new State(-3,new int[]{-1,1,-19,3,-21,97});
     states[1] = new State(new int[]{128,2});
     states[2] = new State(-1);
-    states[3] = new State(-3,new int[]{-17,4,-18,96});
+    states[3] = new State(-3,new int[]{-20,4,-21,96});
     states[4] = new State(new int[]{131,95},new int[]{-2,5,-3,6,-4,7});
     states[5] = new State(-2);
     states[6] = new State(-6);
     states[7] = new State(new int[]{132,8});
     states[8] = new State(new int[]{130,89},new int[]{-5,9});
-    states[9] = new State(-3,new int[]{-19,10,-18,94});
+    states[9] = new State(-3,new int[]{-22,10,-21,94});
     states[10] = new State(new int[]{123,11});
-    states[11] = new State(-3,new int[]{-6,12,-8,14,-20,15,-18,93});
+    states[11] = new State(-3,new int[]{-6,12,-8,14,-14,15,-21,93});
     states[12] = new State(new int[]{125,13});
     states[13] = new State(-7);
     states[14] = new State(-11);
     states[15] = new State(new int[]{134,90,131,91,133,92},new int[]{-12,16,-7,77,-9,78});
-    states[16] = new State(new int[]{123,19},new int[]{-13,17,-26,18});
+    states[16] = new State(new int[]{123,19},new int[]{-16,17,-17,18});
     states[17] = new State(-13);
     states[18] = new State(-25);
-    states[19] = new State(-3,new int[]{-27,20,-18,76});
-    states[20] = new State(new int[]{125,21,130,75,135,-3},new int[]{-10,22,-28,23,-30,24,-23,26,-32,41,-18,43,-29,44,-39,45,-14,46,-40,47,-41,49,-42,50,-45,74});
+    states[19] = new State(-3,new int[]{-15,20,-21,76});
+    states[20] = new State(new int[]{125,21,130,75,135,-3},new int[]{-10,22,-28,23,-30,24,-25,26,-32,41,-21,43,-29,44,-39,45,-13,46,-40,47,-41,49,-42,50,-45,74});
     states[21] = new State(-26);
     states[22] = new State(-27);
     states[23] = new State(-29);
     states[24] = new State(new int[]{59,25});
     states[25] = new State(-31);
-    states[26] = new State(new int[]{135,37,130,38},new int[]{-24,27,-33,32,-36,35,-37,36,-34,39,-35,40});
-    states[27] = new State(new int[]{130,31},new int[]{-31,28,-38,29,-25,30});
+    states[26] = new State(new int[]{135,37,130,38},new int[]{-26,27,-33,32,-36,35,-37,36,-34,39,-35,40});
+    states[27] = new State(new int[]{130,31},new int[]{-31,28,-38,29,-27,30});
     states[28] = new State(-32);
     states[29] = new State(-44);
     states[30] = new State(-45);
@@ -132,7 +136,7 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     states[38] = new State(-43);
     states[39] = new State(-37);
     states[40] = new State(-38);
-    states[41] = new State(-3,new int[]{-23,42,-32,41,-18,43});
+    states[41] = new State(-3,new int[]{-25,42,-32,41,-21,43});
     states[42] = new State(-33);
     states[43] = new State(-34);
     states[44] = new State(-30);
@@ -172,12 +176,12 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     states[78] = new State(new int[]{130,89},new int[]{-11,79,-5,80});
     states[79] = new State(-19);
     states[80] = new State(new int[]{40,81});
-    states[81] = new State(-3,new int[]{-21,82,-18,88});
-    states[82] = new State(new int[]{41,83,135,-3,130,-3},new int[]{-22,84,-23,85,-32,41,-18,43});
+    states[81] = new State(-3,new int[]{-23,82,-21,88});
+    states[82] = new State(new int[]{41,83,135,-3,130,-3},new int[]{-24,84,-25,85,-32,41,-21,43});
     states[83] = new State(-21);
     states[84] = new State(-22);
-    states[85] = new State(new int[]{135,37,130,38},new int[]{-24,86,-33,32,-36,35,-37,36,-34,39,-35,40});
-    states[86] = new State(new int[]{130,31},new int[]{-25,87});
+    states[85] = new State(new int[]{135,37,130,38},new int[]{-26,86,-33,32,-36,35,-37,36,-34,39,-35,40});
+    states[86] = new State(new int[]{130,31},new int[]{-27,87});
     states[87] = new State(-24);
     states[88] = new State(-23);
     states[89] = new State(-10);
@@ -192,43 +196,43 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
 
     for (int sNo = 0; sNo < states.Length; sNo++) states[sNo].number = sNo;
 
-    rules[1] = new Rule(-15, new int[]{-1,128});
-    rules[2] = new Rule(-1, new int[]{-16,-17,-2});
-    rules[3] = new Rule(-18, new int[]{});
-    rules[4] = new Rule(-16, new int[]{-18});
-    rules[5] = new Rule(-17, new int[]{-18});
+    rules[1] = new Rule(-18, new int[]{-1,128});
+    rules[2] = new Rule(-1, new int[]{-19,-20,-2});
+    rules[3] = new Rule(-21, new int[]{});
+    rules[4] = new Rule(-19, new int[]{-21});
+    rules[5] = new Rule(-20, new int[]{-21});
     rules[6] = new Rule(-2, new int[]{-3});
-    rules[7] = new Rule(-3, new int[]{-4,132,-5,-19,123,-6,125});
+    rules[7] = new Rule(-3, new int[]{-4,132,-5,-22,123,-6,125});
     rules[8] = new Rule(-4, new int[]{131});
-    rules[9] = new Rule(-19, new int[]{-18});
+    rules[9] = new Rule(-22, new int[]{-21});
     rules[10] = new Rule(-5, new int[]{130});
     rules[11] = new Rule(-6, new int[]{-8});
-    rules[12] = new Rule(-6, new int[]{-18});
-    rules[13] = new Rule(-8, new int[]{-20,-12,-13});
-    rules[14] = new Rule(-8, new int[]{-18});
-    rules[15] = new Rule(-20, new int[]{-20,-7});
-    rules[16] = new Rule(-20, new int[]{-18});
+    rules[12] = new Rule(-6, new int[]{-21});
+    rules[13] = new Rule(-8, new int[]{-14,-12,-16});
+    rules[14] = new Rule(-8, new int[]{-21});
+    rules[15] = new Rule(-14, new int[]{-14,-7});
+    rules[16] = new Rule(-14, new int[]{-21});
     rules[17] = new Rule(-7, new int[]{131});
     rules[18] = new Rule(-7, new int[]{133});
     rules[19] = new Rule(-12, new int[]{-9,-11});
     rules[20] = new Rule(-9, new int[]{134});
-    rules[21] = new Rule(-11, new int[]{-5,40,-21,41});
-    rules[22] = new Rule(-21, new int[]{-21,-22});
-    rules[23] = new Rule(-21, new int[]{-18});
-    rules[24] = new Rule(-22, new int[]{-23,-24,-25});
-    rules[25] = new Rule(-13, new int[]{-26});
-    rules[26] = new Rule(-26, new int[]{123,-27,125});
-    rules[27] = new Rule(-27, new int[]{-27,-10});
-    rules[28] = new Rule(-27, new int[]{-18});
+    rules[21] = new Rule(-11, new int[]{-5,40,-23,41});
+    rules[22] = new Rule(-23, new int[]{-23,-24});
+    rules[23] = new Rule(-23, new int[]{-21});
+    rules[24] = new Rule(-24, new int[]{-25,-26,-27});
+    rules[25] = new Rule(-16, new int[]{-17});
+    rules[26] = new Rule(-17, new int[]{123,-15,125});
+    rules[27] = new Rule(-15, new int[]{-15,-10});
+    rules[28] = new Rule(-15, new int[]{-21});
     rules[29] = new Rule(-10, new int[]{-28});
     rules[30] = new Rule(-10, new int[]{-29});
     rules[31] = new Rule(-28, new int[]{-30,59});
-    rules[32] = new Rule(-30, new int[]{-23,-24,-31});
-    rules[33] = new Rule(-23, new int[]{-32,-23});
-    rules[34] = new Rule(-23, new int[]{-18});
-    rules[35] = new Rule(-32, new int[]{-18});
-    rules[36] = new Rule(-24, new int[]{-33});
-    rules[37] = new Rule(-24, new int[]{-34});
+    rules[32] = new Rule(-30, new int[]{-25,-26,-31});
+    rules[33] = new Rule(-25, new int[]{-32,-25});
+    rules[34] = new Rule(-25, new int[]{-21});
+    rules[35] = new Rule(-32, new int[]{-21});
+    rules[36] = new Rule(-26, new int[]{-33});
+    rules[37] = new Rule(-26, new int[]{-34});
     rules[38] = new Rule(-34, new int[]{-35});
     rules[39] = new Rule(-35, new int[]{-33,91,93});
     rules[40] = new Rule(-33, new int[]{-36});
@@ -236,11 +240,11 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     rules[42] = new Rule(-37, new int[]{135});
     rules[43] = new Rule(-37, new int[]{130});
     rules[44] = new Rule(-31, new int[]{-38});
-    rules[45] = new Rule(-38, new int[]{-25});
-    rules[46] = new Rule(-25, new int[]{130});
+    rules[45] = new Rule(-38, new int[]{-27});
+    rules[46] = new Rule(-27, new int[]{130});
     rules[47] = new Rule(-29, new int[]{-39});
-    rules[48] = new Rule(-39, new int[]{-14});
-    rules[49] = new Rule(-14, new int[]{-40,59});
+    rules[48] = new Rule(-39, new int[]{-13});
+    rules[49] = new Rule(-13, new int[]{-40,59});
     rules[50] = new Rule(-40, new int[]{-41});
     rules[51] = new Rule(-41, new int[]{-42,-43,-44});
     rules[52] = new Rule(-42, new int[]{-45});
@@ -281,49 +285,64 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     switch (action)
     {
       case 2: // CompilationUnit -> PackageDeclaration, ImportDeclarations, TypeDeclaration
-#line 52 "parser.y"
-                                                           { CurrentSemanticValue.compUnit=new CompilationUnit(null,null,ValueStack[ValueStack.Depth-1].typeDecl); }
+#line 58 "parser.y"
+                                                           { root =new CompilationUnit(null,null,ValueStack[ValueStack.Depth-1].typeDecl); }
 #line default
         break;
       case 6: // TypeDeclaration -> NormalClassDeclaration
-#line 66 "parser.y"
+#line 72 "parser.y"
                             { CurrentSemanticValue.typeDecl = ValueStack[ValueStack.Depth-1].normclassDecl; }
 #line default
         break;
       case 7: // NormalClassDeclaration -> ClassModifier, CLASS, Identifier, TypeParameters, '{', 
               //                           ClassBody, '}'
-#line 70 "parser.y"
+#line 76 "parser.y"
                                                                     {CurrentSemanticValue.normclassDecl = new NormalClassDeclaration(ValueStack[ValueStack.Depth-7].classModi,ValueStack[ValueStack.Depth-5].identi,ValueStack[ValueStack.Depth-2].classBodi);}
 #line default
         break;
       case 10: // Identifier -> IDENT
-#line 82 "parser.y"
+#line 88 "parser.y"
           {CurrentSemanticValue.identi = new Identifier(ValueStack[ValueStack.Depth-1].name);}
 #line default
         break;
       case 11: // ClassBody -> MethodDeclaration
-#line 86 "parser.y"
+#line 92 "parser.y"
                      {CurrentSemanticValue.classBodi = new ClassBody(ValueStack[ValueStack.Depth-1].methDecl);}
 #line default
         break;
       case 13: // MethodDeclaration -> MethodModifiers, MethodHeader, MethodBody
-#line 91 "parser.y"
-                                              {CurrentSemanticValue.methDecl = new MethodDeclaration(ValueStack[ValueStack.Depth-3],ValueStack[ValueStack.Depth-2].methodhea,ValueStack[ValueStack.Depth-1].methodbd);}
+#line 97 "parser.y"
+                                              {CurrentSemanticValue.methDecl = new MethodDeclaration(ValueStack[ValueStack.Depth-3].methodmodilist,ValueStack[ValueStack.Depth-2].methodhea,ValueStack[ValueStack.Depth-1].blk);}
+#line default
+        break;
+      case 15: // MethodModifiers -> MethodModifiers, MethodModifier
+#line 102 "parser.y"
+                                  {}
+#line default
+        break;
+      case 16: // MethodModifiers -> empty
+#line 103 "parser.y"
+                { CurrentSemanticValue.methodmodilist = new List<MethodModifier>(); }
 #line default
         break;
       case 19: // MethodHeader -> Result, MethodDeclarator
-#line 106 "parser.y"
+#line 112 "parser.y"
                                     {CurrentSemanticValue.methodhea = new MethodHeader(ValueStack[ValueStack.Depth-2].result,ValueStack[ValueStack.Depth-1].methodecla);}
 #line default
         break;
       case 21: // MethodDeclarator -> Identifier, '(', FormalParameterList, ')'
-#line 114 "parser.y"
+#line 120 "parser.y"
                                               {CurrentSemanticValue.methodecla = new MethodDeclarator(ValueStack[ValueStack.Depth-4].identi,null);}
 #line default
         break;
+      case 25: // MethodBody -> Block
+#line 133 "parser.y"
+            {CurrentSemanticValue.blk = ValueStack[ValueStack.Depth-1].blk;}
+#line default
+        break;
       case 26: // Block -> '{', BlockStatements, '}'
-#line 131 "parser.y"
-                                {CurrentSemanticValue = new MethodBody(ValueStack[ValueStack.Depth-2]);}
+#line 137 "parser.y"
+                                {CurrentSemanticValue.blk = new Block(ValueStack[ValueStack.Depth-2].blkstas);}
 #line default
         break;
     }
@@ -340,7 +359,7 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
         return CharToString((char)terminal);
   }
 
-#line 276 "parser.y"
+#line 282 "parser.y"
 public Parser(Scanner scanner) : base(scanner)
 {
 

@@ -18,6 +18,7 @@ namespace GPLexTutorial
                 new FileStream(args[0], FileMode.Open));
             Parser parser = new Parser(scanner);
             parser.Parse();
+            root.dump();
         }
     }
 }

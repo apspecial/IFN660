@@ -113,12 +113,14 @@ namespace GPLexTutorial
 			this.expressionStatement = expressionstatement;
 		}
 	}
-	public class MethodBody : Node
+
+ 
+    public class Block : Node
 	{
-		private BlockStatement blockStatement;
-		public MethodBody(BlockStatement blockstatement)
+		private List<BlockStatement> blockStatements;
+		public Block(List<BlockStatement> blockstatements)
 		{
-			this.blockStatement = blockstatement;
+			this.blockStatements = blockstatements;
 		}
 	}
 	public enum MethodModifier { Public, Static };
@@ -148,8 +150,8 @@ namespace GPLexTutorial
 	{
 		private List<MethodModifier> methodModifier;
 		private MethodHeader methodHeader;
-		private MethodBody methodBody;
-		public MethodDeclaration(List<MethodModifier> methodmodifier, MethodHeader methodheader, MethodBody methodbody)
+		private Block methodBody;
+		public MethodDeclaration(List<MethodModifier> methodmodifier, MethodHeader methodheader, Block methodbody)
 		{
 			this.methodModifier = methodmodifier;
 			this.methodHeader = methodheader;
@@ -165,8 +167,8 @@ namespace GPLexTutorial
 		}
 	}
 	public enum ClassModifier { Public };
-	public class NormalClassDeclaration : Node
-	{
+	public class NormalClassDeclaration : TypeDeclaration
+    {
 		private ClassModifier classModifier;
 		private Identifier identifier;
 		private ClassBody classBody;
@@ -177,15 +179,11 @@ namespace GPLexTutorial
 			this.classBody = classbody;
 		}
 	}
-	public class TypeDeclaration : Node
-	{
-		private NormalClassDeclaration normalClassDeclaration;
-		public TypeDeclaration(NormalClassDeclaration normalclassdeclaration)
-		{
-			this.normalClassDeclaration = normalclassdeclaration;
-		}
-	}
-	public abstract class PackageDeclaration : Node { };
+    public abstract class TypeDeclaration : Node
+    {
+    }
+
+    public abstract class PackageDeclaration : Node { };
 	public abstract class ImportDeclaration : Node { };
 	public class CompilationUnit : Node
 	{

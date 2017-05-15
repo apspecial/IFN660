@@ -3,3 +3,10 @@
 D:\SVN and GIT\IFN660\GPLexTutorial\bin\Debug\GPLexTutorial.exe.config
 D:\SVN and GIT\IFN660\GPLexTutorial\obj\Debug\GPLexTutorial.csprojResolveAssemblyReference.cache
 C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\GPLexTutorial\bin\Debug\GPLexTutorial.exe.config
+C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\GPLexTutorial\bin\Debug\GPLexTutorial.exe.config
+C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\GPLexTutorial\bin\Debug\GPLexTutorial.exe
+C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\GPLexTutorial\bin\Debug\GPLexTutorial.pdb
+C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\GPLexTutorial\bin\Debug\QUT.ShiftReduceParser.dll
+C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\GPLexTutorial\obj\Debug\GPLexTutorial.exe
+C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\GPLexTutorial\obj\Debug\GPLexTutorial.pdb
+C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\GPLexTutorial\obj\Debug\GPLexTutorial.csprojResolveAssemblyReference.cache

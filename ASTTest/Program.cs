@@ -11,7 +11,6 @@ namespace ASTTest
         static void Main(string[] args)
         {
             CompilationUnit compilationunit = new CompilationUnit(null, null,
-                new TypeDeclaration(
                     new NormalClassDeclaration(
                          ClassModifier.Public, new Identifier("HelloWorld"),
                             new ClassBody(new MethodDeclaration(
@@ -19,7 +18,7 @@ namespace ASTTest
                                 new MethodHeader(new Result(), new MethodDeclarator(new Identifier("main"), null)),
                                 new MethodBody(new BlockStatement(
                                     new VariableDeclarationStatement(new UnannType(), new Identifier("x")),
-                                    new ExpressionStatement(new AssignmentExpression(new Identifier("x"), new IntegerLiteral(42))))))))));
+                                    new ExpressionStatement(new AssignmentExpression(new Identifier("x"), new IntegerLiteral(42)))))))));
             compilationunit.DumpValue(0);
             Console.ReadKey();
         }

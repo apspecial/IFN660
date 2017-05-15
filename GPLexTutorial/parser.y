@@ -16,8 +16,11 @@
 	public BlockStatement blksta;
 	public MethodDeclarator methodecla;
 	public MethodHeader methodhea;
-	public MethodBody methodbd;
 	public ExpressionStatement expstm;
+	public List<MethodModifier> methodmodilist;
+	public List<BlockStatement> blkstas;
+	public Block blk;
+
 	
 }
 
@@ -42,14 +45,17 @@
 %type <blksta> BlockStatement
 %type <methodecla> MethodDeclarator
 %type <methodhea> MethodHeader
-%type <methodbd> MethodBody
 %type <expstm> ExpressionStatement
+%type <methodmodilist> MethodModifiers
+%type <blkstas> BlockStatements
+%type <blk> MethodBody
+%type <blk> Block
 
 
 %%
 
 CompilationUnit
-	: PackageDeclaration ImportDeclarations TypeDeclaration   { $$=new CompilationUnit(null,null,$3); }
+	: PackageDeclaration ImportDeclarations TypeDeclaration   { root =new CompilationUnit(null,null,$3); }
 	;
 
 empty: ;
@@ -93,8 +99,8 @@ MethodDeclaration
     ;
 
 MethodModifiers
-	: MethodModifiers MethodModifier			
-	| empty
+	: MethodModifiers MethodModifier	{}		
+	| empty								{ $$ = new List<MethodModifier>(); }
 	;
 
 MethodModifier
@@ -123,12 +129,12 @@ FormalParameter
     : VariableModifiers UnannType VariableDeclaratorId 
     ;
 
-MethodBody 
-	: Block
+MethodBody     
+	: Block				{$$ = $1;}
 	;
 
 Block
-    : '{' BlockStatements '}'   {$$ = new MethodBody($2);} 
+    : '{' BlockStatements '}'   {$$ = new Block($2);} 
     ;
 
 BlockStatements
