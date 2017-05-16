@@ -210,7 +210,7 @@ namespace GPLexTutorial
 		}
         public override void dump(int indent)
         {
-
+			label(indent, "IdentifierExpression {0}\n", variableDeclaration);
         }
 
         public override void ResolveNames(LexicalScope scope)
