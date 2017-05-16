@@ -9,4 +9,3 @@ C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\GPLexTutorial\bin\Debug
 C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\GPLexTutorial\bin\Debug\QUT.ShiftReduceParser.dll
 C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\GPLexTutorial\obj\Debug\GPLexTutorial.exe
 C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\GPLexTutorial\obj\Debug\GPLexTutorial.pdb
-C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\GPLexTutorial\obj\Debug\GPLexTutorial.csprojResolveAssemblyReference.cache

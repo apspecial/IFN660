@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 9/05/2017 12:07:18 AM>
+//  GPPG error listing for yacc source file <parser.y - 16/05/2017 12:42:04 AM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  DESKTOP-NS388F7
-//  DateTime: 9/05/2017 12:07:20 AM
+//  DateTime: 16/05/2017 12:42:07 AM
 //  UserName: xiong
 // ==========================================================================
 
@@ -22,16 +22,18 @@
     public Identifier identi;
     public ClassBody classBodi;
     public MethodDeclaration methDecl;
-	public MethodModifiers methModis;
     public MethodModifier methModi;
     public Result result;
 	public BlockStatement blksta;
-	public BlockStatements blkstas;
-	public LocalVariableDeclarationStatement localvariablestate;
 	public MethodDeclarator methodecla;
 	public MethodHeader methodhea;
-	public MethodBody methodbd;
 	public ExpressionStatement expstm;
+	public List<MethodModifier> methodmodilist;
+	public List<BlockStatement> blkstas;
+	public Block blk;
+	public Node node;
+
+	
 }
 
 %token <num> NUMBER
@@ -50,29 +52,30 @@
 %type <identi> Identifier
 %type <classBodi> ClassBody
 %type <methModi> MethodModifier
-%type <methModis> MethodModifiers
 %type <methDecl> MethodDeclaration
 %type <result> Result
 %type <blksta> BlockStatement
-%type <localvariablestate> LocalVariableDeclarationStatement
 %type <methodecla> MethodDeclarator
 %type <methodhea> MethodHeader
-%type <methodbd> MethodBody
-%type <blkstas> BlockStatements
 %type <expstm> ExpressionStatement
+%type <methodmodilist> MethodModifiers
+%type <blkstas> BlockStatements
+%type <blk> MethodBody
+%type <blk> Block
+%type <node> root
 
 
 %%
-// Warning: Terminating VariableModifiers fixes the following size-4 NonTerminal set
-   // {LocalVariableDeclarationStatement, FormalParameter, VariableModifiers, 
-   //     LocalVariableDeclaration}
-// Error: There are 4 non-terminating NonTerminal Symbols
-   //  {LocalVariableDeclarationStatement, FormalParameter, VariableModifiers, 
-   //     LocalVariableDeclaration}
-// ---------------------------------------------------------------------------------
+// Warning: NonTerminal symbol "root" is unreachable
+// Error: NonTerminal symbol "root" has no productions
+// Error: There are 1 non-terminating NonTerminal Symbols
+   //  {root}
+// Warning: Terminating root fixes the following size-1 NonTerminal set
+   // {root}
+// --------------------------------------------------------------------
 
 CompilationUnit
-	: PackageDeclaration ImportDeclarations TypeDeclaration   { $$=new CompilationUnit(null,null,$3); }
+	: PackageDeclaration ImportDeclarations TypeDeclaration   { root =new CompilationUnit(null,null,$3); }
 	;
 
 empty: ;
@@ -116,8 +119,8 @@ MethodDeclaration
     ;
 
 MethodModifiers
-	: MethodModifiers MethodModifier			{$$ = new MethodModifiers($2);}
-	| empty
+	: MethodModifiers MethodModifier	{}		
+	| empty								{ $$ = new List<MethodModifier>(); }
 	;
 
 MethodModifier
@@ -146,16 +149,16 @@ FormalParameter
     : VariableModifiers UnannType VariableDeclaratorId 
     ;
 
-MethodBody 
-	: Block
+MethodBody     
+	: Block				{$$ = $1;}
 	;
 
 Block
-    : '{' BlockStatements '}'   {$$ = new MethodBody($2);} 
+    : '{' BlockStatements '}'   {$$ = new Block($2);} 
     ;
 
 BlockStatements
-	: BlockStatement BlockStatements
+	: BlockStatements BlockStatement
 	| empty
 	;
 
@@ -174,6 +177,7 @@ LocalVariableDeclaration
 
 VariableModifiers
 	: VariableModifier VariableModifiers
+	| empty
 	;
 
 VariableModifier

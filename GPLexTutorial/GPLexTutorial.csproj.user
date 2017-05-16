@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <StartArguments>test1.j</StartArguments>
+    <StartWorkingDirectory>C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\GPLexTutorial\Tests\</StartWorkingDirectory>
+  </PropertyGroup>
+</Project>

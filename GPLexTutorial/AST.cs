@@ -1,9 +1,13 @@
-﻿using System;
+﻿#pragma once;
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace GPLexTutorial
 {
@@ -14,7 +18,35 @@ namespace GPLexTutorial
 			for (int i = 0; i < n; i++)
 				Console.Write("    ");
 		}
-		public void DumpValue(int indent)
+  
+
+        public abstract void dump(int indent);
+        public abstract void ResolveNames(LexicalScope scope);
+        public abstract void TypeCheck(int indent);
+  
+
+        protected void label(int i, string fmt, params object[] args)
+        {
+            Indent(i);
+            Console.Write(fmt, args);
+        }
+
+        public void dump(int i, string name)
+        {
+            label(i, "{0}:\n", name);
+            dump(i + 1);
+        }
+
+        public void emit(FileStream outputfile, char fmt)
+        {
+            //va_list args;
+            //va_start(args, fmt);
+            //vfprintf(outputfile, fmt, args);
+            //fprintf(outputfile, "\n");
+            //va_end(args);
+        }
+
+        public void DumpValue(int indent)
 		{
 			//Indent(indent);
 			//Console.WriteLine("{0}", GetType().ToString());
@@ -65,7 +97,25 @@ namespace GPLexTutorial
 		{
 			this.value = value;
 		}
-	}
+        public override void dump(int indent)
+        {
+        
+        }
+   
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+        public override void TypeCheck(int indent)
+        {
+           
+        }
+        public void GenCode(FileStream file)
+        {
+          
+        }
+
+    }
 	public class Identifier : Expression
 	{
 		private string name;
@@ -73,7 +123,25 @@ namespace GPLexTutorial
 		{
 			this.name = name;
 		}
-	}
+        public override void dump(int indent)
+        {
+            // label(indent, "IdentifierExpression {0}\n", name);
+        }
+    
+    
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+    }
 	public class AssignmentExpression : Expression
 	{
 		private Identifier lhs;
@@ -83,7 +151,28 @@ namespace GPLexTutorial
 			this.lhs = lhs;
 			this.rhs = rhs;
 		}
-	}
+        public override void dump(int indent)
+        {
+            label(indent, "AssignmentExpression\n");
+            lhs.dump(indent + 1, "lhs");
+            rhs.dump(indent + 1, "rhs");
+        }
+
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+
+    }
 	public class ExpressionStatement : Statement
 	{
 		private AssignmentExpression assignmentExpression;
@@ -91,7 +180,24 @@ namespace GPLexTutorial
 		{
 			this.assignmentExpression = assignmentexpression;
 		}
-	}
+        public override void dump(int indent)
+        {
+            // label(indent, "IdentifierExpression {0}\n", name);
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+    }
 	public enum UnannType { Int };
 	public class VariableDeclarationStatement : Statement
 	{
@@ -102,7 +208,25 @@ namespace GPLexTutorial
 			this.unannType = unanntype;
 			this.variableDeclaration = variabledeclaration;
 		}
-	}
+        public override void dump(int indent)
+        {
+
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+
+    }
 	public class BlockStatement : Node
 	{
 		private VariableDeclarationStatement variableDeclarationStatement;
@@ -112,7 +236,24 @@ namespace GPLexTutorial
 			this.variableDeclarationStatement = variabledeclarationstatement;
 			this.expressionStatement = expressionstatement;
 		}
-	}
+        public override void dump(int indent)
+        {
+
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+    }
 
  
     public class Block : Node
@@ -122,7 +263,24 @@ namespace GPLexTutorial
 		{
 			this.blockStatements = blockstatements;
 		}
-	}
+        public override void dump(int indent)
+        {
+
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+    }
 	public enum MethodModifier { Public, Static };
 	public abstract class FormalParameterList : Node { };
 	public class MethodDeclarator : Node
@@ -134,7 +292,24 @@ namespace GPLexTutorial
 			this.identifier = identifier;
 			this.formalParameterList = formalparameterlist;
 		}
-	}
+        public override void dump(int indent)
+        {
+
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+    }
 	public enum Result { Void };
 	public class MethodHeader : Node
 	{
@@ -145,7 +320,24 @@ namespace GPLexTutorial
 			this.result = result;
 			this.methodDeclarator = methoddeclarator;
 		}
-	}
+        public override void dump(int indent)
+        {
+
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+    }
 	public class MethodDeclaration : Node
 	{
 		private List<MethodModifier> methodModifier;
@@ -157,7 +349,24 @@ namespace GPLexTutorial
 			this.methodHeader = methodheader;
 			this.methodBody = methodbody;
 		}
-	}
+        public override void dump(int indent)
+        {
+
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+    }
 	public class ClassBody : Node
 	{
 		private MethodDeclaration methodDeclaration;
@@ -165,7 +374,24 @@ namespace GPLexTutorial
 		{
 			this.methodDeclaration = methoddeclaration;
 		}
-	}
+        public override void dump(int indent)
+        {
+
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+    }
 	public enum ClassModifier { Public };
 	public class NormalClassDeclaration : TypeDeclaration
     {
@@ -178,7 +404,24 @@ namespace GPLexTutorial
 			this.identifier = identifier;
 			this.classBody = classbody;
 		}
-	}
+        public override void dump(int indent)
+        {
+
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+    }
     public abstract class TypeDeclaration : Node
     {
     }
@@ -196,5 +439,25 @@ namespace GPLexTutorial
 			this.importDeclaration = importdeclation;
 			this.typeDeclaration = typedeclaration;
 		}
-	}
+        public override void dump(int indent)
+        {
+
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+    }
+
+   
+
 }

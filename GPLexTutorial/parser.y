@@ -1,5 +1,9 @@
 ﻿﻿%namespace GPLexTutorial
 
+%{
+  public static Node root;
+%}
+
 %union
 {
     public int num;
@@ -20,6 +24,7 @@
 	public List<MethodModifier> methodmodilist;
 	public List<BlockStatement> blkstas;
 	public Block blk;
+
 
 	
 }
@@ -50,6 +55,7 @@
 %type <blkstas> BlockStatements
 %type <blk> MethodBody
 %type <blk> Block
+
 
 
 %%

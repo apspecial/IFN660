@@ -4,9 +4,9 @@
 
 // GPPG version 1.5.2
 // Machine:  DESKTOP-NS388F7
-// DateTime: 14/05/2017 6:10:22 PM
+// DateTime: 16/05/2017 4:52:56 AM
 // UserName: xiong
-// Input file <parser.y - 14/05/2017 6:09:55 PM>
+// Input file <parser.y - 16/05/2017 1:02:02 AM>
 
 // options: lines gplex
 
@@ -24,7 +24,7 @@ public enum Tokens {
     STATIC=133,VOID=134,INT=135,PRIVATE=136,PROTECTED=137};
 
 public struct ValueType
-#line 4 "parser.y"
+#line 8 "parser.y"
 {
     public int num;
     public string name;
@@ -44,6 +44,7 @@ public struct ValueType
 	public List<MethodModifier> methodmodilist;
 	public List<BlockStatement> blkstas;
 	public Block blk;
+
 
 	
 }
@@ -70,6 +71,12 @@ public class ScanObj {
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
 public class Parser: ShiftReduceParser<ValueType, LexLocation>
 {
+  // Verbatim content from parser.y - 16/05/2017 1:02:02 AM
+#line 4 "parser.y"
+  public static Node root;
+#line default
+  // End verbatim content from parser.y - 16/05/2017 1:02:02 AM
+
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
 #pragma warning restore 649
@@ -285,63 +292,63 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     switch (action)
     {
       case 2: // CompilationUnit -> PackageDeclaration, ImportDeclarations, TypeDeclaration
-#line 58 "parser.y"
+#line 64 "parser.y"
                                                            { root =new CompilationUnit(null,null,ValueStack[ValueStack.Depth-1].typeDecl); }
 #line default
         break;
       case 6: // TypeDeclaration -> NormalClassDeclaration
-#line 72 "parser.y"
+#line 78 "parser.y"
                             { CurrentSemanticValue.typeDecl = ValueStack[ValueStack.Depth-1].normclassDecl; }
 #line default
         break;
       case 7: // NormalClassDeclaration -> ClassModifier, CLASS, Identifier, TypeParameters, '{', 
               //                           ClassBody, '}'
-#line 76 "parser.y"
+#line 82 "parser.y"
                                                                     {CurrentSemanticValue.normclassDecl = new NormalClassDeclaration(ValueStack[ValueStack.Depth-7].classModi,ValueStack[ValueStack.Depth-5].identi,ValueStack[ValueStack.Depth-2].classBodi);}
 #line default
         break;
       case 10: // Identifier -> IDENT
-#line 88 "parser.y"
+#line 94 "parser.y"
           {CurrentSemanticValue.identi = new Identifier(ValueStack[ValueStack.Depth-1].name);}
 #line default
         break;
       case 11: // ClassBody -> MethodDeclaration
-#line 92 "parser.y"
+#line 98 "parser.y"
                      {CurrentSemanticValue.classBodi = new ClassBody(ValueStack[ValueStack.Depth-1].methDecl);}
 #line default
         break;
       case 13: // MethodDeclaration -> MethodModifiers, MethodHeader, MethodBody
-#line 97 "parser.y"
+#line 103 "parser.y"
                                               {CurrentSemanticValue.methDecl = new MethodDeclaration(ValueStack[ValueStack.Depth-3].methodmodilist,ValueStack[ValueStack.Depth-2].methodhea,ValueStack[ValueStack.Depth-1].blk);}
 #line default
         break;
       case 15: // MethodModifiers -> MethodModifiers, MethodModifier
-#line 102 "parser.y"
+#line 108 "parser.y"
                                   {}
 #line default
         break;
       case 16: // MethodModifiers -> empty
-#line 103 "parser.y"
+#line 109 "parser.y"
                 { CurrentSemanticValue.methodmodilist = new List<MethodModifier>(); }
 #line default
         break;
       case 19: // MethodHeader -> Result, MethodDeclarator
-#line 112 "parser.y"
+#line 118 "parser.y"
                                     {CurrentSemanticValue.methodhea = new MethodHeader(ValueStack[ValueStack.Depth-2].result,ValueStack[ValueStack.Depth-1].methodecla);}
 #line default
         break;
       case 21: // MethodDeclarator -> Identifier, '(', FormalParameterList, ')'
-#line 120 "parser.y"
+#line 126 "parser.y"
                                               {CurrentSemanticValue.methodecla = new MethodDeclarator(ValueStack[ValueStack.Depth-4].identi,null);}
 #line default
         break;
       case 25: // MethodBody -> Block
-#line 133 "parser.y"
+#line 139 "parser.y"
             {CurrentSemanticValue.blk = ValueStack[ValueStack.Depth-1].blk;}
 #line default
         break;
       case 26: // Block -> '{', BlockStatements, '}'
-#line 137 "parser.y"
+#line 143 "parser.y"
                                 {CurrentSemanticValue.blk = new Block(ValueStack[ValueStack.Depth-2].blkstas);}
 #line default
         break;
@@ -359,7 +366,7 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
         return CharToString((char)terminal);
   }
 
-#line 282 "parser.y"
+#line 288 "parser.y"
 public Parser(Scanner scanner) : base(scanner)
 {
 
