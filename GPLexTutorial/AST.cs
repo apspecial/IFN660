@@ -23,7 +23,29 @@ namespace GPLexTutorial
         public abstract void dump(int indent);
         public abstract void ResolveNames(LexicalScope scope);
         public abstract void TypeCheck(int indent);
-  
+
+        public static LexicalScope getNewScope(LexicalScope oldScope, Object obj)
+        {
+            //  new scope
+            var newScope = new LexicalScope();
+            newScope.ParentScope = oldScope;
+            newScope.Symbol_table = new Dictionary<string, Declaration>();
+
+            // Check for declarations in the new scope and add to symbol_table of old scope
+            if (obj != null)
+            {
+                //foreach (Declaration decl in declList)
+                {
+                   // Declaration decl = each as Declaration; // try to cast statement as a declaration
+                   // if (decl != null)
+                   // {
+                       // decl.AddItemsToSymbolTable(newScope);
+                   // }
+                }
+            }
+
+            return newScope;
+        }
 
         protected void label(int i, string fmt, params object[] args)
         {
@@ -104,7 +126,7 @@ namespace GPLexTutorial
    
         public override void ResolveNames(LexicalScope scope)
         {
-
+            //nothing to do
         }
         public override void TypeCheck(int indent)
         {
@@ -119,7 +141,9 @@ namespace GPLexTutorial
 	public class Identifier : Expression
 	{
 		private string name;
-		public Identifier(string name)
+        private Declaration declreturn;
+
+        public Identifier(string name)
 		{
 			this.name = name;
 		}
@@ -131,8 +155,14 @@ namespace GPLexTutorial
     
         public override void ResolveNames(LexicalScope scope)
         {
+            // check for valid declaration...
+            if (scope != null)
+            {
+                declreturn = scope.Resolve(name);
+            }
 
         }
+
         public override void TypeCheck(int indent)
         {
 
@@ -161,8 +191,10 @@ namespace GPLexTutorial
 
         public override void ResolveNames(LexicalScope scope)
         {
-
+            lhs.ResolveNames(scope);
+            rhs.ResolveNames(scope);
         }
+
         public override void TypeCheck(int indent)
         {
 
@@ -187,7 +219,7 @@ namespace GPLexTutorial
 
         public override void ResolveNames(LexicalScope scope)
         {
-
+            assignmentExpression.ResolveNames(scope);
         }
         public override void TypeCheck(int indent)
         {
@@ -203,6 +235,7 @@ namespace GPLexTutorial
 	{
 		private UnannType unannType;
 		private Identifier variableDeclaration;
+        private Declaration declreturn;
 		public VariableDeclarationStatement(UnannType unanntype, Identifier variabledeclaration)
 		{
 			this.unannType = unanntype;
@@ -210,11 +243,12 @@ namespace GPLexTutorial
 		}
         public override void dump(int indent)
         {
-			label(indent, "IdentifierExpression {0}\n", variableDeclaration);
+
         }
 
         public override void ResolveNames(LexicalScope scope)
         {
+            ResolveNames(scope);
 
         }
         public override void TypeCheck(int indent)
@@ -243,7 +277,8 @@ namespace GPLexTutorial
 
         public override void ResolveNames(LexicalScope scope)
         {
-
+            var newScope = getNewScope(scope, expressionStatement);
+            ResolveNames(newScope);
         }
         public override void TypeCheck(int indent)
         {
@@ -270,7 +305,17 @@ namespace GPLexTutorial
 
         public override void ResolveNames(LexicalScope scope)
         {
-
+            var newScope = getNewScope(scope, blockStatements);
+            foreach (BlockStatement blkstat in blockStatements)
+            {
+                //Declaration decl ; 
+                if (blkstat != null)
+                {
+                   // decl.AddItemsToSymbolTable(newScope);
+                }
+                ResolveNames(newScope);
+            }
+           // ResolveNames(newScope);
         }
         public override void TypeCheck(int indent)
         {
@@ -299,7 +344,8 @@ namespace GPLexTutorial
 
         public override void ResolveNames(LexicalScope scope)
         {
-
+            var newScope = getNewScope(scope, formalParameterList);
+            ResolveNames(newScope);
         }
         public override void TypeCheck(int indent)
         {
@@ -327,7 +373,8 @@ namespace GPLexTutorial
 
         public override void ResolveNames(LexicalScope scope)
         {
-
+            var newScope = getNewScope(scope, methodDeclarator);
+            ResolveNames(newScope);
         }
         public override void TypeCheck(int indent)
         {
@@ -356,7 +403,8 @@ namespace GPLexTutorial
 
         public override void ResolveNames(LexicalScope scope)
         {
-
+            var newScope = getNewScope(scope, methodBody);
+            ResolveNames(newScope);
         }
         public override void TypeCheck(int indent)
         {
@@ -381,7 +429,8 @@ namespace GPLexTutorial
 
         public override void ResolveNames(LexicalScope scope)
         {
-
+            var newScope = getNewScope(scope, methodDeclaration);
+            ResolveNames(newScope);
         }
         public override void TypeCheck(int indent)
         {
@@ -411,7 +460,11 @@ namespace GPLexTutorial
 
         public override void ResolveNames(LexicalScope scope)
         {
+            // Step 1: Create new scope and populate the symbol table
+            var newScope = getNewScope(scope, classBody);
 
+            // Step 2: ResolveNames 
+            ResolveNames(newScope);
         }
         public override void TypeCheck(int indent)
         {
@@ -446,7 +499,17 @@ namespace GPLexTutorial
 
         public override void ResolveNames(LexicalScope scope)
         {
+            
+            var newScope = getNewScope(scope, typeDeclaration);
 
+
+            if (typeDeclaration != null)
+             {
+                typeDeclaration.ResolveNames(newScope);
+           
+            }
+
+            
         }
         public override void TypeCheck(int indent)
         {

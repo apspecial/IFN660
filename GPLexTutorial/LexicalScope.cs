@@ -9,9 +9,11 @@ namespace GPLexTutorial
 {
    public class LexicalScope
     {
-        public LexicalScope parentScope;
+        //public LexicalScope parentScope;
+        protected LexicalScope parentScope;
+        protected Dictionary<string, Declaration> symbol_table;
         //List<Declaration> symbol_table;
-        Dictionary<string, Declaration> symbol_table = new Dictionary<string, Declaration>();
+        //Dictionary<string, Declaration> symbol_table = new Dictionary<string, Declaration>();
         //OrderedDictionary symbol_table = new OrderedDictionary();
         // private var symbol_table = new Dictionary<string, double>();
 
@@ -21,20 +23,21 @@ namespace GPLexTutorial
             symbol_table.Clear();
         }
 
+        public LexicalScope ParentScope { get; set; }
+        public Dictionary<string, Declaration> Symbol_table {  get;  set; }
+
+
         public Declaration ResolveHere(string symbol)
         {
-            //std::map < std::string, Declaration*>::iterator it = symbol_table.find(symbol);
-            // foreach (KeyValuePair<string, Declaration> entry in symbol_table)
-            // {
-            // do something with entry.Value or entry.Key
-            // find(entry.Key);
-            // symbol_table [symbol];
-
-            // }
+            //Shawn Zhao: 
             Declaration local;
-            symbol_table.TryGetValue(symbol,out local);
+            //Get every value in Symbol_table by key "symbol"
+            if (Symbol_table.TryGetValue(symbol, out local))
+                return local;
+            else
+                return null;
 
-            return local;
+
             //int termIndex = GetIndex(symbol_table, symbol);
 
           //  if (termIndex != symbol_table.Count)
@@ -42,17 +45,19 @@ namespace GPLexTutorial
            // return NULL;
         }
 
-       // public int GetIndex(OrderedDictionary dictionary, string key)
-       // {
-       //     for (int index = 0; index < dictionary.Count; index++)
+        // public int GetIndex(OrderedDictionary dictionary, string key)
+        // {
+        //     for (int index = 0; index < dictionary.Count; index++)
         //    {
-       //         dictionary
+        //         dictionary
         //        if (dictionary.Item[index] == dictionary.Item[key])
-       //             return index; // We found the item
+        //             return index; // We found the item
         //    }
-//
-       //     return -1;
-       // }
+        //
+        //     return -1;
+        // }
+
+        
 
         public static int GetIndex(Dictionary<string, Declaration> dictionary, string key)
         {
@@ -65,7 +70,7 @@ namespace GPLexTutorial
             return -1;
         }
 
-        Declaration Resolve(string symbol)
+        public Declaration Resolve(string symbol)
         {
             Declaration local = ResolveHere(symbol);
             if (local != null)
