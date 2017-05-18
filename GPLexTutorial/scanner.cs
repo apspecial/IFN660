@@ -6,9 +6,9 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  TUPHAM-LAPTOP
-//  DateTime: 5/14/2017 1:18:09 AM
+//  DateTime: 5/16/2017 5:49:01 PM
 //  UserName: Ngoc Tu Pham
-//  GPLEX input file <scanner.lex - 5/2/2017 6:04:25 PM>
+//  GPLEX input file <scanner.lex - 5/16/2017 3:46:55 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -736,7 +736,7 @@ throw new Exception(
         case 51:
         case 52:
         case 53:
-yylval.name = yytext; return (int)Tokens.IDENT;
+yylval.name = yytext; return (int)Tokens.IDENTIFIER;
             break;
         case 8:
 return '(';

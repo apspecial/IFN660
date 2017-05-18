@@ -16,11 +16,11 @@ namespace GPLexTutorial
 		}
 		public void DumpValue(int indent)
 		{
-			//Indent(indent);
-			//Console.WriteLine("{0}", GetType().ToString());
+			Indent(indent);
+			Console.WriteLine("{0}", GetType().ToString());
 
-			//Indent(indent);
-			//Console.WriteLine("{");
+			Indent(indent);
+			Console.WriteLine("{");
 
 			foreach (var field in GetType().GetFields(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance))
 			{
@@ -52,8 +52,8 @@ namespace GPLexTutorial
 					Console.WriteLine("{0}: {1}", field.Name, value);
 			}
 
-			//Indent(indent);
-			//Console.WriteLine("}");
+			Indent(indent);
+			Console.WriteLine("}");
 		}
 	}
 	public abstract class Expression : Node { }
@@ -74,11 +74,11 @@ namespace GPLexTutorial
 			this.name = name;
 		}
 	}
-	public class AssignmentExpression : Expression
+	public class Assignment : Statement
 	{
 		private Identifier lhs;
 		private IntegerLiteral rhs;
-		public AssignmentExpression(Identifier lhs, IntegerLiteral rhs)
+		public Assignment(Identifier lhs, IntegerLiteral rhs)
 		{
 			this.lhs = lhs;
 			this.rhs = rhs;
@@ -86,45 +86,45 @@ namespace GPLexTutorial
 	}
 	public class ExpressionStatement : Statement
 	{
-		private AssignmentExpression assignmentExpression;
-		public ExpressionStatement(AssignmentExpression assignmentexpression)
+		private Assignment assignment;
+		public ExpressionStatement(Assignment assignment)
 		{
-			this.assignmentExpression = assignmentexpression;
+			this.assignment = assignment;
 		}
 	}
 	public enum UnannType { Int };
-	public class VariableDeclarationStatement : Statement
+	public class LocalVariableDeclarationStatement : Statement
 	{
 		private UnannType unannType;
-		private Identifier variableDeclaration;
-		public VariableDeclarationStatement(UnannType unanntype, Identifier variabledeclaration)
+		private Identifier variableDeclarator;
+		public LocalVariableDeclarationStatement(UnannType unanntype, Identifier variabledeclarator)
 		{
 			this.unannType = unanntype;
-			this.variableDeclaration = variabledeclaration;
+			this.variableDeclarator = variabledeclarator;
 		}
 	}
 	public class BlockStatement : Node
 	{
-		private VariableDeclarationStatement variableDeclarationStatement;
-		private ExpressionStatement expressionStatement;
-		public BlockStatement(VariableDeclarationStatement variabledeclarationstatement, ExpressionStatement expressionstatement)
+		private LocalVariableDeclarationStatement localvariableDeclarationStatement;
+		private Statement statement;
+		public BlockStatement(LocalVariableDeclarationStatement localvariabledeclarationstatement, Statement statement)
 		{
-			this.variableDeclarationStatement = variabledeclarationstatement;
-			this.expressionStatement = expressionstatement;
+			this.localvariableDeclarationStatement = localvariabledeclarationstatement;
+			this.statement = statement;
 		}
 	}
     public class BlockStatements: Node
     {
-        private BlockStatement blockStatement;
-        public BlockStatements(BlockStatement blockstatement)
+        private List<BlockStatement> blockStatement;
+        public BlockStatements(List<BlockStatement> blockstatement)
         {
             this.blockStatement = blockstatement;
         }
     }
-	public class MethodBody : Node
+	public class Block : Node
 	{
 		private BlockStatements blockStatements;
-		public MethodBody(BlockStatements blockstatements)
+		public Block(BlockStatements blockstatements)
 		{
 			this.blockStatements = blockstatements;
 		}
@@ -132,13 +132,30 @@ namespace GPLexTutorial
 	public enum MethodModifier { Public, Static };
     public class MethodModifiers : Node
     {
-        private MethodModifier methodModifier;
-        public MethodModifiers(MethodModifier methodmodifier)
+        private List<MethodModifier> methodModifier;
+        public MethodModifiers(List<MethodModifier> methodmodifier)
         {
             this.methodModifier = methodmodifier;
         }
     }
-	public abstract class FormalParameterList : Node { };
+	public class FormalParameter : Node
+    {
+        private UnannType unannType;
+        private Identifier variableDeclarator;
+        public FormalParameter(UnannType unanntype, Identifier variabledeclarator)
+        {
+            this.unannType = unanntype;
+            this.variableDeclarator = variabledeclarator;
+        }
+    }
+    public class FormalParameterList : Node
+    {
+        private List<FormalParameter> formalParameter;
+        public FormalParameterList(List<FormalParameter> formalparameter)
+        {
+            this.formalParameter = formalparameter;
+        }
+    }
 	public class MethodDeclarator : Node
 	{
 		private Identifier identifier;
@@ -164,8 +181,8 @@ namespace GPLexTutorial
 	{
 		private MethodModifiers methodModifiers;
 		private MethodHeader methodHeader;
-		private MethodBody methodBody;
-		public MethodDeclaration(MethodModifiers methodmodifiers, MethodHeader methodheader, MethodBody methodbody)
+		private Block methodBody;
+		public MethodDeclaration(MethodModifiers methodmodifiers, MethodHeader methodheader, Block methodbody)
 		{
 			this.methodModifiers = methodmodifiers;
 			this.methodHeader = methodheader;
