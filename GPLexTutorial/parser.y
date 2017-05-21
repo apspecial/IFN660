@@ -1,5 +1,9 @@
 ﻿﻿%namespace GPLexTutorial
 
+%{
+  public static Node root;
+%}
+
 %union
 {
     public int num;
@@ -8,7 +12,6 @@
     public TypeDeclaration typeDecl;
     public NormalClassDeclaration normclassDecl;
     public ClassModifier classModi;  
-    public Identifier identi;
     public ClassBody classBodi;
     public MethodDeclaration methDecl;
     public MethodModifier methModi;
@@ -19,11 +22,20 @@
 	public MethodDeclarator methodecla;
 	public MethodHeader methodhea;
 	public ExpressionStatement expstm;
-	
+	public List<MethodModifier> methodmodilist;
+	public FormalParameter	fmpara;
+	public List<FormalParameter> fmparalist;
+	public UnannType untype;
+	public VariableModifier varmodi;
+	public List<VariableModifier> varmodis;
+	public Assignment assign;
+	public Expression exp;
+	public LocalVariableDeclaration localvardcl;
+	public IntegralType inttype;
 }
 
-%token <num> NUMBER
-%token <name> IDENTIFIER 
+%token <num> IntegerLiteral
+%token <name> Identifier 
 %token PUBLIC CLASS STATIC VOID INT
 %token PRIVATE PROTECTED 
 
@@ -35,7 +47,6 @@
 %type <typeDecl> TypeDeclaration 
 %type <normclassDecl> NormalClassDeclaration
 %type <classModi> ClassModifier
-%type <identi> Identifier
 %type <classBodi> ClassBody
 %type <methModi> MethodModifier
 %type <methDecl> MethodDeclaration
@@ -47,12 +58,21 @@
 %type <block> Block
 %type <block> MethodBody
 %type <expstm> ExpressionStatement
-
+%type <methodmodilist> MethodModifiers
+%type <fmpara> FormalParameter
+%type <fmparalist> FormalParameterList
+%type <untype> UnannType
+%type <varmodi> VariableModifier
+%type <varmodis> VariableModifiers
+%type <assign> Assignment
+%type <exp> Expression
+%type <localvardcl> LocalVariableDeclaration
+%type <inttype> IntegralType
 
 %%
 
 CompilationUnit
-	: PackageDeclaration ImportDeclarations TypeDeclaration   { $$=new CompilationUnit(null,null,$3); }
+	: PackageDeclaration ImportDeclarations TypeDeclaration   { root = new CompilationUnit(null,null,$3); }
 	;
 
 empty
@@ -72,11 +92,7 @@ TypeDeclaration
 	;
 
 NormalClassDeclaration
-	: ClassModifier CLASS Identifier TypeParameters '{' ClassBody '}'  {$$ = new NormalClassDeclaration($1,$3,$6);}
-	;
-
-Identifier
-	: IDENTIFIER											{ $$ = $1; }
+	: ClassModifier CLASS Identifier TypeParameters '{' ClassBody '}'  {$$ = new NormalClassDeclaration($1,new Identifier($3),$6);}
 	;
 
 ClassModifier
@@ -103,8 +119,8 @@ MethodModifiers
 	;
 
 MethodModifier
-    : PUBLIC												{ $$ = $1; }
-	| STATIC												{ $$ = $1; }
+    : PUBLIC												{ $$ = MethodModifier.Public; }
+	| STATIC												{ $$ = MethodModifier.Static; }
     ;
 
 MethodHeader
@@ -112,11 +128,11 @@ MethodHeader
     ;
 
 Result
-    : VOID													{ $$ = $1; }
+    : VOID													{ $$ = Result.Void; }
     ;
 
 MethodDeclarator
-    : Identifier '(' FormalParameterList ')'				{$$ = new MethodDeclarator($1,$3);}
+    : Identifier '(' FormalParameterList ')'				{$$ = new MethodDeclarator(new Identifier($1),$3);}
     ;
 
 FormalParameterList
@@ -128,12 +144,13 @@ FormalParameter
     : VariableModifiers UnannType VariableDeclaratorId		{ $$ = new FormalParameter($2,$3); }
     ;
 
+
 MethodBody 
 	: Block													{ $$ = $1; }
 	;
 
 Block
-    : '{' BlockStatements '}'								{ $$ = $2; }
+    : '{' BlockStatements '}'								{$$ = new Block($2);}
     ;
 
 BlockStatements
@@ -151,7 +168,7 @@ LocalVariableDeclarationStatement
 	;
 
 LocalVariableDeclaration
-	: VariableModifiers UnannType VariableDeclarationList	{ $$ = new LocalVariableDeclaration($1,$2,$3); }
+	: VariableModifiers UnannType VariableDeclarator		{ $$ = new LocalVariableDeclaration($2,$3); }
 	;
 
 VariableModifiers
@@ -160,7 +177,7 @@ VariableModifiers
 	;
 
 VariableModifier
-	: empty													{ $$ = $1; }
+	: empty													{ $$ = null; }
 	;
 
 UnannType
@@ -169,11 +186,7 @@ UnannType
 	;
 
 UnannReferenceType
-	: UnannArrayType										{ $$ = $1; }
-	;
-
-UnannArrayType
-	: UnannPrimitiveType '[' ']'							{ $$ = $1; }
+	: Identifier											{$$ = new Identifier($1); }
 	;
 
 UnannPrimitiveType
@@ -185,11 +198,7 @@ NumericType
 	;
 
 IntegralType
-	: INT													{ $$ = $1; }
-	;
-
-VariableDeclarationList
-	: VariableDeclarator									{ $$ = $1; }
+	: INT													{ $$ = IntegralType.Int; }
 	;
 
 VariableDeclarator
@@ -197,7 +206,7 @@ VariableDeclarator
 	;
 
 VariableDeclaratorId
-	: IDENTIFIER											{ $$ = $1; }
+	: Identifier											{ $$ = new Identifier($1); }
 	;
 
 Statement
@@ -205,7 +214,7 @@ Statement
 	;
 
 ExpressionStatement
-	: Assignment ';'										{ $$ = $1; }
+	: Assignment ';'										{ $$ = new ExpressionStatement($1); }
 	;
 
 Assignment
@@ -213,11 +222,7 @@ Assignment
 	;
 
 LeftHandSide
-	: ExpressionName										{ $$ = $1; }
-	;
-
-ExpressionName
-	: IDENTIFIER											{ $$ = $1; }
+	: Identifier											{ $$ = new Identifier($1); }
 	;
 
 AssignmentOperator
@@ -225,14 +230,7 @@ AssignmentOperator
 	;
 
 Expression
-	: AssignmentExpression									{ $$ = $1; }
-	;
-
-AssignmentExpression
-	: IntegerLiteral										{ $$ = $1; }
-	;
-IntegerLiteral
-	: NUMBER												{ $$ = $1; }
+	: IntegerLiteral										{ $$ = new IntegerLiteral($1); }
 	;
 
 %%

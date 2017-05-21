@@ -165,7 +165,7 @@ namespace ASTTest
         }
     }
     public enum ClassModifier { Public };
-    public class NormalClassDeclaration : Node
+    public class NormalClassDeclaration : TypeDeclaration
     {
         private ClassModifier classModifier;
         private Identifier identifier;
@@ -177,13 +177,7 @@ namespace ASTTest
             this.classBody = classbody;
         }
     }
-    public class TypeDeclaration : Node
-    {
-        private NormalClassDeclaration normalClassDeclaration;
-        public TypeDeclaration(NormalClassDeclaration normalclassdeclaration)
-        {
-            this.normalClassDeclaration = normalclassdeclaration;
-        }
+    public abstract class TypeDeclaration : Node { 
     }
     public abstract class PackageDeclaration : Node { };
     public abstract class ImportDeclaration : Node { };

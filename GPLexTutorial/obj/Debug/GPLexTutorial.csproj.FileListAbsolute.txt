@@ -1,4 +1,1 @@
-/Users/xiongwei/Downloads/GPLexTutorial 2/GPLexTutorial/obj/Debug/GPLexTutorial.csproj.CoreCompileInputs.cache
-/Users/xiongwei/Projects/IFN660_group/GPLexTutorial/obj/Debug/GPLexTutorial.csproj.CoreCompileInputs.cache
-D:\SVN and GIT\IFN660\GPLexTutorial\bin\Debug\GPLexTutorial.exe.config
-D:\SVN and GIT\IFN660\GPLexTutorial\obj\Debug\GPLexTutorial.csprojResolveAssemblyReference.cache
+C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\GPLexTutorial\obj\Debug\GPLexTutorial.csprojResolveAssemblyReference.cache
