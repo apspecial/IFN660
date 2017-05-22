@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace GPLexTutorial
 {
-	public abstract class Node
-	{
-		void Indent(int n)
-		{
-			for (int i = 0; i < n; i++)
-				Console.Write("    ");
-		}
-  
+    public abstract class Node
+    {
+        void Indent(int n)
+        {
+            for (int i = 0; i < n; i++)
+                Console.Write("    ");
+        }
+
 
         public abstract void dump(int indent);
         public abstract void ResolveNames(LexicalScope scope);
@@ -34,11 +34,11 @@ namespace GPLexTutorial
             {
                 //foreach (Declaration decl in declList)
                 {
-                   // Declaration decl = each as Declaration; // try to cast statement as a declaration
-                   // if (decl != null)
-                   // {
-                       // decl.AddItemsToSymbolTable(newScope);
-                   // }
+                    // Declaration decl = each as Declaration; // try to cast statement as a declaration
+                    // if (decl != null)
+                    // {
+                    // decl.AddItemsToSymbolTable(newScope);
+                    // }
                 }
             }
 
@@ -67,96 +67,96 @@ namespace GPLexTutorial
         }
 
         public void DumpValue(int indent)
-		{
-			//Indent(indent);
-			//Console.WriteLine("{0}", GetType().ToString());
+        {
+            //Indent(indent);
+            //Console.WriteLine("{0}", GetType().ToString());
 
-			//Indent(indent);
-			//Console.WriteLine("{");
+            //Indent(indent);
+            //Console.WriteLine("{");
 
-			foreach (var field in GetType().GetFields(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance))
-			{
-				object value = field.GetValue(this);
-				Indent(indent + 1);
-				if (value is Node)
-				{
-					Console.WriteLine("{0}: ", field.Name);
-					((Node)value).DumpValue(indent + 2);
-				}
-				else if (value is IEnumerable && !(value is String))
-				{
-					Console.WriteLine("{0}: [", field.Name);
-					var list = (IEnumerable)value;
-					foreach (var item in list)
-					{
-						if (item is Node)
-							((Node)item).DumpValue(indent + 2);
-						else
-						{
-							Indent(indent + 2);
-							Console.WriteLine(item);
-						}
-					}
-					Indent(indent + 1);
-					Console.WriteLine("]");
-				}
-				else
-					Console.WriteLine("{0}: {1}", field.Name, value);
-			}
+            foreach (var field in GetType().GetFields(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance))
+            {
+                object value = field.GetValue(this);
+                Indent(indent + 1);
+                if (value is Node)
+                {
+                    Console.WriteLine("{0}: ", field.Name);
+                    ((Node)value).DumpValue(indent + 2);
+                }
+                else if (value is IEnumerable && !(value is String))
+                {
+                    Console.WriteLine("{0}: [", field.Name);
+                    var list = (IEnumerable)value;
+                    foreach (var item in list)
+                    {
+                        if (item is Node)
+                            ((Node)item).DumpValue(indent + 2);
+                        else
+                        {
+                            Indent(indent + 2);
+                            Console.WriteLine(item);
+                        }
+                    }
+                    Indent(indent + 1);
+                    Console.WriteLine("]");
+                }
+                else
+                    Console.WriteLine("{0}: {1}", field.Name, value);
+            }
 
-			//Indent(indent);
-			//Console.WriteLine("}");
-		}
-	}
-	public abstract class Expression : Node { }
-	public abstract class Statement : Node { }
-	public class IntegerLiteral : Expression
-	{
-		private int value;
-		public IntegerLiteral(int value)
-		{
-			this.value = value;
-		}
+            //Indent(indent);
+            //Console.WriteLine("}");
+        }
+    }
+    public abstract class Expression : Node { }
+    public abstract class Statement : Node { }
+    public class IntegerLiteral : Expression
+    {
+        private int value;
+        public IntegerLiteral(int value)
+        {
+            this.value = value;
+        }
         public override void dump(int indent)
         {
-        
+
         }
-   
+
         public override void ResolveNames(LexicalScope scope)
         {
             //nothing to do
         }
         public override void TypeCheck(int indent)
         {
-           
+
         }
         public void GenCode(FileStream file)
         {
-          
+
         }
 
     }
-	public class Identifier : Expression
-	{
-		private string name;
-        private Declaration declreturn;
+    public class Identifier : Expression
+    {
+        private string name;
+        private Declaration declaration;
 
         public Identifier(string name)
-		{
-			this.name = name;
-		}
+        {
+            this.name = name;
+        }
         public override void dump(int indent)
         {
             // label(indent, "IdentifierExpression {0}\n", name);
         }
-    
-    
+
+
         public override void ResolveNames(LexicalScope scope)
         {
             // check for valid declaration...
             if (scope != null)
             {
-                declreturn = scope.Resolve(name);
+                declaration = scope.Resolve(name);
             }
 
         }
@@ -170,15 +170,15 @@ namespace GPLexTutorial
 
         }
     }
-	public class Assignment : Expression
-	{
-        private Identifier lhs;
+    public class Assignment : Expression
+    {
+        private Expression lhs;
         private Expression rhs;
-		public Assignment(Identifier lhs, Expression rhs)
-		{
-			this.lhs = lhs;
-			this.rhs = rhs;
-		}
+        public Assignment(Expression lhs, Expression rhs)
+        {
+            this.lhs = lhs;
+            this.rhs = rhs;
+        }
         public override void dump(int indent)
         {
             label(indent, "AssignmentExpression\n");
@@ -203,13 +203,13 @@ namespace GPLexTutorial
         }
 
     }
-	public class ExpressionStatement : Statement
-	{
-		private Assignment assignment;
-		public ExpressionStatement(Assignment assignment)
-		{
-			this.assignment = assignment;
-		}
+    public class ExpressionStatement : Statement
+    {
+        private Assignment assignment;
+        public ExpressionStatement(Assignment assignment)
+        {
+            this.assignment = assignment;
+        }
         public override void dump(int indent)
         {
             // label(indent, "IdentifierExpression {0}\n", name);
@@ -231,13 +231,7 @@ namespace GPLexTutorial
     public enum IntegralType { Int };
     public class UnannType : Node
     {
-        private IntegralType integraltype;
-        private Identifier referencetype;
-        public UnannType(IntegralType integraltype, Identifier referencetype)
-        {
-            this.integraltype = integraltype;
-            this.referencetype = referencetype;
-        }
+
         public override void dump(int indent)
         {
 
@@ -257,6 +251,37 @@ namespace GPLexTutorial
 
         }
     };
+
+    public class NamedType : UnannType
+    {
+        private string typeName;
+        public NamedType(string typename)
+        {
+            this.typeName = typename;
+        }
+    }
+
+    public class PrimitiveType : UnannType
+    {
+        private IntegralType integraltype;
+
+        public PrimitiveType(IntegralType integraltype)
+        {
+            this.integraltype = integraltype;
+        }
+    }
+
+
+    public class ArrayType : UnannType
+    {
+        private UnannType arrayType;
+        public ArrayType(UnannType arrayType)
+        {
+            this.arrayType = arrayType;
+        }
+    }
+
+
     public abstract class VariableModifier : Node { }
     public class VariableModifiers : Node
     {
@@ -284,16 +309,16 @@ namespace GPLexTutorial
 
         }
     }
-	public class LocalVariableDeclaration : Statement
-	{
-		private UnannType unannType;
-		private Identifier variableDeclarator;
-        private Declaration declreturn;
-		public LocalVariableDeclaration(UnannType unanntype, Identifier variabledeclarator)
-		{
-			this.unannType = unanntype;
-			this.variableDeclarator = variabledeclarator;
-		}
+    public class LocalVariableDeclaration : Statement
+    {
+        private UnannType unannType;
+        private Identifier variableDeclarator;
+
+        public LocalVariableDeclaration(UnannType unanntype, Identifier variabledeclarator)
+        {
+            this.unannType = unanntype;
+            this.variableDeclarator = variabledeclarator;
+        }
         public override void dump(int indent)
         {
 
@@ -314,7 +339,7 @@ namespace GPLexTutorial
         }
 
     }
-    public class LocalVariableDeclarationStatement: Node
+    public class LocalVariableDeclarationStatement : Node
     {
         private LocalVariableDeclaration localVariableDeclaration;
         public LocalVariableDeclarationStatement(LocalVariableDeclaration localvariabledeclaration)
@@ -340,6 +365,8 @@ namespace GPLexTutorial
 
         }
     }
+
+    /*
 	public class BlockStatement : Node
 	{
 		private LocalVariableDeclarationStatement variableDeclarationStatement;
@@ -368,13 +395,15 @@ namespace GPLexTutorial
 
         }
     }
-    public class Block : Node
-	{
-		private List<BlockStatement> blockStatements;
-		public Block(List<BlockStatement> blockstatements)
-		{
-			this.blockStatements = blockstatements;
-		}
+    */
+
+    public class Block : Statement
+    {
+        private List<Statement> blockStatements;
+        public Block(List<Statement> blockstatements)
+        {
+            this.blockStatements = blockstatements;
+        }
         public override void dump(int indent)
         {
 
@@ -383,16 +412,16 @@ namespace GPLexTutorial
         public override void ResolveNames(LexicalScope scope)
         {
             var newScope = getNewScope(scope, blockStatements);
-            foreach (BlockStatement blkstat in blockStatements)
+            foreach (var blkstat in blockStatements)
             {
                 //Declaration decl ; 
                 if (blkstat != null)
                 {
-                   // decl.AddItemsToSymbolTable(newScope);
+                    // decl.AddItemsToSymbolTable(newScope);
                 }
                 ResolveNames(newScope);
             }
-           // ResolveNames(newScope);
+            // ResolveNames(newScope);
         }
         public override void TypeCheck(int indent)
         {
@@ -403,7 +432,7 @@ namespace GPLexTutorial
 
         }
     }
-	public enum MethodModifier { Public, Static };
+    public enum MethodModifier { Public, Static };
     public class FormalParameter : Node
     {
         private UnannType unannType;
@@ -432,7 +461,7 @@ namespace GPLexTutorial
 
         }
     }
-	public class FormalParameterList : Node
+    public class FormalParameterList : Node
     {
         private List<FormalParameter> formalParameter;
         public FormalParameterList(List<FormalParameter> formalparameter)
@@ -458,15 +487,15 @@ namespace GPLexTutorial
 
         }
     };
-	public class MethodDeclarator : Node
-	{
-		private Identifier identifier;
-		private List<FormalParameter> formalParameterList;
-		public MethodDeclarator(Identifier identifier, List<FormalParameter> formalparameterlist)
-		{
-			this.identifier = identifier;
-			this.formalParameterList = formalparameterlist;
-		}
+    public class MethodDeclarator : Node
+    {
+        private Identifier identifier;
+        private List<FormalParameter> formalParameterList;
+        public MethodDeclarator(Identifier identifier, List<FormalParameter> formalparameterlist)
+        {
+            this.identifier = identifier;
+            this.formalParameterList = formalparameterlist;
+        }
         public override void dump(int indent)
         {
 
@@ -486,16 +515,16 @@ namespace GPLexTutorial
 
         }
     }
-	public enum Result { Void };
-	public class MethodHeader : Node
-	{
-		private Result result;
-		private MethodDeclarator methodDeclarator;
-		public MethodHeader(Result result, MethodDeclarator methoddeclarator)
-		{
-			this.result = result;
-			this.methodDeclarator = methoddeclarator;
-		}
+    public enum Result { Void };
+    public class MethodHeader : Node
+    {
+        private Result result;
+        private MethodDeclarator methodDeclarator;
+        public MethodHeader(Result result, MethodDeclarator methoddeclarator)
+        {
+            this.result = result;
+            this.methodDeclarator = methoddeclarator;
+        }
         public override void dump(int indent)
         {
 
@@ -515,17 +544,17 @@ namespace GPLexTutorial
 
         }
     }
-	public class MethodDeclaration : Node
-	{
-		private List<MethodModifier> methodModifier;
-		private MethodHeader methodHeader;
-		private Block methodBody;
-		public MethodDeclaration(List<MethodModifier> methodmodifier, MethodHeader methodheader, Block methodbody)
-		{
-			this.methodModifier = methodmodifier;
-			this.methodHeader = methodheader;
-			this.methodBody = methodbody;
-		}
+    public class MethodDeclaration : Node
+    {
+        private List<MethodModifier> methodModifier;
+        private MethodHeader methodHeader;
+        private Block methodBody;
+        public MethodDeclaration(List<MethodModifier> methodmodifier, MethodHeader methodheader, Block methodbody)
+        {
+            this.methodModifier = methodmodifier;
+            this.methodHeader = methodheader;
+            this.methodBody = methodbody;
+        }
         public override void dump(int indent)
         {
 
@@ -545,13 +574,13 @@ namespace GPLexTutorial
 
         }
     }
-	public class ClassBody : Node
-	{
-		private MethodDeclaration methodDeclaration;
-		public ClassBody(MethodDeclaration methoddeclaration)
-		{
-			this.methodDeclaration = methoddeclaration;
-		}
+    public class ClassBody : Node
+    {
+        private MethodDeclaration methodDeclaration;
+        public ClassBody(MethodDeclaration methoddeclaration)
+        {
+            this.methodDeclaration = methoddeclaration;
+        }
         public override void dump(int indent)
         {
 
@@ -571,18 +600,18 @@ namespace GPLexTutorial
 
         }
     }
-	public enum ClassModifier { Public };
-	public class NormalClassDeclaration : TypeDeclaration
+    public enum ClassModifier { Public };
+    public class NormalClassDeclaration : TypeDeclaration
     {
-		private ClassModifier classModifier;
-		private Identifier identifier;
-		private ClassBody classBody;
-		public NormalClassDeclaration(ClassModifier classmodifier, Identifier identifier, ClassBody classbody)
-		{
-			this.classModifier = classmodifier;
-			this.identifier = identifier;
-			this.classBody = classbody;
-		}
+        private ClassModifier classModifier;
+        private Identifier identifier;
+        private ClassBody classBody;
+        public NormalClassDeclaration(ClassModifier classmodifier, Identifier identifier, ClassBody classbody)
+        {
+            this.classModifier = classmodifier;
+            this.identifier = identifier;
+            this.classBody = classbody;
+        }
         public override void dump(int indent)
         {
 
@@ -610,18 +639,18 @@ namespace GPLexTutorial
     }
 
     public abstract class PackageDeclaration : Node { };
-	public abstract class ImportDeclaration : Node { };
-	public class CompilationUnit : Node
-	{
-		private PackageDeclaration packageDeclaration;
-		private List<ImportDeclaration> importDeclaration;
-		private TypeDeclaration typeDeclaration;
-		public CompilationUnit(PackageDeclaration packagedeclaration, List<ImportDeclaration> importdeclation, TypeDeclaration typedeclaration)
-		{
-			this.packageDeclaration = packagedeclaration;
-			this.importDeclaration = importdeclation;
-			this.typeDeclaration = typedeclaration;
-		}
+    public abstract class ImportDeclaration : Node { };
+    public class CompilationUnit : Node
+    {
+        private PackageDeclaration packageDeclaration;
+        private List<ImportDeclaration> importDeclaration;
+        private TypeDeclaration typeDeclaration;
+        public CompilationUnit(PackageDeclaration packagedeclaration, List<ImportDeclaration> importdeclation, TypeDeclaration typedeclaration)
+        {
+            this.packageDeclaration = packagedeclaration;
+            this.importDeclaration = importdeclation;
+            this.typeDeclaration = typedeclaration;
+        }
         public override void dump(int indent)
         {
 
@@ -629,17 +658,15 @@ namespace GPLexTutorial
 
         public override void ResolveNames(LexicalScope scope)
         {
-            
+
             var newScope = getNewScope(scope, typeDeclaration);
 
 
             if (typeDeclaration != null)
-             {
+            {
                 typeDeclaration.ResolveNames(newScope);
-           
-            }
 
-            
+            }
         }
         public override void TypeCheck(int indent)
         {
@@ -650,7 +677,4 @@ namespace GPLexTutorial
 
         }
     }
-
-   
-
 }

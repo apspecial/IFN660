@@ -13,32 +13,32 @@ namespace GPLexTutorial
     {
         //extern int yylex();
         //extern int yyparse();
-       // extern Node roote;
+        // extern Node roote;
         public static void Main(string[] args)
         {
-            
-            FileStream  yyin = File.Open(args[0], FileMode.Open);
-            Scanner scanner = new Scanner(
-                new FileStream(args[0], FileMode.Open));
+            Scanner scanner = new Scanner(new FileStream(args[0], FileMode.Open));
             Parser parser = new Parser(scanner);
-            parser.Parse();
-            //int x;
-            // Parser.root.dump(0);
-            SemanticAnalysis(Parser.root);
-            Parser.root.DumpValue(0);
+            if (parser.Parse())
+            {
+                Parser.root.DumpValue(0);
 
-            //yyparse();
-           // Node root = null ;
-            //char i = '0';
-           // if (root != null)
-           // {
+                //int x;
+                // Parser.root.dump(0);
+                //SemanticAnalysis(Parser.root);
+                //Parser.root.DumpValue(0);
+
+                //yyparse();
+                // Node root = null ;
+                //char i = '0';
+                // if (root != null)
+                // {
                 //root->dump(0);
-              //  SemanticAnalysis(root);
-              //  //root->dump(0);
-               // CodeGeneration(i, root);
-           // }
+                //  SemanticAnalysis(root);
+                //  //root->dump(0);
+                // CodeGeneration(i, root);
+                // }
 
-
+            }
         }
 
         public static void SemanticAnalysis(Node root)

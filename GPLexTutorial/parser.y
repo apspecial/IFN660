@@ -16,20 +16,20 @@
     public MethodDeclaration methDecl;
     public MethodModifier methModi;
     public Result result;
-	public BlockStatement blksta;
-	public List<BlockStatement> blkstas;
+	public List<Statement> stmts;
 	public Block block;
 	public MethodDeclarator methodecla;
 	public MethodHeader methodhea;
-	public ExpressionStatement expstm;
+	public Statement stmt;
 	public List<MethodModifier> methodmodilist;
 	public FormalParameter	fmpara;
 	public List<FormalParameter> fmparalist;
 	public UnannType untype;
 	public VariableModifier varmodi;
+	public Identifier ident;
 	public List<VariableModifier> varmodis;
 	public Assignment assign;
-	public Expression exp;
+	public Expression expr;
 	public LocalVariableDeclaration localvardcl;
 	public IntegralType inttype;
 }
@@ -51,23 +51,22 @@
 %type <methModi> MethodModifier
 %type <methDecl> MethodDeclaration
 %type <result> Result
-%type <blksta> BlockStatement
-%type <blkstas> BlockStatements
+%type <stmt> BlockStatement LocalVariableDeclarationStatement ExpressionStatement Statement
+%type <stmts> BlockStatements
 %type <methodecla> MethodDeclarator
 %type <methodhea> MethodHeader
 %type <block> Block
 %type <block> MethodBody
-%type <expstm> ExpressionStatement
 %type <methodmodilist> MethodModifiers
 %type <fmpara> FormalParameter
 %type <fmparalist> FormalParameterList
-%type <untype> UnannType
+%type <untype> UnannType UnannPrimitiveType UnannReferenceType NumericType IntegralType UnannClassType UnannArrayType UnannClassOrInterfaceType 
 %type <varmodi> VariableModifier
 %type <varmodis> VariableModifiers
 %type <assign> Assignment
-%type <exp> Expression
+%type <expr> Expression LeftHandSide
 %type <localvardcl> LocalVariableDeclaration
-%type <inttype> IntegralType
+%type <ident> VariableDeclaratorId VariableDeclarator
 
 %%
 
@@ -155,7 +154,7 @@ Block
 
 BlockStatements
 	: BlockStatements BlockStatement						{ $$ = $1; $$.Add($2); }
-	| empty													{ $$ = new List<BlockStatement>(); }
+	| empty													{ $$ = new List<Statement>(); }
 	;
 
 BlockStatement
@@ -186,7 +185,37 @@ UnannType
 	;
 
 UnannReferenceType
-	: Identifier											{$$ = new Identifier($1); }
+	: UnannClassOrInterfaceType								{ $$ = $1; }
+	| UnannArrayType										{ $$ = $1; }
+	;
+
+UnannArrayType
+	: UnannClassOrInterfaceType Dims					{ $$ = new ArrayType($1); }
+	;
+
+Dims
+	: Annotations '[' ']' MoreDims
+	;
+
+MoreDims
+	: Dims
+	| empty
+	;
+
+Annotations 
+	: empty
+	;
+
+UnannClassOrInterfaceType
+	: UnannClassType										{ $$ = $1; }
+	; 
+
+UnannClassType
+	:	Identifier TypeArguments_opt						{ $$ = new NamedType($1); }
+	;
+
+TypeArguments_opt
+	: empty
 	;
 
 UnannPrimitiveType
@@ -198,7 +227,7 @@ NumericType
 	;
 
 IntegralType
-	: INT													{ $$ = IntegralType.Int; }
+	: INT													{ $$ = new PrimitiveType(IntegralType.Int); }
 	;
 
 VariableDeclarator
