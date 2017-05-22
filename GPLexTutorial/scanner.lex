@@ -197,8 +197,8 @@ FALSE						{ yylval.display_str = yytext; return (int)Tokens.BOOLEAN; } */
 
 // {FloatingPointLiteral} {yylval.display_str = yytext; return (int)Tokens.FLOATINGPOINTLITERAL; }
 
-{Character}({Character}|{Digit})* { yylval.name = yytext; return (int)Tokens.IDENT; }
-{Digit}+	    { yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
+{Character}({Character}|{Digit})* { yylval.name = yytext; return (int)Tokens.Identifier; }
+{Digit}+	    { yylval.num = int.Parse(yytext); return (int)Tokens.IntegerLiteral; }
 
 /* End Tu Pham */
 [\n]		{ lines++;    }

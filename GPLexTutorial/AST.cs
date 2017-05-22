@@ -1,5 +1,3 @@
-﻿#pragma once;
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +19,7 @@ namespace GPLexTutorial
   
 
         public abstract void dump(int indent);
-        public abstract void ResolveNames(LexicalScope scope);
+        public abstract bool ResolveNames(LexicalScope scope);
         public abstract void TypeCheck(int indent);
 
         public static LexicalScope getNewScope(LexicalScope oldScope, Object obj)
@@ -124,9 +122,11 @@ namespace GPLexTutorial
         
         }
    
-        public override void ResolveNames(LexicalScope scope)
+        public override bool ResolveNames(LexicalScope scope)
         {
             //nothing to do
+            return true;
+
         }
         public override void TypeCheck(int indent)
         {
@@ -138,28 +138,40 @@ namespace GPLexTutorial
         }
 
     }
-	public class Identifier : Expression
+	public class Identifier : Expression,Declaration
 	{
 		private string name;
-        private Declaration declreturn;
+        private Type type;
+        private Declaration declaration;
 
         public Identifier(string name)
 		{
-			this.name = name;
+            //this.type = type;
+            this.name = name;
 		}
         public override void dump(int indent)
         {
             // label(indent, "IdentifierExpression {0}\n", name);
         }
-    
-    
-        public override void ResolveNames(LexicalScope scope)
+
+        public void AddItems(LexicalScope scope)
+        {
+            scope.Symbol_table.Add(name, this);
+        }
+
+        public Type GetTypeFrom()
+        {
+            return type;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
         {
             // check for valid declaration...
             if (scope != null)
             {
-                declreturn = scope.Resolve(name);
+                declaration = scope.Resolve(name);
             }
+            return true;
 
         }
 
@@ -172,11 +184,11 @@ namespace GPLexTutorial
 
         }
     }
-	public class AssignmentExpression : Expression
+	public class Assignment : Expression
 	{
-		private Identifier lhs;
-		private IntegerLiteral rhs;
-		public AssignmentExpression(Identifier lhs, IntegerLiteral rhs)
+        private Expression lhs;
+        private Expression rhs;
+		public Assignment(Expression lhs, Expression rhs)
 		{
 			this.lhs = lhs;
 			this.rhs = rhs;
@@ -189,10 +201,11 @@ namespace GPLexTutorial
         }
 
 
-        public override void ResolveNames(LexicalScope scope)
+        public override bool ResolveNames(LexicalScope scope)
         {
             lhs.ResolveNames(scope);
             rhs.ResolveNames(scope);
+            return true;
         }
 
         public override void TypeCheck(int indent)
@@ -207,19 +220,20 @@ namespace GPLexTutorial
     }
 	public class ExpressionStatement : Statement
 	{
-		private AssignmentExpression assignmentExpression;
-		public ExpressionStatement(AssignmentExpression assignmentexpression)
+		private Assignment assignment;
+		public ExpressionStatement(Assignment assignment)
 		{
-			this.assignmentExpression = assignmentexpression;
+			this.assignment = assignment;
 		}
         public override void dump(int indent)
         {
             // label(indent, "IdentifierExpression {0}\n", name);
         }
 
-        public override void ResolveNames(LexicalScope scope)
+        public override bool ResolveNames(LexicalScope scope)
         {
-            assignmentExpression.ResolveNames(scope);
+            assignment.ResolveNames(scope);
+            return true;
         }
         public override void TypeCheck(int indent)
         {
@@ -230,25 +244,110 @@ namespace GPLexTutorial
 
         }
     }
-	public enum UnannType { Int };
-	public class VariableDeclarationStatement : Statement
-	{
-		private UnannType unannType;
-		private Identifier variableDeclaration;
-        private Declaration declreturn;
-		public VariableDeclarationStatement(UnannType unanntype, Identifier variabledeclaration)
-		{
-			this.unannType = unanntype;
-			this.variableDeclaration = variabledeclaration;
-		}
+    public enum IntegralType { Int };
+    public class UnannType : Node
+    {
+
         public override void dump(int indent)
         {
 
         }
 
-        public override void ResolveNames(LexicalScope scope)
+        public override bool ResolveNames(LexicalScope scope)
         {
             ResolveNames(scope);
+            return true;
+
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+    };
+
+    public class NamedType: UnannType
+    {
+        private string typeName;
+        public NamedType(string typeName)
+        {
+            this.typeName = typeName;
+        }
+    }
+
+    public class PrimitiveType : UnannType
+    {
+        private IntegralType integraltype;
+
+        public PrimitiveType(IntegralType integraltype)
+        {
+            this.integraltype = integraltype;
+        }
+    }
+
+
+    public class ArrayType : UnannType
+    {
+        private UnannType elementType;
+
+        public ArrayType(UnannType elementType)
+        {
+            this.elementType = elementType;
+        }
+    }
+
+
+    public abstract class VariableModifier : Node { }
+    public class VariableModifiers : Node
+    {
+        private List<VariableModifier> variableModifier;
+        public VariableModifiers(List<VariableModifier> varibalemodifier)
+        {
+            this.variableModifier = varibalemodifier;
+        }
+        public override void dump(int indent)
+        {
+
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            ResolveNames(scope);
+            return true;
+
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+    }
+	public class LocalVariableDeclaration : Statement
+    {
+		private UnannType unannType;
+		private Identifier variableDeclarator;
+
+        public LocalVariableDeclaration(UnannType unanntype, Identifier variabledeclarator)
+		{
+			this.unannType = unanntype;
+			this.variableDeclarator = variabledeclarator;
+		}
+        public override void dump(int indent)
+        {
+
+        }
+      
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            ResolveNames(scope);
+            return true;
 
         }
         public override void TypeCheck(int indent)
@@ -261,14 +360,43 @@ namespace GPLexTutorial
         }
 
     }
+    public class LocalVariableDeclarationStatement: Node
+    {
+        private LocalVariableDeclaration localVariableDeclaration;
+        public LocalVariableDeclarationStatement(LocalVariableDeclaration localvariabledeclaration)
+        {
+            this.localVariableDeclaration = localvariabledeclaration;
+        }
+        public override void dump(int indent)
+        {
+
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            ResolveNames(scope);
+            return true;
+
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+    }
+
+    /*
 	public class BlockStatement : Node
 	{
-		private VariableDeclarationStatement variableDeclarationStatement;
-		private ExpressionStatement expressionStatement;
-		public BlockStatement(VariableDeclarationStatement variabledeclarationstatement, ExpressionStatement expressionstatement)
+		private LocalVariableDeclarationStatement variableDeclarationStatement;
+		private Statement statement;
+		public BlockStatement(LocalVariableDeclarationStatement variabledeclarationstatement, Statement statement)
 		{
 			this.variableDeclarationStatement = variabledeclarationstatement;
-			this.expressionStatement = expressionstatement;
+			this.statement = statement;
 		}
         public override void dump(int indent)
         {
@@ -277,7 +405,7 @@ namespace GPLexTutorial
 
         public override void ResolveNames(LexicalScope scope)
         {
-            var newScope = getNewScope(scope, expressionStatement);
+            var newScope = getNewScope(scope, statement);
             ResolveNames(newScope);
         }
         public override void TypeCheck(int indent)
@@ -289,12 +417,12 @@ namespace GPLexTutorial
 
         }
     }
+    */
 
- 
-    public class Block : Node
+    public class Block : Statement
 	{
-		private List<BlockStatement> blockStatements;
-		public Block(List<BlockStatement> blockstatements)
+		private List<Statement> blockStatements;
+		public Block(List<Statement> blockstatements)
 		{
 			this.blockStatements = blockstatements;
 		}
@@ -303,19 +431,20 @@ namespace GPLexTutorial
 
         }
 
-        public override void ResolveNames(LexicalScope scope)
+        public override bool ResolveNames(LexicalScope scope)
         {
             var newScope = getNewScope(scope, blockStatements);
-            foreach (BlockStatement blkstat in blockStatements)
+            foreach (var blkstat in blockStatements)
             {
                 //Declaration decl ; 
                 if (blkstat != null)
                 {
-                   // decl.AddItemsToSymbolTable(newScope);
+                   // decl.AddItems(newScope);
                 }
                 ResolveNames(newScope);
             }
-           // ResolveNames(newScope);
+            // ResolveNames(newScope);
+            return true;
         }
         public override void TypeCheck(int indent)
         {
@@ -327,12 +456,67 @@ namespace GPLexTutorial
         }
     }
 	public enum MethodModifier { Public, Static };
-	public abstract class FormalParameterList : Node { };
+    public class FormalParameter : Node
+    {
+        private UnannType unannType;
+        private Identifier variableDeclarator;
+        public FormalParameter(UnannType unanntype, Identifier variabledeclarator)
+        {
+            this.unannType = unanntype;
+            this.variableDeclarator = variabledeclarator;
+        }
+        public override void dump(int indent)
+        {
+
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            var newScope = getNewScope(scope, variableDeclarator);
+            ResolveNames(newScope);
+            return true;
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+    }
+	public class FormalParameterList : Node
+    {
+        private List<FormalParameter> formalParameter;
+        public FormalParameterList(List<FormalParameter> formalparameter)
+        {
+            this.formalParameter = formalparameter;
+        }
+        public override void dump(int indent)
+        {
+
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            var newScope = getNewScope(scope, formalParameter);
+            ResolveNames(newScope);
+            return true;
+        }
+        public override void TypeCheck(int indent)
+        {
+
+        }
+        public void GenCode(FileStream file)
+        {
+
+        }
+    };
 	public class MethodDeclarator : Node
 	{
 		private Identifier identifier;
-		private FormalParameterList formalParameterList;
-		public MethodDeclarator(Identifier identifier, FormalParameterList formalparameterlist)
+		private List<FormalParameter> formalParameterList;
+		public MethodDeclarator(Identifier identifier, List<FormalParameter> formalparameterlist)
 		{
 			this.identifier = identifier;
 			this.formalParameterList = formalparameterlist;
@@ -342,10 +526,11 @@ namespace GPLexTutorial
 
         }
 
-        public override void ResolveNames(LexicalScope scope)
+        public override bool ResolveNames(LexicalScope scope)
         {
             var newScope = getNewScope(scope, formalParameterList);
             ResolveNames(newScope);
+            return true;
         }
         public override void TypeCheck(int indent)
         {
@@ -371,10 +556,11 @@ namespace GPLexTutorial
 
         }
 
-        public override void ResolveNames(LexicalScope scope)
+        public override bool ResolveNames(LexicalScope scope)
         {
             var newScope = getNewScope(scope, methodDeclarator);
             ResolveNames(newScope);
+            return true;
         }
         public override void TypeCheck(int indent)
         {
@@ -401,10 +587,11 @@ namespace GPLexTutorial
 
         }
 
-        public override void ResolveNames(LexicalScope scope)
+        public override bool ResolveNames(LexicalScope scope)
         {
             var newScope = getNewScope(scope, methodBody);
             ResolveNames(newScope);
+            return true;
         }
         public override void TypeCheck(int indent)
         {
@@ -427,10 +614,11 @@ namespace GPLexTutorial
 
         }
 
-        public override void ResolveNames(LexicalScope scope)
+        public override bool ResolveNames(LexicalScope scope)
         {
             var newScope = getNewScope(scope, methodDeclaration);
             ResolveNames(newScope);
+            return true;
         }
         public override void TypeCheck(int indent)
         {
@@ -458,13 +646,14 @@ namespace GPLexTutorial
 
         }
 
-        public override void ResolveNames(LexicalScope scope)
+        public override bool ResolveNames(LexicalScope scope)
         {
-            // Step 1: Create new scope and populate the symbol table
+            // 
             var newScope = getNewScope(scope, classBody);
 
-            // Step 2: ResolveNames 
+            //
             ResolveNames(newScope);
+            return true;
         }
         public override void TypeCheck(int indent)
         {
@@ -497,7 +686,7 @@ namespace GPLexTutorial
 
         }
 
-        public override void ResolveNames(LexicalScope scope)
+        public override bool ResolveNames(LexicalScope scope)
         {
             
             var newScope = getNewScope(scope, typeDeclaration);
@@ -509,7 +698,9 @@ namespace GPLexTutorial
            
             }
 
-            
+            return true;
+
+
         }
         public override void TypeCheck(int indent)
         {

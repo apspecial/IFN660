@@ -12,25 +12,30 @@
     public TypeDeclaration typeDecl;
     public NormalClassDeclaration normclassDecl;
     public ClassModifier classModi;  
-    public Identifier identi;
     public ClassBody classBodi;
     public MethodDeclaration methDecl;
     public MethodModifier methModi;
     public Result result;
-	public BlockStatement blksta;
+	public List<Statement> stmts;
+	public Block block;
 	public MethodDeclarator methodecla;
 	public MethodHeader methodhea;
-	public ExpressionStatement expstm;
+	public Statement stmt;
 	public List<MethodModifier> methodmodilist;
-	public List<BlockStatement> blkstas;
-	public Block blk;
-
-
-	
+	public FormalParameter	fmpara;
+	public List<FormalParameter> fmparalist;
+	public UnannType untype;
+	public VariableModifier varmodi;
+	public Identifier ident;
+	public List<VariableModifier> varmodis;
+	public Assignment assign;
+	public Expression expr;
+	public LocalVariableDeclaration localvardcl;
+	public IntegralType inttype;
 }
 
-%token <num> NUMBER
-%token <name> IDENT 
+%token <num> IntegerLiteral
+%token <name> Identifier 
 %token PUBLIC CLASS STATIC VOID INT
 %token PRIVATE PROTECTED 
 
@@ -42,29 +47,36 @@
 %type <typeDecl> TypeDeclaration 
 %type <normclassDecl> NormalClassDeclaration
 %type <classModi> ClassModifier
-%type <identi> Identifier
 %type <classBodi> ClassBody
 %type <methModi> MethodModifier
 %type <methDecl> MethodDeclaration
 %type <result> Result
-%type <blksta> BlockStatement
+%type <stmt> BlockStatement LocalVariableDeclarationStatement ExpressionStatement Statement
+%type <stmts> BlockStatements
 %type <methodecla> MethodDeclarator
 %type <methodhea> MethodHeader
-%type <expstm> ExpressionStatement
+%type <block> Block
+%type <block> MethodBody
 %type <methodmodilist> MethodModifiers
-%type <blkstas> BlockStatements
-%type <blk> MethodBody
-%type <blk> Block
-
-
+%type <fmpara> FormalParameter
+%type <fmparalist> FormalParameterList
+%type <untype> UnannType UnannPrimitiveType UnannReferenceType NumericType IntegralType UnannClassType UnannArrayType UnannClassOrInterfaceType 
+%type <varmodi> VariableModifier
+%type <varmodis> VariableModifiers
+%type <assign> Assignment
+%type <expr> Expression LeftHandSide
+%type <localvardcl> LocalVariableDeclaration
+%type <ident> VariableDeclaratorId VariableDeclarator
 
 %%
 
 CompilationUnit
-	: PackageDeclaration ImportDeclarations TypeDeclaration   { root =new CompilationUnit(null,null,$3); }
+	: PackageDeclaration ImportDeclarations TypeDeclaration   { root = new CompilationUnit(null,null,$3); }
 	;
 
-empty: ;
+empty
+	: 
+	;
 
 PackageDeclaration
 	: empty
@@ -75,212 +87,179 @@ ImportDeclarations
 	;
 
 TypeDeclaration
-	: NormalClassDeclaration   { $$ = $1; }
+	: NormalClassDeclaration								{ $$ = $1; }
 	;
 
 NormalClassDeclaration
-	: ClassModifier CLASS Identifier TypeParameters '{' ClassBody '}'  {$$ = new NormalClassDeclaration($1,$3,$6);}
+	: ClassModifier CLASS Identifier TypeParameters '{' ClassBody '}'  {$$ = new NormalClassDeclaration($1,new Identifier($3),$6);}
 	;
 
 ClassModifier
-	: PUBLIC  
+	: PUBLIC												{ $$ = ClassModifier.Public; } 
 	;
 
 TypeParameters
 	: empty
 	;
 
-Identifier
-	: IDENT  {$$ = new Identifier($1);}
-	;
-
 ClassBody
-	: MethodDeclaration {$$ = new ClassBody($1);}
+	: MethodDeclaration										{$$ = new ClassBody($1);}
 	| empty
 	;
 
 MethodDeclaration
-    : MethodModifiers MethodHeader MethodBody	{$$ = new MethodDeclaration($1,$2,$3);}
+    : MethodModifiers MethodHeader MethodBody				{ $$ = new MethodDeclaration($1,$2,$3); }
     | empty
     ;
 
 MethodModifiers
-	: MethodModifiers MethodModifier	{}		
-	| empty								{ $$ = new List<MethodModifier>(); }
+	: MethodModifier MethodModifiers						{ $$ = $2; $$.Add($1); }
+	| empty													{ $$ = new List<MethodModifier>(); }
 	;
 
 MethodModifier
-    : PUBLIC 
-	| STATIC
+    : PUBLIC												{ $$ = MethodModifier.Public; }
+	| STATIC												{ $$ = MethodModifier.Static; }
     ;
 
 MethodHeader
-    : Result MethodDeclarator       {$$ = new MethodHeader($1,$2);}
+    : Result MethodDeclarator								{$$ = new MethodHeader($1,$2);}
     ;
 
 Result
-    : VOID
+    : VOID													{ $$ = Result.Void; }
     ;
 
 MethodDeclarator
-    : Identifier '(' FormalParameterList ')'  {$$ = new MethodDeclarator($1,null);}
+    : Identifier '(' FormalParameterList ')'				{$$ = new MethodDeclarator(new Identifier($1),$3);}
     ;
 
 FormalParameterList
-    : FormalParameterList FormalParameter    
-    | empty
+    : FormalParameterList FormalParameter					{ $$ = $1; $$.Add($2); }
+    | empty													{ $$ = new List<FormalParameter>(); }
     ;
 
 FormalParameter
-    : VariableModifiers UnannType VariableDeclaratorId 
+    : VariableModifiers UnannType VariableDeclaratorId		{ $$ = new FormalParameter($2,$3); }
     ;
 
-MethodBody     
-	: Block				{$$ = $1;}
+
+MethodBody 
+	: Block													{ $$ = $1; }
 	;
 
 Block
-    : '{' BlockStatements '}'   {$$ = new Block($2);} 
+    : '{' BlockStatements '}'								{$$ = new Block($2);}
     ;
 
 BlockStatements
-	: BlockStatements BlockStatement
-	| empty
+	: BlockStatements BlockStatement						{ $$ = $1; $$.Add($2); }
+	| empty													{ $$ = new List<Statement>(); }
 	;
 
 BlockStatement
-	: LocalVariableDeclarationStatement
-	| Statement
+	: LocalVariableDeclarationStatement						{ $$ = $1; }
+	| Statement												{ $$ = $1; }
 	;
 
 LocalVariableDeclarationStatement
-	: LocalVariableDeclaration ';'
+	: LocalVariableDeclaration ';'							{ $$ = $1; }
 	;
 
 LocalVariableDeclaration
-	: VariableModifiers UnannType VariableDeclarationList
+	: VariableModifiers UnannType VariableDeclarator		{ $$ = new LocalVariableDeclaration($2,$3); }
 	;
 
 VariableModifiers
-	: VariableModifier VariableModifiers
-	| empty
+	: VariableModifier VariableModifiers					{ $$ = $2; $$.Add($1); }
+	| empty													{ $$ = new List<VariableModifier>(); }
 	;
 
 VariableModifier
+	: empty													{ $$ = null; }
+	;
+
+UnannType
+	: UnannPrimitiveType									{ $$ = $1; }
+	| UnannReferenceType									{ $$ = $1; }
+	;
+
+UnannReferenceType
+	: UnannClassOrInterfaceType								{ $$ = $1; }
+	| UnannArrayType										{ $$ = $1; }
+	;
+
+UnannArrayType
+	: UnannClassOrInterfaceType Dims						{ $$ = new ArrayType($1); }
+	;
+
+Dims
+	: Annotations '[' ']' MoreDims
+	;
+
+MoreDims
+	: Dims
+	| empty
+	;
+
+Annotations 
 	: empty
 	;
-UnannType
-	: UnannPrimitiveType
-	| UnannReferenceType
+
+UnannClassOrInterfaceType
+	: UnannClassType										{ $$ = $1; }
+	; 
+
+UnannClassType
+	:	Identifier TypeArguments_opt						{ $$ = new NamedType($1); }
 	;
-UnannReferenceType
-	: UnannArrayType
+
+TypeArguments_opt
+	: empty
 	;
-UnannArrayType
-	: UnannPrimitiveType '[' ']'
-	;
+
 UnannPrimitiveType
-	: NumericType
+	: NumericType											{ $$ = $1; }
 	;
+
 NumericType
-	: IntegralType
+	: IntegralType											{ $$ = $1; }
 	;
+
 IntegralType
-	: INT
-	| IDENT
+	: INT													{ $$ = new PrimitiveType(IntegralType.Int); }
 	;
-VariableDeclarationList
-	: VariableDeclarator
-	;
+
 VariableDeclarator
-	: VariableDeclaratorId
+	: VariableDeclaratorId									{ $$ = $1; }
 	;
+
 VariableDeclaratorId
-	: IDENT
+	: Identifier											{ $$ = new Identifier($1); }
 	;
+
 Statement
-	: StatementWithoutTrailingSubstatement
+	: ExpressionStatement									{ $$ = $1; }
 	;
-StatementWithoutTrailingSubstatement
-	: ExpressionStatement
-	;
+
 ExpressionStatement
-	: StatementExpression ';'
+	: Assignment ';'										{ $$ = new ExpressionStatement($1); }
 	;
-StatementExpression
-	: Assignment
-	;
+
 Assignment
-	: LeftHandSide AssignmentOperator Expression
+	: LeftHandSide AssignmentOperator Expression			{ $$ = new Assignment($1,$3); }
 	;
+
 LeftHandSide
-	: ExpressionName
+	: Identifier											{ $$ = new Identifier($1); }
 	;
-ExpressionName
-	: IDENT
-	;
+
 AssignmentOperator
-	: '='
+	: '='													{ $$ = $1; }
 	;
+
 Expression
-	: AssignmentExpression
-	;
-AssignmentExpression
-	: ConditionalExpression
-	;
-ConditionalExpression
-	: ConditionalOrExpression
-	;
-ConditionalOrExpression
-	: ConditionalAndExpression
-	;
-ConditionalAndExpression
-	: InclusiveOrExpression
-	;
-InclusiveOrExpression
-	: ExclusiveOrExpression
-	;
-ExclusiveOrExpression
-	: AndExpression
-	;
-AndExpression
-	: EqualityExpression
-	;
-EqualityExpression
-	: RelationalExpression
-	;
-RelationalExpression
-	: ShiftExpression
-	;
-ShiftExpression
-	: AdditiveExpression
-	;
-AdditiveExpression
-	: MultiplicativeExpression
-	;
-MultiplicativeExpression
-	: UnaryExpression
-	;
-UnaryExpression
-	: UnaryExpressionNotPlusMinus
-	;
-UnaryExpressionNotPlusMinus
-	: PostfixExpression
-	;
-PostfixExpression
-	: Primary
-	;
-Primary
-	: PrimaryNoNewArray
-	;
-PrimaryNoNewArray
-	: Literal
-	;
-Literal
-	: IntegerLiteral
-	;
-IntegerLiteral
-	: NUMBER
+	: IntegerLiteral										{ $$ = new IntegerLiteral($1); }
 	;
 
 %%

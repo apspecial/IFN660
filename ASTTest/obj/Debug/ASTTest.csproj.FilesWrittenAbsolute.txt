@@ -1,6 +1,0 @@
-/Users/xiongwei/Downloads/GPLexTutorial 2/ASTTest/obj/Debug/.NETFramework,Version=v4.5.2.AssemblyAttribute.cs
-/Users/xiongwei/Downloads/GPLexTutorial 2/ASTTest/bin/Debug/ASTTest.exe.config
-/Users/xiongwei/Downloads/GPLexTutorial 2/ASTTest/bin/Debug/ASTTest.exe.mdb
-/Users/xiongwei/Downloads/GPLexTutorial 2/ASTTest/bin/Debug/ASTTest.exe
-/Users/xiongwei/Downloads/GPLexTutorial 2/ASTTest/obj/Debug/ASTTest.exe
-/Users/xiongwei/Downloads/GPLexTutorial 2/ASTTest/obj/Debug/ASTTest.exe.mdb

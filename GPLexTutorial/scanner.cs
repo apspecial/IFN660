@@ -6,9 +6,9 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  DESKTOP-NS388F7
-//  DateTime: 17/05/2017 2:22:44 AM
+//  DateTime: 22/05/2017 1:15:50 AM
 //  UserName: xiong
-//  GPLEX input file <scanner.lex - 14/05/2017 4:15:20 PM>
+//  GPLEX input file <scanner.lex - 21/05/2017 5:37:33 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -736,7 +736,7 @@ throw new Exception(
         case 51:
         case 52:
         case 53:
-yylval.name = yytext; return (int)Tokens.IDENT;
+yylval.name = yytext; return (int)Tokens.Identifier;
             break;
         case 8:
 return '(';
@@ -814,7 +814,7 @@ return '^';
 return '%';
             break;
         case 33:
-yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER;
+yylval.num = int.Parse(yytext); return (int)Tokens.IntegerLiteral;
             break;
         case 34:
 lines++;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GPLexTutorial
 {
-    public class Type
+    public abstract class Type: Node
     {
     }
 }

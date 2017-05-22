@@ -1,23 +1,17 @@
-/Users/xiongwei/Downloads/GPLexTutorial 2/ASTTest/bin/Debug/ASTTest.exe.config
-/Users/xiongwei/Downloads/GPLexTutorial 2/ASTTest/bin/Debug/ASTTest.exe
-/Users/xiongwei/Downloads/GPLexTutorial 2/ASTTest/bin/Debug/ASTTest.pdb
-/Users/xiongwei/Downloads/GPLexTutorial 2/ASTTest/obj/Debug/ASTTest.csproj.CoreCompileInputs.cache
-/Users/xiongwei/Downloads/GPLexTutorial 2/ASTTest/obj/Debug/ASTTest.exe
-/Users/xiongwei/Downloads/GPLexTutorial 2/ASTTest/obj/Debug/ASTTest.pdb
-/Users/xiongwei/Projects/IFN660_group/ASTTest/bin/Debug/ASTTest.exe.config
-/Users/xiongwei/Projects/IFN660_group/ASTTest/bin/Debug/ASTTest.exe
-/Users/xiongwei/Projects/IFN660_group/ASTTest/bin/Debug/ASTTest.pdb
-/Users/xiongwei/Projects/IFN660_group/ASTTest/obj/Debug/ASTTest.csprojResolveAssemblyReference.cache
-/Users/xiongwei/Projects/IFN660_group/ASTTest/obj/Debug/ASTTest.csproj.CoreCompileInputs.cache
-/Users/xiongwei/Projects/IFN660_group/ASTTest/obj/Debug/ASTTest.exe
-/Users/xiongwei/Projects/IFN660_group/ASTTest/obj/Debug/ASTTest.pdb
-C:\Users\xiong\Downloads\IFN660-master\IFN660-master\ASTTest\bin\Debug\ASTTest.exe.config
-C:\Users\xiong\Downloads\IFN660-master\IFN660-master\ASTTest\bin\Debug\ASTTest.exe
-C:\Users\xiong\Downloads\IFN660-master\IFN660-master\ASTTest\bin\Debug\ASTTest.pdb
-C:\Users\xiong\Downloads\IFN660-master\IFN660-master\ASTTest\obj\Debug\ASTTest.exe
-C:\Users\xiong\Downloads\IFN660-master\IFN660-master\ASTTest\obj\Debug\ASTTest.pdb
-C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\ASTTest\bin\Debug\ASTTest.exe.config
-C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\ASTTest\bin\Debug\ASTTest.exe
-C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\ASTTest\bin\Debug\ASTTest.pdb
-C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\ASTTest\obj\Debug\ASTTest.exe
-C:\Users\xiong\Downloads\IFN660-master_new\IFN660-master\ASTTest\obj\Debug\ASTTest.pdb
+C:\Users\n9351744\Desktop\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.exe.config
+C:\Users\n9351744\Desktop\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.exe
+C:\Users\n9351744\Desktop\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.pdb
+C:\Users\n9351744\Desktop\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.exe
+C:\Users\n9351744\Desktop\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.pdb
+C:\Users\n9351744\Desktop\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.csprojResolveAssemblyReference.cache
+C:\temp\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.exe.config
+C:\temp\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.exe
+C:\temp\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.pdb
+C:\temp\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.exe
+C:\temp\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.pdb
+C:\temp\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.csprojResolveAssemblyReference.cache
+C:\Users\xiong\Downloads\ifn660-tupham\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.exe.config
+C:\Users\xiong\Downloads\ifn660-tupham\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.exe
+C:\Users\xiong\Downloads\ifn660-tupham\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.pdb
+C:\Users\xiong\Downloads\ifn660-tupham\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.exe
+C:\Users\xiong\Downloads\ifn660-tupham\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.pdb
