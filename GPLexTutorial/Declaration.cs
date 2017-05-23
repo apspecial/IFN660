@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace GPLexTutorial
 {
-    public abstract class Declaration
+    public interface Declaration
     {
-        public abstract Type GetType();
-        public abstract string GetName();
-        public abstract int GetNumber();
-
+        Type GetTypeFrom();
+        string GetName();
     }
 }
