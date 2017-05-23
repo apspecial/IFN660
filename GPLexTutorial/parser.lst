@@ -1,23 +1,20 @@
 
 // ==========================================================================
-<<<<<<< HEAD
-//  GPPG error listing for yacc source file <parser.y - 5/19/2017 8:05:44 PM>
+//  GPPG error listing for yacc source file <parser.y - 5/24/2017 3:53:48 AM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  TUPHAM-LAPTOP
-//  DateTime: 5/19/2017 8:05:47 PM
-=======
-//  GPPG error listing for yacc source file <parser.y - 5/24/2017 2:42:44 AM>
-// ==========================================================================
-//  Version:  1.5.2
-//  Machine:  TUPHAM-LAPTOP
-//  DateTime: 5/24/2017 2:42:45 AM
->>>>>>> d7606bcfcfc15b7767567010fe0c815b0dc96c01
+//  DateTime: 5/24/2017 3:53:49 AM
 //  UserName: Ngoc Tu Pham
 // ==========================================================================
 
 
-%namespace GPLexTutorial
+﻿﻿%namespace GPLexTutorial
+//^^^^^^^^^^
+// Error: This character is invalid in this context
+// Error: This character is invalid in this context
+// Error: Keyword must start in column-0
+// ------------------------------------------------
 
 %{
   public static Node root;
@@ -34,12 +31,7 @@
     public MethodDeclaration methDecl;
     public MethodModifier methModi;
     public Result result;
-<<<<<<< HEAD
-	public BlockStatement blksta;
-	public List<BlockStatement> blkstas;
-=======
 	public List<Statement> stmts;
->>>>>>> d7606bcfcfc15b7767567010fe0c815b0dc96c01
 	public Block block;
 	public MethodDeclarator methodecla;
 	public MethodHeader methodhea;
@@ -49,16 +41,12 @@
 	public List<FormalParameter> fmparalist;
 	public UnannType untype;
 	public VariableModifier varmodi;
-<<<<<<< HEAD
-	public List<VariableModifier> varmodis;
-=======
 	public Identifier ident;
 	public List<VariableModifier> varmodis;
 	public Assignment assign;
 	public Expression expr;
 	public LocalVariableDeclaration localvardcl;
 	public IntegralType inttype;
->>>>>>> d7606bcfcfc15b7767567010fe0c815b0dc96c01
 }
 
 %token <num> IntegerLiteral
@@ -77,28 +65,12 @@
 %type <methModi> MethodModifier
 %type <methDecl> MethodDeclaration
 %type <result> Result
-<<<<<<< HEAD
-%type <blksta> BlockStatement
-%type <blkstas> BlockStatements
-=======
 %type <stmt> BlockStatement LocalVariableDeclarationStatement ExpressionStatement Statement
 %type <stmts> BlockStatements
->>>>>>> d7606bcfcfc15b7767567010fe0c815b0dc96c01
 %type <methodecla> MethodDeclarator
 %type <methodhea> MethodHeader
 %type <block> Block
 %type <block> MethodBody
-<<<<<<< HEAD
-%type <expstm> ExpressionStatement
-%type <methodmodilist> MethodModifiers
-%type <fmpara> FormalParameter
-%type <fmparalist> FormalParameterList
-%type <untype> UnannType
-%type <varmodi> VariableModifier
-%type <varmodis> VariableModifiers
-
-%%
-=======
 %type <methodmodilist> MethodModifiers
 %type <fmpara> FormalParameter
 %type <fmparalist> FormalParameterList
@@ -108,17 +80,9 @@
 %type <assign> Assignment
 %type <expr> Expression LeftHandSide
 %type <localvardcl> LocalVariableDeclaration
-%type <name> VariableDeclaratorId VariableDeclarator Identifier
+%type <ident> VariableDeclaratorId VariableDeclarator
 
 %%
-// Warning: NonTerminal symbol "Identifier" is unreachable
-// Error: NonTerminal symbol "Identifier" has no productions
-// Error: There are 1 non-terminating NonTerminal Symbols
-   //  {Identifier}
-// Warning: Terminating Identifier fixes the following size-1 NonTerminal set
-   // {Identifier}
-// --------------------------------------------------------------------------
->>>>>>> d7606bcfcfc15b7767567010fe0c815b0dc96c01
 
 CompilationUnit
 	: PackageDeclaration ImportDeclarations TypeDeclaration   { root = new CompilationUnit(null,null,$3); }
@@ -204,11 +168,7 @@ Block
 
 BlockStatements
 	: BlockStatements BlockStatement						{ $$ = $1; $$.Add($2); }
-<<<<<<< HEAD
-	| empty													{ $$ = new List<BlockStatement>(); }
-=======
 	| empty													{ $$ = new List<Statement>(); }
->>>>>>> d7606bcfcfc15b7767567010fe0c815b0dc96c01
 	;
 
 BlockStatement
@@ -217,19 +177,11 @@ BlockStatement
 	;
 
 LocalVariableDeclarationStatement
-<<<<<<< HEAD
-	: LocalVariableDeclaration ';'							{ $$ = new LocalVariableDeclarationStatement($1); }
-	;
-
-LocalVariableDeclaration
-	: VariableModifiers UnannType VariableDeclarationList	{ $$ = new LocalVariableDeclaration($2,$3); }
-=======
 	: LocalVariableDeclaration ';'							{ $$ = $1; }
 	;
 
 LocalVariableDeclaration
 	: VariableModifiers UnannType VariableDeclarator		{ $$ = new LocalVariableDeclaration($2,$3); }
->>>>>>> d7606bcfcfc15b7767567010fe0c815b0dc96c01
 	;
 
 VariableModifiers
@@ -247,14 +199,6 @@ UnannType
 	;
 
 UnannReferenceType
-<<<<<<< HEAD
-	: Identifier											{$$ = new Identifier($1); }
-
-UnannPrimitiveType
-//^^^^^^^^^^^^^^^^
-// Error: Syntax error, unexpected anchoredSymbol
-// ----------------------------------------------
-=======
 	: UnannClassOrInterfaceType								{ $$ = $1; }
 	| UnannArrayType										{ $$ = $1; }
 	;
@@ -289,7 +233,6 @@ TypeArguments_opt
 	;
 
 UnannPrimitiveType
->>>>>>> d7606bcfcfc15b7767567010fe0c815b0dc96c01
 	: NumericType											{ $$ = $1; }
 	;
 
@@ -298,15 +241,7 @@ NumericType
 	;
 
 IntegralType
-<<<<<<< HEAD
-	: INT													{ $$ = $1; }
-	;
-
-VariableDeclarationList
-	: VariableDeclarator									{ $$ = $1; }
-=======
 	: INT													{ $$ = new PrimitiveType(IntegralType.Int); }
->>>>>>> d7606bcfcfc15b7767567010fe0c815b0dc96c01
 	;
 
 VariableDeclarator
@@ -347,5 +282,6 @@ public Parser(Scanner scanner) : base(scanner)
 {
 
 }
+
 // ==========================================================================
 

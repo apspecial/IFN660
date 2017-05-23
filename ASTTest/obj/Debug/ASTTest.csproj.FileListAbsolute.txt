@@ -1,30 +1,6 @@
-<<<<<<< HEAD
 C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\bin\Debug\ASTTest.exe.config
 C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\bin\Debug\ASTTest.exe
 C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\bin\Debug\ASTTest.pdb
+C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\obj\Debug\ASTTest.csprojResolveAssemblyReference.cache
 C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\obj\Debug\ASTTest.exe
 C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\obj\Debug\ASTTest.pdb
-=======
-C:\Users\n9351744\Desktop\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.exe.config
-C:\Users\n9351744\Desktop\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.exe
-C:\Users\n9351744\Desktop\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.pdb
-C:\Users\n9351744\Desktop\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.exe
-C:\Users\n9351744\Desktop\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.pdb
-C:\Users\n9351744\Desktop\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.csprojResolveAssemblyReference.cache
-C:\temp\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.exe.config
-C:\temp\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.exe
-C:\temp\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.pdb
-C:\temp\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.exe
-C:\temp\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.pdb
-C:\temp\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.csprojResolveAssemblyReference.cache
-C:\Users\xiong\Downloads\ifn660-tupham\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.exe.config
-C:\Users\xiong\Downloads\ifn660-tupham\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.exe
-C:\Users\xiong\Downloads\ifn660-tupham\IFN660-TuPham\ASTTest\bin\Debug\ASTTest.pdb
-C:\Users\xiong\Downloads\ifn660-tupham\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.exe
-C:\Users\xiong\Downloads\ifn660-tupham\IFN660-TuPham\ASTTest\obj\Debug\ASTTest.pdb
-C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\bin\Debug\ASTTest.exe.config
-C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\bin\Debug\ASTTest.exe
-C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\bin\Debug\ASTTest.pdb
-C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\obj\Debug\ASTTest.exe
-C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\obj\Debug\ASTTest.pdb
->>>>>>> d7606bcfcfc15b7767567010fe0c815b0dc96c01
