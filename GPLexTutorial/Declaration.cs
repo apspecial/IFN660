@@ -8,10 +8,7 @@ namespace GPLexTutorial
 {
     public interface Declaration
     {
-          Type GetTypeFrom();
-        void AddItems(LexicalScope scop);
-        //string GetName();
-       //  int GetNumber();
-
+        Type GetTypeFrom();
+        string GetName();
     }
 }

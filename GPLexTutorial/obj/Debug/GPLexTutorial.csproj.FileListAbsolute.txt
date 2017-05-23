@@ -11,3 +11,8 @@ C:\Users\xiong\Downloads\ifn660-tupham\IFN660-TuPham\GPLexTutorial\bin\Debug\GPL
 C:\Users\xiong\Downloads\ifn660-tupham\IFN660-TuPham\GPLexTutorial\obj\Debug\GPLexTutorial.exe
 C:\Users\xiong\Downloads\ifn660-tupham\IFN660-TuPham\GPLexTutorial\obj\Debug\GPLexTutorial.pdb
 C:\Users\xiong\Downloads\ifn660-tupham\IFN660-TuPham\GPLexTutorial\obj\Debug\GPLexTutorial.csprojResolveAssemblyReference.cache
+C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\GPLexTutorial\bin\Debug\GPLexTutorial.exe.config
+C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\GPLexTutorial\bin\Debug\GPLexTutorial.exe
+C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\GPLexTutorial\bin\Debug\GPLexTutorial.pdb
+C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\GPLexTutorial\obj\Debug\GPLexTutorial.exe
+C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\GPLexTutorial\obj\Debug\GPLexTutorial.pdb

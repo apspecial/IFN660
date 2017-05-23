@@ -19,44 +19,15 @@ namespace GPLexTutorial
             Scanner scanner = new Scanner(new FileStream(args[0], FileMode.Open));
             Parser parser = new Parser(scanner);
             if (parser.Parse())
-            {
+            {               
+                SemanticAnalysis(Parser.root);
                 Parser.root.DumpValue(0);
-
-                //int x;
-                // Parser.root.dump(0);
-                //SemanticAnalysis(Parser.root);
-
-
-                //yyparse();
-                // Node root = null ;
-                //char i = '0';
-                // if (root != null)
-                // {
-                //root->dump(0);
-                //  SemanticAnalysis(root);
-                //  //root->dump(0);
-                // CodeGeneration(i, root);
-                // }
-
             }
         }
 
         public static void SemanticAnalysis(Node root)
         {
             root.ResolveNames(null);
-            // root.TypeCheck(0);
-
-            //bool success;
-
-            // name resolution
-            // success = root.ResolveNames(null);
-            // if (!success)
-            // {
-            //     System.Console.WriteLine("*** ERROR - Name Resolution Failed ***");
-            //     throw new Exception("Name Resolution Error");
-            // }
-
-            // type checking
             root.TypeCheck(0);
         }
 

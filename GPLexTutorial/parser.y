@@ -9,7 +9,6 @@
     public int num;
     public string name;
     public CompilationUnit compUnit;
-    public TypeDeclaration typeDecl;
     public NormalClassDeclaration normclassDecl;
     public ClassModifier classModi;  
     public ClassBody classBodi;
@@ -43,9 +42,8 @@
 %nonassoc '<'
 %left '+'
 
-%type <compUnit> CompilationUnit
-%type <typeDecl> TypeDeclaration 
-%type <normclassDecl> NormalClassDeclaration
+%type <compUnit> CompilationUnit 
+%type <normclassDecl> NormalClassDeclaration TypeDeclaration
 %type <classModi> ClassModifier
 %type <classBodi> ClassBody
 %type <methModi> MethodModifier

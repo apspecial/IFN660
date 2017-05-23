@@ -8,5 +8,10 @@ namespace GPLexTutorial
 {
     public abstract class Type: Node
     {
+        public bool Compatible(Type other)
+        {
+            return Equal(other);
+        }
+        public abstract bool Equal(Type other);
     }
 }
