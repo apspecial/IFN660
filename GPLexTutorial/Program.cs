@@ -4,14 +4,17 @@ namespace JavaCompiler
     class Program
     {
         public static void Main(string[] args)
-        {   
-            Scanner scanner = new Scanner(new FileStream(args[0], FileMode.Open));
+        {
+            FileStream stream = new FileStream(args[0], FileMode.Open);
+            Scanner scanner = new Scanner(stream);
             Parser parser = new Parser(scanner);
-            if (parser.Parse())
+            bool status = parser.Parse();
+            stream.Close();
+            if (status == true)
             {               
                 SemanticAnalysis(Parser.root);
                 Parser.root.DumpValue(0);
-                CodeGeneration(args[1], Parser.root);
+                CodeGeneration(args[0].Substring(0, args[0].LastIndexOf('.')), Parser.root);
             }
         }
         public static void SemanticAnalysis(Node root)
@@ -21,8 +24,12 @@ namespace JavaCompiler
         }
         public static void CodeGeneration(string file, Node root)
         {
-            StreamWriter stream = new StreamWriter(file, true);
-            stream.WriteLine(".assembly %s {0}", file);
+            StreamWriter stream = new StreamWriter(file + ".il");
+            stream.WriteLine(".assembly extern mscorlib", file);
+            stream.WriteLine("{}");
+            stream.WriteLine(".assembly {0}", file);
+            stream.WriteLine("{}");
+            stream.WriteLine(".module {0}", file);
             root.GenerateCode(stream);
             stream.Close();
         }

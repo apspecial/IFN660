@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace JavaCompiler
 {
-    public abstract class Type: Node
+    public abstract class Type:Node
     {
         public bool Compatible(Type other)
         {
             return Equal(other);
         }
+        public abstract string GetTypeName();
         public abstract bool Equal(Type other);
     }
 }

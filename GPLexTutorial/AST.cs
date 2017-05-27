@@ -51,7 +51,7 @@ namespace JavaCompiler
     public abstract class Statement : Node { }
     public class IntegerLiteral : Expression
     {
-        private int value;
+        public int value;
         public IntegerLiteral(int value)
         {
             this.value = value;
@@ -64,16 +64,17 @@ namespace JavaCompiler
         {
         }
         public override void GenerateCode(StreamWriter stream)
-        { }
+        {
+        }
     }
     public class Identifier : Expression
     {
-        private string name;
+        private string name = "";
         private Declaration declaration;
         public string Name
         {
-            get { return Name; }
-            set { Name = value; }
+            get { return name; }
+            set { name = value; }
         }
         public Identifier(string name)
         {
@@ -113,6 +114,9 @@ namespace JavaCompiler
         }
         public override void GenerateCode(StreamWriter stream)
         {
+            stream.BaseStream.Seek(0, SeekOrigin.End);
+            stream.WriteLine("ldc.i4.s {0}", ((IntegerLiteral)rhs).value);
+            stream.WriteLine("stloc.0");
         }
     }
     public class ExpressionStatement : Statement
@@ -132,11 +136,15 @@ namespace JavaCompiler
         }
         public override void GenerateCode(StreamWriter stream)
         {
+            assignment.GenerateCode(stream);
         }
     }
     public enum IntegralType { Int };
     public class UnannType : Type
     {
+        public override string GetTypeName(){
+            return "";
+        }
         public override bool Equal(Type other)
         {
             if (other as UnannType != null)
@@ -156,16 +164,20 @@ namespace JavaCompiler
         {
         }
     }
-    public class NamedType : UnannType
+    public class NameType : UnannType
     {
+        public override string GetTypeName()
+        {
+            return "string";
+        }
         private string typeName;
-        public NamedType(string typeName)
+        public NameType(string typeName)
         {
             this.typeName = typeName;
         }
         public override bool Equal(Type other)
         {
-            if (other as NamedType != null)
+            if (other as NameType != null)
                 return true;
             else
                 return false;
@@ -185,6 +197,10 @@ namespace JavaCompiler
             else
                 return false;
         }
+        public override string GetTypeName()
+        {
+            return "int32";
+        }
     }
     public class ArrayType : UnannType
     {
@@ -192,6 +208,10 @@ namespace JavaCompiler
         public ArrayType(UnannType arrayType)
         {
             this.arrayType = arrayType;
+        }
+        public override string GetTypeName()
+        {
+            return arrayType.GetTypeName() + "[]";
         }
         public override bool Equal(Type other)
         {
@@ -248,6 +268,14 @@ namespace JavaCompiler
         }
         public override void GenerateCode(StreamWriter stream)
         {
+            stream.BaseStream.Seek(0, SeekOrigin.End);
+            switch (unannType.GetTypeName())
+            {
+                case "int32":
+                    break;
+            }
+            string s = string.Format(".locals init ([0] {0} {1})", unannType.GetTypeName(), variableDeclarator.Name);
+            stream.WriteLine(s);
         }
     }
     public class LocalVariableDeclarationStatement : Node
@@ -294,6 +322,12 @@ namespace JavaCompiler
         }
         public override void GenerateCode(StreamWriter stream)
         {
+            stream.BaseStream.Seek(0, SeekOrigin.End);
+            foreach (Statement statement in blockStatements)
+            {
+                statement.GenerateCode(stream);
+            }
+            stream.WriteLine("ret");
         }
     }
     public enum MethodModifier { Public, Static };
@@ -332,9 +366,23 @@ namespace JavaCompiler
         private List<FormalParameter> formalParameterList;
         public List<FormalParameter> FormalParameterList
         {
-            get { return FormalParameterList; }
-            set { FormalParameterList = value; }
+            get { return formalParameterList; }
+            set { formalParameterList = value; }
         }
+
+        public Identifier Identifier
+        {
+            get
+            {
+                return identifier;
+            }
+
+            set
+            {
+                identifier = value;
+            }
+        }
+
         public MethodDeclarator(Identifier identifier, List<FormalParameter> formalparameterlist)
         {
             this.identifier = identifier;
@@ -364,8 +412,8 @@ namespace JavaCompiler
     public enum Result { Void };
     public class MethodHeader : Node
     {
-        private Result result;
-        private MethodDeclarator methodDeclarator;
+        public Result result;
+        public MethodDeclarator methodDeclarator;
         public MethodHeader(Result result, MethodDeclarator methoddeclarator)
         {
             this.result = result;
@@ -385,12 +433,12 @@ namespace JavaCompiler
     }
     public class MethodDeclaration : Node
     {
-        private List<MethodModifier> methodModifier;
+        private List<MethodModifier> methodmodifiers;
         private MethodHeader methodHeader;
         private Block methodBody;
         public MethodDeclaration(List<MethodModifier> methodmodifier, MethodHeader methodheader, Block methodbody)
         {
-            this.methodModifier = methodmodifier;
+            this.methodmodifiers = methodmodifier;
             this.methodHeader = methodheader;
             this.methodBody = methodbody;
         }
@@ -405,6 +453,51 @@ namespace JavaCompiler
         }
         public override void GenerateCode(StreamWriter stream)
         {
+            stream.BaseStream.Seek(0, SeekOrigin.End);
+            string modifiers = "";
+            foreach (MethodModifier modifier in methodmodifiers)
+            {
+                switch (modifier)
+                {
+                    case MethodModifier.Public:
+                        modifiers += "public ";
+                        break;
+                    case MethodModifier.Static:
+                        modifiers += "static ";
+                        break;
+                }
+            }
+            string result = "";
+            switch (methodHeader.result)
+            {
+                case Result.Void:
+                    result = "void ";
+                    break;
+            }
+            string name = "";
+            name = methodHeader.methodDeclarator.Identifier.Name;
+
+            string parameters = "";
+            Type a;
+            foreach (FormalParameter parameter in methodHeader.methodDeclarator.FormalParameterList)
+            {
+                ArrayType arrayType = new ArrayType(new NameType("nametype"));
+                if (parameter.GetTypeFrom().Equal(arrayType))
+                {
+                    parameters += ((ArrayType)parameter.GetTypeFrom()).GetTypeName() + " " + parameter.GetName() + ",";
+                }
+            }
+            parameters = parameters.Remove(parameters.Length - 1);
+            stream.WriteLine(".method {0}{1}{2}({3})", modifiers, result, name, parameters);
+            stream.WriteLine("{");
+            if (name.ToLower() == "main")
+            {
+                stream.WriteLine(".entrypoint");
+                stream.WriteLine(".maxstack 1");
+            }
+            else { }
+            methodBody.GenerateCode(stream);
+            stream.WriteLine("}");
         }
     }
     public class ClassBody : Node
@@ -424,6 +517,8 @@ namespace JavaCompiler
         }
         public override void GenerateCode(StreamWriter stream)
         {
+            stream.BaseStream.Seek(0, SeekOrigin.End);
+            methodDeclaration.GenerateCode(stream);
         }
     }
     public enum ClassModifier { Public };
@@ -449,6 +544,18 @@ namespace JavaCompiler
         }
         public override void GenerateCode(StreamWriter stream)
         {
+            stream.BaseStream.Seek(0, SeekOrigin.End);
+            string modifier = "";
+            switch (classModifier)
+            {
+                case ClassModifier.Public:
+                    modifier = "public ";
+                    break;
+            }
+            stream.WriteLine(".class {0}{1}", modifier, identifier.Name);
+            stream.WriteLine("{");
+            classBody.GenerateCode(stream);
+            stream.WriteLine("}");
         }
     }
     public abstract class TypeDeclaration : Node { };
@@ -479,6 +586,8 @@ namespace JavaCompiler
         }
         public override void GenerateCode(StreamWriter stream)
         {
+            stream.BaseStream.Seek(0, SeekOrigin.End);
+            typeDeclaration.GenerateCode(stream);
         }
     }
 }

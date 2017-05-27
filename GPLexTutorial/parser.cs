@@ -4,9 +4,9 @@
 
 // GPPG version 1.5.2
 // Machine:  LAPTOP-33AHR5JC
-// DateTime: 27/05/2017 2:21:56 PM
+// DateTime: 27/05/2017 7:49:33 PM
 // UserName: vincentchauau
-// Input file <parser.y - 27/05/2017 1:27:07 PM>
+// Input file <parser.y - 27/05/2017 6:07:08 PM>
 
 // options: lines gplex
 
@@ -75,11 +75,11 @@ public class ScanObj {
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
 public class Parser: ShiftReduceParser<ValueType, LexLocation>
 {
-  // Verbatim content from parser.y - 27/05/2017 1:27:07 PM
+  // Verbatim content from parser.y - 27/05/2017 6:07:08 PM
 #line 4 "parser.y"
   public static Node root;
 #line default
-  // End verbatim content from parser.y - 27/05/2017 1:27:07 PM
+  // End verbatim content from parser.y - 27/05/2017 6:07:08 PM
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
@@ -428,7 +428,7 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
         break;
       case 45: // UnannClassType -> Identifier, TypeArguments_opt
 #line 212 "parser.y"
-                                     { CurrentSemanticValue.untype = new NamedType(ValueStack[ValueStack.Depth-2].name); }
+                                     { CurrentSemanticValue.untype = new NameType(ValueStack[ValueStack.Depth-2].name); }
 #line default
         break;
       case 47: // UnannPrimitiveType -> NumericType
