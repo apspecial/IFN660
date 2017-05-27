@@ -2,6 +2,6 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartArguments>test1.j</StartArguments>
-    <StartWorkingDirectory>C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\GPLexTutorial\Tests\</StartWorkingDirectory>
+    <StartWorkingDirectory>D:\Box Sync\SVN and GIT\IFN660\GPLexTutorial\Tests\</StartWorkingDirectory>
   </PropertyGroup>
 </Project>
