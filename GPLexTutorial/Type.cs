@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GPLexTutorial
+namespace JavaCompiler
 {
     public abstract class Type: Node
     {

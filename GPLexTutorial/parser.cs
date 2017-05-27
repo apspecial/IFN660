@@ -4,9 +4,9 @@
 
 // GPPG version 1.5.2
 // Machine:  LAPTOP-33AHR5JC
-// DateTime: 27/05/2017 1:06:34 PM
+// DateTime: 27/05/2017 2:21:56 PM
 // UserName: vincentchauau
-// Input file <parser.y - 27/05/2017 12:51:35 PM>
+// Input file <parser.y - 27/05/2017 1:27:07 PM>
 
 // options: lines gplex
 
@@ -17,7 +17,7 @@ using System.Globalization;
 using System.Text;
 using QUT.Gppg;
 
-namespace GPLexTutorial
+namespace JavaCompiler
 {
 public enum Tokens {
     error=127,EOF=128,IntegerLiteral=129,Identifier=130,PUBLIC=131,CLASS=132,
@@ -75,11 +75,11 @@ public class ScanObj {
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
 public class Parser: ShiftReduceParser<ValueType, LexLocation>
 {
-  // Verbatim content from parser.y - 27/05/2017 12:51:35 PM
+  // Verbatim content from parser.y - 27/05/2017 1:27:07 PM
 #line 4 "parser.y"
   public static Node root;
 #line default
-  // End verbatim content from parser.y - 27/05/2017 12:51:35 PM
+  // End verbatim content from parser.y - 27/05/2017 1:27:07 PM
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;

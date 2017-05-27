@@ -1,4 +1,4 @@
-%namespace GPLexTutorial
+%namespace JavaCompiler
 
 %{
 int lines = 0;

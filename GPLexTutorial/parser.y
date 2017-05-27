@@ -1,4 +1,4 @@
-﻿﻿%namespace GPLexTutorial
+﻿﻿%namespace JavaCompiler
 
 %{
   public static Node root;

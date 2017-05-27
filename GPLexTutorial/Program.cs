@@ -1,19 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Globalization;
-using QUT.Gppg;
-
-namespace GPLexTutorial
+﻿using System.IO;
+namespace JavaCompiler
 {
     class Program
     {
-        //extern int yylex();
-        //extern int yyparse();
-       // extern Node roote;
         public static void Main(string[] args)
         {   
             Scanner scanner = new Scanner(new FileStream(args[0], FileMode.Open));
@@ -22,17 +11,20 @@ namespace GPLexTutorial
             {               
                 SemanticAnalysis(Parser.root);
                 Parser.root.DumpValue(0);
+                CodeGeneration(args[1], Parser.root);
             }
         }
-
         public static void SemanticAnalysis(Node root)
         {
             root.ResolveNames(null);
-            root.TypeCheck(0);
+            root.CheckType(0);
         }
-
-        public static void CodeGeneration(char inputfile, Node root)
+        public static void CodeGeneration(string file, Node root)
         {
+            StreamWriter stream = new StreamWriter(file, true);
+            stream.WriteLine(".assembly %s {0}", file);
+            root.GenerateCode(stream);
+            stream.Close();
         }
     }
 }
