@@ -1,4 +1,4 @@
-﻿﻿﻿﻿%namespace GPLexTutorial
+﻿﻿%namespace JavaCompiler
 
 %{
   public static Node root;
@@ -15,22 +15,22 @@
     public MethodDeclaration methDecl;
     public MethodModifier methModi;
     public Result result;
-	public List<Statement> stmts;
-	public Block block;
-	public MethodDeclarator methodecla;
-	public MethodHeader methodhea;
-	public Statement stmt;
-	public List<MethodModifier> methodmodilist;
-	public FormalParameter	fmpara;
-	public List<FormalParameter> fmparalist;
-	public UnannType untype;
-	public VariableModifier varmodi;
-	public Identifier ident;
-	public List<VariableModifier> varmodis;
-	public Assignment assign;
-	public Expression expr;
-	public LocalVariableDeclaration localvardcl;
-	public IntegralType inttype;
+	  public List<Statement> stmts;
+	  public Block block;
+	  public MethodDeclarator methodecla;
+	  public MethodHeader methodhea;
+	  public Statement stmt;
+	  public List<MethodModifier> methodmodilist;
+	  public FormalParameter	fmpara;
+	  public List<FormalParameter> fmparalist;
+	  public UnannType untype;
+	  public VariableModifier varmodi;
+	  public Identifier ident;
+	  public List<VariableModifier> varmodis;
+	  public Assignment assign;
+	  public Expression expr;
+	  public LocalVariableDeclaration localvardcl;
+	  public IntegralType inttype;
 }
 
 %token <num> IntegerLiteral
@@ -209,7 +209,7 @@ UnannClassOrInterfaceType
 	; 
 
 UnannClassType
-	:	Identifier TypeArguments_opt						{ $$ = new NamedType($1); }
+	:	Identifier TypeArguments_opt						{ $$ = new NameType($1); }
 	;
 
 TypeArguments_opt
@@ -266,4 +266,3 @@ public Parser(Scanner scanner) : base(scanner)
 {
 
 }
-

@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="QUT.ShiftReduceParser">
-      <HintPath>..\..\..\Users\n9351744\Desktop\IFN660-TuPham\GPLexTutorial\bin\Debug\QUT.ShiftReduceParser.dll</HintPath>
+      <HintPath>..\..\IN20 Course\IFN660\IFN660-T5J\Project Folder\IFN660_Java_ECMAScript\gppg-distro-1_5_2\binaries\QUT.ShiftReduceParser.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -56,12 +57,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="parser.y" />
+    <None Include="parser.y">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="scanner.lex" />
-    <None Include="Tests\test1.j" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tests\test.java" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

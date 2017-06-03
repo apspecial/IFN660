@@ -2,12 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace GPLexTutorial
+namespace JavaCompiler
 {
     public abstract class Node
     {
@@ -16,31 +11,8 @@ namespace GPLexTutorial
             for (int i = 0; i < n; i++)
                 Console.Write("    ");
         }
-        public abstract void dump(int indent);
-        public abstract bool ResolveNames(LexicalScope scope);
-        public abstract void TypeCheck(int indent);
-        protected void label(int i, string fmt, params object[] args)
-        {
-            Indent(i);
-            Console.Write(fmt, args);
-        }
-        public void dump(int i, string name)
-        {
-            label(i, "{0}:\n", name);
-            dump(i + 1);
-        }
-        public void emit(FileStream outputfile, char fmt)
-        {
-
-        }
         public void DumpValue(int indent)
         {
-            //Indent(indent);
-            //Console.WriteLine("{0}", GetType().ToString());
-
-            //Indent(indent);
-            //Console.WriteLine("{");
-
             foreach (var field in GetType().GetFields(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance))
             {
                 object value = field.GetValue(this);
@@ -70,59 +42,43 @@ namespace GPLexTutorial
                 else
                     Console.WriteLine("{0}: {1}", field.Name, value);
             }
-
-            //Indent(indent);
-            //Console.WriteLine("}");
         }
+        public abstract bool ResolveNames(LexicalScope scope);
+        public abstract void CheckType(int indent);
+        public abstract void GenerateCode(StreamWriter stream);
     }
-
     public abstract class Expression : Node { }
-
     public abstract class Statement : Node { }
-
     public class IntegerLiteral : Expression
     {
-        private int value;
+        public int value;
         public IntegerLiteral(int value)
         {
             this.value = value;
-        }
-        public override void dump(int indent)
-        {
-
         }
         public override bool ResolveNames(LexicalScope scope)
         {
             return true;
         }
-        public override void TypeCheck(int indent)
+        public override void CheckType(int indent)
         {
-
         }
-        public void GenCode(FileStream file)
+        public override void GenerateCode(StreamWriter stream)
         {
-
         }
     }
-
     public class Identifier : Expression
     {
-        private string name;
+        private string name = "";
         private Declaration declaration;
-
         public string Name
         {
-            get { return Name; }
-            set { Name = value; }
+            get { return name; }
+            set { name = value; }
         }
-
         public Identifier(string name)
         {
             this.name = name;
-        }
-        public override void dump(int indent)
-        {
-
         }
         public override bool ResolveNames(LexicalScope scope)
         {
@@ -132,16 +88,12 @@ namespace GPLexTutorial
             }
             return true;
         }
-        public override void TypeCheck(int indent)
+        public override void CheckType(int indent)
         {
-
         }
-        public void GenCode(FileStream file)
-        {
-
-        }
+        public override void GenerateCode(StreamWriter stream)
+        { }
     }
-
     public class Assignment : Expression
     {
         private Expression lhs;
@@ -151,28 +103,22 @@ namespace GPLexTutorial
             this.lhs = lhs;
             this.rhs = rhs;
         }
-        public override void dump(int indent)
-        {
-            label(indent, "AssignmentExpression\n");
-            lhs.dump(indent + 1, "lhs");
-            rhs.dump(indent + 1, "rhs");
-        }
         public override bool ResolveNames(LexicalScope scope)
         {
             lhs.ResolveNames(scope);
             rhs.ResolveNames(scope);
             return true;
         }
-        public override void TypeCheck(int indent)
+        public override void CheckType(int indent)
         {
-
         }
-        public void GenCode(FileStream file)
+        public override void GenerateCode(StreamWriter stream)
         {
-
+            stream.BaseStream.Seek(0, SeekOrigin.End);
+            stream.WriteLine("ldc.i4.s {0}", ((IntegerLiteral)rhs).value);
+            stream.WriteLine("stloc.0");
         }
     }
-
     public class ExpressionStatement : Statement
     {
         private Assignment assignment;
@@ -180,41 +126,24 @@ namespace GPLexTutorial
         {
             this.assignment = assignment;
         }
-        public override void dump(int indent)
-        {
-
-        }
         public override bool ResolveNames(LexicalScope scope)
         {
             assignment.ResolveNames(scope);
             return true;
         }
-        public override void TypeCheck(int indent)
+        public override void CheckType(int indent)
         {
-
         }
-        public void GenCode(FileStream file)
+        public override void GenerateCode(StreamWriter stream)
         {
-
+            assignment.GenerateCode(stream);
         }
     }
-
     public enum IntegralType { Int };
-
     public class UnannType : Type
     {
-        public override void dump(int indent)
-        {
-
-        }
-        public override bool ResolveNames(LexicalScope scope)
-        {
-            ResolveNames(scope);
-            return true;
-        }
-        public override void TypeCheck(int indent)
-        {
-
+        public override string GetTypeName(){
+            return "";
         }
         public override bool Equal(Type other)
         {
@@ -223,32 +152,40 @@ namespace GPLexTutorial
             else
                 return false;
         }
-        public void GenCode(FileStream file)
+        public override bool ResolveNames(LexicalScope scope)
         {
-
+            ResolveNames(scope);
+            return true;
+        }
+        public override void CheckType(int indent)
+        {
+        }
+        public override void GenerateCode(StreamWriter stream)
+        {
         }
     }
-
-    public class NamedType : UnannType
+    public class NameType : UnannType
     {
+        public override string GetTypeName()
+        {
+            return "string";
+        }
         private string typeName;
-        public NamedType(string typeName)
+        public NameType(string typeName)
         {
             this.typeName = typeName;
         }
         public override bool Equal(Type other)
         {
-            if (other as NamedType != null)
+            if (other as NameType != null)
                 return true;
             else
                 return false;
         }
     }
-
     public class PrimitiveType : UnannType
     {
         private IntegralType integraltype;
-
         public PrimitiveType(IntegralType integraltype)
         {
             this.integraltype = integraltype;
@@ -260,15 +197,21 @@ namespace GPLexTutorial
             else
                 return false;
         }
+        public override string GetTypeName()
+        {
+            return "int32";
+        }
     }
-
     public class ArrayType : UnannType
     {
         private UnannType arrayType;
-
         public ArrayType(UnannType arrayType)
         {
             this.arrayType = arrayType;
+        }
+        public override string GetTypeName()
+        {
+            return arrayType.GetTypeName() + "[]";
         }
         public override bool Equal(Type other)
         {
@@ -278,9 +221,7 @@ namespace GPLexTutorial
                 return false;
         }
     }
-
     public abstract class VariableModifier : Node { }
-
     public class VariableModifiers : Node
     {
         private List<VariableModifier> variableModifier;
@@ -288,25 +229,18 @@ namespace GPLexTutorial
         {
             this.variableModifier = varibalemodifier;
         }
-        public override void dump(int indent)
-        {
-
-        }
         public override bool ResolveNames(LexicalScope scope)
         {
             ResolveNames(scope);
             return true;
         }
-        public override void TypeCheck(int indent)
+        public override void CheckType(int indent)
         {
-
         }
-        public void GenCode(FileStream file)
+        public override void GenerateCode(StreamWriter stream)
         {
-
         }
     }
-
     public class LocalVariableDeclaration : Statement, Declaration
     {
         private UnannType unannType;
@@ -320,10 +254,6 @@ namespace GPLexTutorial
             this.unannType = unanntype;
             this.variableDeclarator = variabledeclarator;
         }
-        public override void dump(int indent)
-        {
-
-        }
         public Type GetTypeFrom()
         {
             return unannType;
@@ -333,16 +263,21 @@ namespace GPLexTutorial
             variableDeclarator.ResolveNames(scope);
             return true;
         }
-        public override void TypeCheck(int indent)
+        public override void CheckType(int indent)
         {
-
         }
-        public void GenCode(FileStream file)
+        public override void GenerateCode(StreamWriter stream)
         {
-
+            stream.BaseStream.Seek(0, SeekOrigin.End);
+            switch (unannType.GetTypeName())
+            {
+                case "int32":
+                    break;
+            }
+            string s = string.Format(".locals init ([0] {0} {1})", unannType.GetTypeName(), variableDeclarator.Name);
+            stream.WriteLine(s);
         }
     }
-
     public class LocalVariableDeclarationStatement : Node
     {
         private LocalVariableDeclaration localVariableDeclaration;
@@ -350,66 +285,24 @@ namespace GPLexTutorial
         {
             this.localVariableDeclaration = localvariabledeclaration;
         }
-        public override void dump(int indent)
-        {
-
-        }
         public override bool ResolveNames(LexicalScope scope)
         {
             localVariableDeclaration.ResolveNames(scope);
             return true;
         }
-        public override void TypeCheck(int indent)
+        public override void CheckType(int indent)
         {
-
         }
-        public void GenCode(FileStream file)
+        public override void GenerateCode(StreamWriter stream)
         {
-
         }
     }
-
-    /*
-	public class BlockStatement : Node
-	{
-		private LocalVariableDeclarationStatement variableDeclarationStatement;
-		private Statement statement;
-		public BlockStatement(LocalVariableDeclarationStatement variabledeclarationstatement, Statement statement)
-		{
-			this.variableDeclarationStatement = variabledeclarationstatement;
-			this.statement = statement;
-		}
-        public override void dump(int indent)
-        {
-
-        }
-
-        public override void ResolveNames(LexicalScope scope)
-        {
-            var newScope = getNewScope(scope, statement);
-            ResolveNames(newScope);
-        }
-        public override void TypeCheck(int indent)
-        {
-
-        }
-        public void GenCode(FileStream file)
-        {
-
-        }
-    }
-    */
-
     public class Block : Statement
     {
         private List<Statement> blockStatements;
         public Block(List<Statement> blockstatements)
         {
             this.blockStatements = blockstatements;
-        }
-        public override void dump(int indent)
-        {
-
         }
         public override bool ResolveNames(LexicalScope scope)
         {
@@ -424,18 +317,20 @@ namespace GPLexTutorial
                 ResolveNames(newScope);
             return true;
         }
-        public override void TypeCheck(int indent)
+        public override void CheckType(int indent)
         {
-
         }
-        public void GenCode(FileStream file)
+        public override void GenerateCode(StreamWriter stream)
         {
-
+            stream.BaseStream.Seek(0, SeekOrigin.End);
+            foreach (Statement statement in blockStatements)
+            {
+                statement.GenerateCode(stream);
+            }
+            stream.WriteLine("ret");
         }
     }
-
     public enum MethodModifier { Public, Static };
-
     public class FormalParameter : Node, Declaration
     {
         private UnannType unannType;
@@ -444,10 +339,6 @@ namespace GPLexTutorial
         {
             this.unannType = unanntype;
             this.variableDeclarator = variabledeclarator;
-        }
-        public override void dump(int indent)
-        {
-
         }
         public Type GetTypeFrom()
         {
@@ -462,34 +353,40 @@ namespace GPLexTutorial
             variableDeclarator.ResolveNames(scope);
             return true;
         }
-        public override void TypeCheck(int indent)
+        public override void CheckType(int indent)
         {
-
         }
-        public void GenCode(FileStream file)
+        public override void GenerateCode(StreamWriter stream)
         {
-
         }
     }
-
     public class MethodDeclarator : Node
     {
         private Identifier identifier;
         private List<FormalParameter> formalParameterList;
         public List<FormalParameter> FormalParameterList
         {
-            get { return FormalParameterList; }
-            set { FormalParameterList = value; }
+            get { return formalParameterList; }
+            set { formalParameterList = value; }
+        }
+
+        public Identifier Identifier
+        {
+            get
+            {
+                return identifier;
+            }
+
+            set
+            {
+                identifier = value;
+            }
         }
 
         public MethodDeclarator(Identifier identifier, List<FormalParameter> formalparameterlist)
         {
             this.identifier = identifier;
             this.formalParameterList = formalparameterlist;
-        }
-        public override void dump(int indent)
-        {
-
         }
         public override bool ResolveNames(LexicalScope scope)
         {
@@ -505,60 +402,45 @@ namespace GPLexTutorial
                 ResolveNames(newScope);
             return true;
         }
-        public override void TypeCheck(int indent)
+        public override void CheckType(int indent)
         {
-
         }
-        public void GenCode(FileStream file)
+        public override void GenerateCode(StreamWriter stream)
         {
-
         }
     }
-
     public enum Result { Void };
-
     public class MethodHeader : Node
     {
-        private Result result;
-        private MethodDeclarator methodDeclarator;
+        public Result result;
+        public MethodDeclarator methodDeclarator;
         public MethodHeader(Result result, MethodDeclarator methoddeclarator)
         {
             this.result = result;
             this.methodDeclarator = methoddeclarator;
-        }
-        public override void dump(int indent)
-        {
-
         }
         public override bool ResolveNames(LexicalScope scope)
         {
             methodDeclarator.ResolveNames(scope);
             return true;
         }
-        public override void TypeCheck(int indent)
+        public override void CheckType(int indent)
         {
-
         }
-        public void GenCode(FileStream file)
+        public override void GenerateCode(StreamWriter stream)
         {
-
         }
     }
-
     public class MethodDeclaration : Node
     {
-        private List<MethodModifier> methodModifier;
+        private List<MethodModifier> methodmodifiers;
         private MethodHeader methodHeader;
         private Block methodBody;
         public MethodDeclaration(List<MethodModifier> methodmodifier, MethodHeader methodheader, Block methodbody)
         {
-            this.methodModifier = methodmodifier;
+            this.methodmodifiers = methodmodifier;
             this.methodHeader = methodheader;
             this.methodBody = methodbody;
-        }
-        public override void dump(int indent)
-        {
-
         }
         public override bool ResolveNames(LexicalScope scope)
         {
@@ -566,16 +448,58 @@ namespace GPLexTutorial
             methodBody.ResolveNames(scope);
             return true;
         }
-        public override void TypeCheck(int indent)
+        public override void CheckType(int indent)
         {
-
         }
-        public void GenCode(FileStream file)
+        public override void GenerateCode(StreamWriter stream)
         {
+            stream.BaseStream.Seek(0, SeekOrigin.End);
+            string modifiers = "";
+            foreach (MethodModifier modifier in methodmodifiers)
+            {
+                switch (modifier)
+                {
+                    case MethodModifier.Public:
+                        modifiers += "public ";
+                        break;
+                    case MethodModifier.Static:
+                        modifiers += "static ";
+                        break;
+                }
+            }
+            string result = "";
+            switch (methodHeader.result)
+            {
+                case Result.Void:
+                    result = "void ";
+                    break;
+            }
+            string name = "";
+            name = methodHeader.methodDeclarator.Identifier.Name;
 
+            string parameters = "";
+            Type a;
+            foreach (FormalParameter parameter in methodHeader.methodDeclarator.FormalParameterList)
+            {
+                ArrayType arrayType = new ArrayType(new NameType("nametype"));
+                if (parameter.GetTypeFrom().Equal(arrayType))
+                {
+                    parameters += ((ArrayType)parameter.GetTypeFrom()).GetTypeName() + " " + parameter.GetName() + ",";
+                }
+            }
+            parameters = parameters.Remove(parameters.Length - 1);
+            stream.WriteLine(".method {0}{1}{2}({3})", modifiers, result, name, parameters);
+            stream.WriteLine("{");
+            if (name.ToLower() == "main")
+            {
+                stream.WriteLine(".entrypoint");
+                stream.WriteLine(".maxstack 1");
+            }
+            else { }
+            methodBody.GenerateCode(stream);
+            stream.WriteLine("}");
         }
     }
-
     public class ClassBody : Node
     {
         private MethodDeclaration methodDeclaration;
@@ -583,27 +507,21 @@ namespace GPLexTutorial
         {
             this.methodDeclaration = methoddeclaration;
         }
-        public override void dump(int indent)
-        {
-
-        }
         public override bool ResolveNames(LexicalScope scope)
         {
             methodDeclaration.ResolveNames(scope);
             return true;
         }
-        public override void TypeCheck(int indent)
+        public override void CheckType(int indent)
         {
-
         }
-        public void GenCode(FileStream file)
+        public override void GenerateCode(StreamWriter stream)
         {
-
+            stream.BaseStream.Seek(0, SeekOrigin.End);
+            methodDeclaration.GenerateCode(stream);
         }
     }
-
     public enum ClassModifier { Public };
-
     public class NormalClassDeclaration : TypeDeclaration
     {
         private ClassModifier classModifier;
@@ -615,32 +533,34 @@ namespace GPLexTutorial
             this.identifier = identifier;
             this.classBody = classbody;
         }
-        public override void dump(int indent)
-        {
-
-        }
         public override bool ResolveNames(LexicalScope scope)
         {
             identifier.ResolveNames(scope);
             //classBody.ResolveNames(scope);
             return true;
         }
-        public override void TypeCheck(int indent)
+        public override void CheckType(int indent)
         {
-
         }
-        public void GenCode(FileStream file)
+        public override void GenerateCode(StreamWriter stream)
         {
-
+            stream.BaseStream.Seek(0, SeekOrigin.End);
+            string modifier = "";
+            switch (classModifier)
+            {
+                case ClassModifier.Public:
+                    modifier = "public ";
+                    break;
+            }
+            stream.WriteLine(".class {0}{1}", modifier, identifier.Name);
+            stream.WriteLine("{");
+            classBody.GenerateCode(stream);
+            stream.WriteLine("}");
         }
     }
-
     public abstract class TypeDeclaration : Node { };
-
     public abstract class PackageDeclaration : Node { };
-
     public abstract class ImportDeclaration : Node { };
-
     public class CompilationUnit : Node
     {
         private PackageDeclaration packageDeclaration;
@@ -652,26 +572,22 @@ namespace GPLexTutorial
             this.importDeclaration = importdeclation;
             this.typeDeclaration = typedeclaration;
         }
-        public override void dump(int indent)
-        {
-
-        }
         public override bool ResolveNames(LexicalScope scope)
         {
-            
+
             if (typeDeclaration != null)
             {
                 typeDeclaration.ResolveNames(scope);
             }
             return true;
         }
-        public override void TypeCheck(int indent)
+        public override void CheckType(int indent)
         {
-
         }
-        public void GenCode(FileStream file)
+        public override void GenerateCode(StreamWriter stream)
         {
-
+            stream.BaseStream.Seek(0, SeekOrigin.End);
+            typeDeclaration.GenerateCode(stream);
         }
     }
 }
