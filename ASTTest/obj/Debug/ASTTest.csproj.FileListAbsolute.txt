@@ -26,3 +26,8 @@ C:\Users\xiong\Downloads\IFN660-vincentchauau\IFN660-vincentchauau\ASTTest\bin\D
 C:\Users\xiong\Downloads\IFN660-vincentchauau\IFN660-vincentchauau\ASTTest\bin\Debug\ASTTest.pdb
 C:\Users\xiong\Downloads\IFN660-vincentchauau\IFN660-vincentchauau\ASTTest\obj\Debug\ASTTest.exe
 C:\Users\xiong\Downloads\IFN660-vincentchauau\IFN660-vincentchauau\ASTTest\obj\Debug\ASTTest.pdb
+H:\IFN660\IFN660-master\IFN660-master\ASTTest\bin\Debug\ASTTest.exe.config
+H:\IFN660\IFN660-master\IFN660-master\ASTTest\bin\Debug\ASTTest.exe
+H:\IFN660\IFN660-master\IFN660-master\ASTTest\bin\Debug\ASTTest.pdb
+H:\IFN660\IFN660-master\IFN660-master\ASTTest\obj\Debug\ASTTest.exe
+H:\IFN660\IFN660-master\IFN660-master\ASTTest\obj\Debug\ASTTest.pdb

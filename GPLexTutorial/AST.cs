@@ -49,10 +49,10 @@ namespace JavaCompiler
     }
     public abstract class Expression : Node
     { public Type type;
-        public  Type GettypeFrom()
-        {
-            return type;
-        }
+        //public  Type GettypeFrom()
+        //{
+        //    return type;
+        //}
     }
     public abstract class Statement : Node { }
     public class IntegerLiteral : Expression
@@ -99,6 +99,12 @@ namespace JavaCompiler
         public override void CheckType()
         {
             //type = declaration.GetTypeFrom();
+            if (declaration!=null)
+            {
+                type = declaration.GetTypeFrom();
+            }
+           
+             
         }
         public override void GenerateCode(StreamWriter stream)
         { }
@@ -122,11 +128,20 @@ namespace JavaCompiler
         {
             lhs.CheckType();
             rhs.CheckType();
-            
-            if(rhs.GettypeFrom()!= lhs.GettypeFrom())
+           
+
+            if (rhs.type!=null && lhs.type != null)
             {
-                Console.WriteLine("Type error in assignment \n");
+                //if (!rhs.type.Compatible(lhs.type))
+                //{
+                //    Console.WriteLine("Type error in assignment \n");
+                //}
+                if(!lhs.Equals(rhs.type.GetTypeName()))
+                    {
+                    Console.WriteLine("Type error in assignment \n");
+                }
             }
+        
 
             type = lhs.type;
 
@@ -183,6 +198,7 @@ namespace JavaCompiler
         }
         public override void CheckType()
         {
+             
         }
         public override void GenerateCode(StreamWriter stream)
         {
@@ -268,6 +284,7 @@ namespace JavaCompiler
     }
     public class LocalVariableDeclaration : Statement, Declaration
     {
+        private Type type;
         private UnannType unannType;
         private Identifier variableDeclarator;
         public string GetName()
@@ -290,7 +307,10 @@ namespace JavaCompiler
         }
         public override void CheckType()
         {
+            //unannType.CheckType();
+            unannType.GetTypeName();
         }
+     
         public override void GenerateCode(StreamWriter stream)
         {
             stream.BaseStream.Seek(0, SeekOrigin.End);
