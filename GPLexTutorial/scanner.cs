@@ -5,10 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.2.2
-//  Machine:  TUPHAM-LAPTOP
-//  DateTime: 5/24/2017 3:44:16 AM
-//  UserName: Ngoc Tu Pham
-//  GPLEX input file <scanner.lex - 5/23/2017 2:39:28 PM>
+//  Machine:  DESKTOP-NS388F7
+//  DateTime: 2/06/2017 8:15:47 PM
+//  UserName: xiong
+//  GPLEX input file <scanner.lex - 2/06/2017 6:40:59 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -32,7 +32,7 @@ using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
 
-namespace GPLexTutorial
+namespace JavaCompiler
 {   
     /// <summary>
     /// Summary Canonical example of GPLEX automaton
@@ -131,7 +131,7 @@ namespace GPLexTutorial
 
 #region user code
 int lines = 0;
-/* Foo Cheok Kok (Kirill) */
+/* shawn */
 /* Tri Vu Chau */
 /* (Shawn) */
 #endregion user code

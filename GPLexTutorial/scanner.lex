@@ -1,10 +1,10 @@
-%namespace GPLexTutorial
+%namespace JavaCompiler
 
 %{
 int lines = 0;
 %}
 
-/* Foo Cheok Kok (Kirill) */
+/* shawn */
 Digit [0-9]
 DigitsOrUnderscore {Digit}|[_]
 DigitsAndUnderscores {DigitsOrUnderscore}+

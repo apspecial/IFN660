@@ -1,4 +1,4 @@
-﻿﻿%namespace GPLexTutorial
+﻿﻿%namespace JavaCompiler
 
 %{
   public static Node root;
@@ -209,7 +209,7 @@ UnannClassOrInterfaceType
 	; 
 
 UnannClassType
-	:	Identifier TypeArguments_opt						{ $$ = new NamedType($1); }
+	:	Identifier TypeArguments_opt						{ $$ = new NameType($1); }
 	;
 
 TypeArguments_opt

@@ -3,10 +3,10 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.5.2
-// Machine:  TUPHAM-LAPTOP
-// DateTime: 5/24/2017 3:44:16 AM
-// UserName: Ngoc Tu Pham
-// Input file <parser.y - 5/24/2017 3:43:59 AM>
+// Machine:  DESKTOP-NS388F7
+// DateTime: 2/06/2017 8:15:48 PM
+// UserName: xiong
+// Input file <parser.y - 28/05/2017 5:39:32 PM>
 
 // options: lines gplex
 
@@ -17,7 +17,7 @@ using System.Globalization;
 using System.Text;
 using QUT.Gppg;
 
-namespace GPLexTutorial
+namespace JavaCompiler
 {
 public enum Tokens {
     error=127,EOF=128,IntegerLiteral=129,Identifier=130,PUBLIC=131,CLASS=132,
@@ -75,11 +75,11 @@ public class ScanObj {
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
 public class Parser: ShiftReduceParser<ValueType, LexLocation>
 {
-  // Verbatim content from parser.y - 5/24/2017 3:43:59 AM
+  // Verbatim content from parser.y - 28/05/2017 5:39:32 PM
 #line 4 "parser.y"
   public static Node root;
 #line default
-  // End verbatim content from parser.y - 5/24/2017 3:43:59 AM
+  // End verbatim content from parser.y - 28/05/2017 5:39:32 PM
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
@@ -428,7 +428,7 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
         break;
       case 45: // UnannClassType -> Identifier, TypeArguments_opt
 #line 212 "parser.y"
-                                     { CurrentSemanticValue.untype = new NamedType(ValueStack[ValueStack.Depth-2].name); }
+                                     { CurrentSemanticValue.untype = new NameType(ValueStack[ValueStack.Depth-2].name); }
 #line default
         break;
       case 47: // UnannPrimitiveType -> NumericType

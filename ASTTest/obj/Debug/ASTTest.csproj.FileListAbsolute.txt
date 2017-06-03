@@ -21,3 +21,8 @@ C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\bin\Debug\ASTTest.pdb
 C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\obj\Debug\ASTTest.exe
 C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\obj\Debug\ASTTest.pdb
 C:\Users\Ngoc Tu Pham\Documents\IFN660 Project\ASTTest\obj\Debug\ASTTest.csprojResolveAssemblyReference.cache
+C:\Users\xiong\Downloads\IFN660-vincentchauau\IFN660-vincentchauau\ASTTest\bin\Debug\ASTTest.exe.config
+C:\Users\xiong\Downloads\IFN660-vincentchauau\IFN660-vincentchauau\ASTTest\bin\Debug\ASTTest.exe
+C:\Users\xiong\Downloads\IFN660-vincentchauau\IFN660-vincentchauau\ASTTest\bin\Debug\ASTTest.pdb
+C:\Users\xiong\Downloads\IFN660-vincentchauau\IFN660-vincentchauau\ASTTest\obj\Debug\ASTTest.exe
+C:\Users\xiong\Downloads\IFN660-vincentchauau\IFN660-vincentchauau\ASTTest\obj\Debug\ASTTest.pdb
