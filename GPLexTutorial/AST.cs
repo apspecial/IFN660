@@ -48,11 +48,8 @@ namespace JavaCompiler
         public abstract void GenerateCode(StreamWriter stream);
     }
     public abstract class Expression : Node
-    { public Type type;
-        //public  Type GettypeFrom()
-        //{
-        //    return type;
-        //}
+    {
+        public Type type;
     }
     public abstract class Statement : Node { }
     public class IntegerLiteral : Expression
@@ -307,7 +304,7 @@ namespace JavaCompiler
         }
         public override void CheckType()
         {
-            //unannType.CheckType();
+      
             unannType.GetTypeName();
         }
      
@@ -597,7 +594,6 @@ namespace JavaCompiler
         public override bool ResolveNames(LexicalScope scope)
         {
             identifier.ResolveNames(scope);
-            //classBody.ResolveNames(scope);
             return true;
         }
         public override void CheckType()

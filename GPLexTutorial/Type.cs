@@ -38,8 +38,7 @@ namespace JavaCompiler
 
         public override bool Equal(JavaCompiler.Type other)
         {
-        // System.Type intType = typeof(int);
-        // return intType.IsAssignableFrom(other.GetType());
+ 
         Boolean f = true;
         try
         {

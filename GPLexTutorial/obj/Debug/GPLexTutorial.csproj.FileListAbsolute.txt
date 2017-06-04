@@ -33,3 +33,9 @@ H:\IFN660\IFN660-master\IFN660-master\GPLexTutorial\bin\Debug\GPLexTutorial.exe
 H:\IFN660\IFN660-master\IFN660-master\GPLexTutorial\bin\Debug\GPLexTutorial.pdb
 H:\IFN660\IFN660-master\IFN660-master\GPLexTutorial\obj\Debug\GPLexTutorial.exe
 H:\IFN660\IFN660-master\IFN660-master\GPLexTutorial\obj\Debug\GPLexTutorial.pdb
+C:\Users\xiong\Downloads\IFN660-master\IFN660-master\GPLexTutorial\bin\Debug\GPLexTutorial.exe.config
+C:\Users\xiong\Downloads\IFN660-master\IFN660-master\GPLexTutorial\bin\Debug\GPLexTutorial.exe
+C:\Users\xiong\Downloads\IFN660-master\IFN660-master\GPLexTutorial\bin\Debug\GPLexTutorial.pdb
+C:\Users\xiong\Downloads\IFN660-master\IFN660-master\GPLexTutorial\obj\Debug\GPLexTutorial.csprojResolveAssemblyReference.cache
+C:\Users\xiong\Downloads\IFN660-master\IFN660-master\GPLexTutorial\obj\Debug\GPLexTutorial.exe
+C:\Users\xiong\Downloads\IFN660-master\IFN660-master\GPLexTutorial\obj\Debug\GPLexTutorial.pdb
